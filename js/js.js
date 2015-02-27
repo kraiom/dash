@@ -4,8 +4,8 @@ var panels = [null, null];
 // The arrow handlers
 var arrows = [null, null];
 
-// The gauge handler
-var gauge = null;
+// The gauge and score DOM handlers
+var gauge = null, score = null;
 
 // The score handlers
 var last = null, points = null, msg = null;
@@ -79,7 +79,7 @@ function start_gauge () {
 function wrong () {
     arrows[current].removeClass().addClass('icon-cancel');
 
-    $('.lives i:nth-child(' + lives + ')').removeClass().addClass('icon-circle-empty')
+    $('.lives div:nth-child(' + lives + ')').addClass('lost')
 
     clearTimeout(timer);
 
@@ -92,20 +92,18 @@ function wrong () {
 // The game over handler
 function game_over () {
 
-    if (right > BEST_SCORE) {
-        BEST_SCORE = right;
-        $.cookie('best', right + '', { expires: 365 });
-    }
+    // if (right > BEST_SCORE) {
+    //     BEST_SCORE = right;
+    //     $.cookie('best', right + '', { expires: 365 });
+    // }
 
-    last.html(right);
-    best.html(BEST_SCORE)
+    // last.html(right);
+    // best.html(BEST_SCORE);
 
     clearTimeout(timer);
     panels[0].fadeOut();
     panels[1].fadeOut();
-    $('.lives').fadeOut();
-    $('.timer').fadeOut();
-    $('h2').fadeOut();
+    score.fadeOut();
     playing = false;
 }
 
@@ -147,10 +145,7 @@ function evaluate (key) {
 // Updates the difficulty of the game
 function difficulty () {
     press_time -= DEFAULTS.ROUND_DECREASE;
-    press_time = Math.max(press_time, DEFAULTS.MINIMUM_VELOCITY);
-
-    // fall_time -= 5;
-    // fall_time = Math.max(fall_time, 200);    
+    press_time = Math.max(press_time, DEFAULTS.MINIMUM_VELOCITY);   
 }
 
 // Generates a number in [0, 4]
@@ -180,7 +175,7 @@ function game () {
 
     current = next;
 
-    arrows[current].removeClass().addClass('icon-' + names[direction] + '-open');
+    arrows[current].removeClass().addClass('icon-angle-' + names[direction]);
 
     var pos = positions[rand()];
 
@@ -215,6 +210,7 @@ $(document).ready(function() {
     msg = $('.msg');
     last = $('#last');
 
+    score = $('#score');
     gauge = $('#gauge');
 
     panels[0] = $('#panel-0');
@@ -249,24 +245,21 @@ $(document).ready(function() {
     });
     
 
-    if ($.cookie('best') === undefined)
-        $.cookie('best', '0', { expires: 365 });
+    // if ($.cookie('best') === undefined)
+    //     $.cookie('best', '0', { expires: 365 });
 
-    BEST_SCORE = $.cookie('best');
+    // BEST_SCORE = $.cookie('best');
 
-    best.html(BEST_SCORE);
-    last.html(0);
+    // best.html(BEST_SCORE);
+    // last.html(0);
 
-    msg.fadeIn();
+    // msg.fadeIn();
 
-    $('.txt a').click(function(){
-        $('.lives i').removeClass().addClass('icon-circle');
+    $('#btn_play').click(function(){
+        $('.lives div').removeClass('lost');
 
-        $('h2').html('0');
-
-        $('h2').fadeIn();
-        $('.lives').fadeIn();
-        $('.timer').fadeIn();
+        $('#counter').html(0);
+        score.fadeIn();
 
         fall_time = DEFAULTS.FALL_TIME;
         press_time = DEFAULTS.PRESS_TIME;

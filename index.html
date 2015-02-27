@@ -4,15 +4,15 @@
     <meta charset="utf-8"/>
     <meta name="author" content="Breno Lima de Freitas"/>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-    <meta property="og:image" content="http://breno.io/streak/img/favicon.png"/>
+    <meta property="og:image" content="http://breno.io/streak/img/logo.png"/>
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>Streak</title>
+    <title>Dash</title>
 
     <!-- <link href="img/favicon.ico" rel="icon" type="image/x-icon"/> -->
     <link href="img/favicon.png" rel="icon" type="image/x-icon"/>
-    <link href='http://fonts.googleapis.com/css?family=Noto+Sans|Yanone+Kaffeesatz:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Noto+Sans|Josefin+Sans:100,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/css.css?update=878"/>
     <link rel="stylesheet" type="text/css" href="css/fontello.css"/>
 
@@ -21,7 +21,7 @@
     <base target="_blank"/>
 </head>
 <body>
-    <script>
+    <!-- <script>
       window.fbAsyncInit = function() {
         FB.init({
           appId      : '1543390215934507',
@@ -37,44 +37,38 @@
          js.src = "//connect.facebook.net/en_US/sdk.js";
          fjs.parentNode.insertBefore(js, fjs);
        }(document, 'script', 'facebook-jssdk'));
-    </script>
+    </script> -->
 
-    <div class="social">
+<!--     <div class="social">
         <div class="fb-share-button" data-href="http://breno.io/streak" data-layout="button"></div>
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://breno.io/streak" data-text="Try to get rid of as many panels as you can" data-via="brenoldf" data-count="none" data-hashtags="streak">Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         <div class="g-plus" data-action="share" data-annotation="none" data-href="http://breno.io/streak"></div>
-    </div>
+    </div> -->
 
-    <h1>Streak<b>!</b></h1>
-    <h2 id="counter">0</h2>
+    <div class="wraper">
+        <h1>DASH</h1>
 
-    <div class="lives">
-        <i class="icon-circle"></i>
-        <i class="icon-circle"></i>
-        <i class="icon-circle"></i>
-    </div>
-
-    <div class="timer">
-        <div class="fill" id="gauge"></div>
-    </div>
-
-    <div class="txt">
-        <div class="msg">Your last score was <span id="last"></span> and your best score is <span id="best"></span> points!</div>
-
-        The rule is simple: send the panel to the correct direction, if you can!
-        
-        <h3>How to Play:</h3>
-
-        <ul>
-            <li>Press the arrow buttons corresponding to the arrow in the screen</li>
-            <li>You can also drag the panel to the direction on the cellphone</li>
-            <li>Pay attention not to run out of lives!</li>
-        </ul>
-
-        <div class="centering">
-            <a>Play!</a>
+        <div class="menu">
+            <a id="btn_play">Start game</a>
+            <a id="btn_howto">How to play</a>
+            <a id="btn_leader">Leaderboards</a>
         </div>
+
+        <div class="clear"></div>
+    </div>
+
+    <div class="score" id="score">
+        <div class="counter" id="counter">10</div>
+        <div class="timer">
+            <div class="fill" id="gauge"></div>
+        </div>
+        <div class="lives">
+            <div></div>
+            <div class="middle"></div>
+            <div></div>
+        </div>
+        <div class="clear"></div>
     </div>
 
     <section id="panel-0" class="preset-0"><i></i></section>
@@ -85,9 +79,9 @@
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/hammer.min.js"></script>
 <script type="text/javascript" src="js/jquery.hammer.js"></script>
-<script type="text/javascript" src="js/js.min.js?update=444"></script>
+<script type="text/javascript" src="js/js.js?update=444"></script>
 
-<script>
+<!-- <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -95,6 +89,6 @@
 
   ga('create', 'UA-60178881-1', 'auto');
   ga('send', 'pageview');
-</script>
+</script> -->
 
 </html>
