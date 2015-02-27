@@ -8,158 +8,176 @@
 @color7: #7E45D3;
 
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 body, html {
-	width: 100%;
-	height: 100%;
-	margin: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     padding: 0;
     overflow: hidden;
 }
 
 body {
-	background: @color2;
-	font-family: 'Noto Sans', sans-serif;
-	font-size: 1.1em;
+    background: @color2;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.1em;
 }
 
 section {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: -100%;
-	left: -100%;	
-	background: #f00;
-	z-index: 1;
-	overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: -100%;
+    left: -100%;    
+    background: #f00;
+    z-index: 1;
+    overflow: hidden;
 
-	i {
-		display: block;
-		font-size: 20em;
-		line-height: 2em;
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		top: 0;
-		margin: auto;
-		text-align: center;
+    i {
+        display: block;
+        font-size: 20em;
+        line-height: 2em;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+        text-align: center;
 
-		&.correct {
-			color: #ffffff;
-		}
-	}
+        &.correct {
+            color: #ffffff;
+        }
+    }
 }
 
 .fb_iframe_widget {
-	line-height: 15px;
+    line-height: 15px;
 }
 
 .wraper {
-	margin: 12em auto;
-	width: 36em;
+    margin: 12em auto;
+    width: 36em;
 }
 
 .clear {
-	clear: both;
+    clear: both;
 }
 
 .menu {
-	float: left;
-	display: inline-block;
-	padding: 3em 2.5em;
-	width: 15em;
-	height: 3em;
+    float: left;
+    display: inline-block;
+    padding: 0 2.5em;
+    margin-top: -0.5em;
+    width: 15em;
+    height: 3em;
+
+    div {
+        display: block;
+        padding: 0.6em;
+        text-align: center;
+        font-size: 0.8em;
+        letter-spacing: 0.2em;
+        color: #111;
+        margin-bottom: 1.5em;
+
+        span {
+            background: #111;
+            color: #fff;
+            padding: 0.2em;
+        }
+    }
 }
 
 .score {
-	z-index: 100;
-	display: none;
-	width: 2em;
-	height: 2em;
-	font-size: 3em;
-	color: #fff;
-	font-family: 'Josefin Sans', sans-serif;
-	background: #111;
-	position: absolute;
-	left: 0.5em;
-	top: 0.5em;
-	box-shadow: 0 1px 2px #333;
+    z-index: 100;
+    display: none;
+    width: 2em;
+    height: 2em;
+    font-size: 3em;
+    color: #fff;
+    font-family: 'Josefin Sans', sans-serif;
+    background: #111;
+    position: absolute;
+    left: 0.5em;
+    top: 0.5em;
+    box-shadow: 0 1px 2px #333;
 
-	& > div {
-		float: left;
-	}
+    & > div {
+        float: left;
+    }
 
-	.counter {
-		width: 100%;
-		text-align: center;
-		line-height: 2em;
-	}
+    .counter {
+        width: 100%;
+        text-align: center;
+        line-height: 2em;
+    }
 
-	.timer {
-		width: 1.8em;
-		height: 0.1em;
-		box-sizing: border-box;
-		margin: -0.2em 0.1em 0 0.1em;
-		background: #333;
+    .timer {
+        width: 1.8em;
+        height: 0.1em;
+        box-sizing: border-box;
+        margin: -0.2em 0.1em 0 0.1em;
+        background: #333;
 
-		.fill {
-			background: #fff;
-			width: 50%;
-			height: 100%;
-		}
-	}
+        .fill {
+            background: #fff;
+            width: 50%;
+            height: 100%;
+        }
+    }
 
-	.lives {
-		height: 0.2em;
-		width: 2em;
-		margin-top: -1.9em;
-		margin-left: 0.1em;
+    .lives {
+        height: 0.2em;
+        width: 2em;
+        margin-top: -1.9em;
+        margin-left: 0.1em;
 
-		div {
-			float: left;
-			width: 0.5em;
-			height: 0.1em;
-			background: #fff;
+        div {
+            float: left;
+            width: 0.5em;
+            height: 0.1em;
+            background: #fff;
 
-			&.middle {
-				margin: 0 0.15em;
-			}
+            &.middle {
+                margin: 0 0.15em;
+            }
 
-			&.lost {
-				background: #333;
-			}
-		}
-	}
+            &.lost {
+                background: #333;
+            }
+        }
+    }
 }
 
 h1 {
-	float: left;
-	text-align: center;
-	width: 3.2em;
-	height: 3em;
-	line-height: 3.2em;
-	background: #111;
-	color: #fff;
-	font-family: 'Josefin Sans', sans-serif;
-	font-weight: 400;
-	font-size: 5em;
-	display: inline-block;
+    float: left;
+    text-align: center;
+    width: 3.2em;
+    height: 3em;
+    line-height: 3.2em;
+    background: #111;
+    color: #fff;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 400;
+    font-size: 5em;
+    display: inline-block;
 }
 
 .social {
-	position: fixed;
-	z-index: 0;
-	bottom: 1em;
-	right: 1em;
+    position: fixed;
+    z-index: 0;
+    bottom: 1em;
+    right: 1em;
 }
 
 a {
+    width: 16.5em;
     display: block;
     padding: 0.6em;
     text-align: center;
@@ -177,46 +195,55 @@ a {
         background: #111;
         color: #fff;
     }
+
+    &.fb, &.tw, &.gp {
+        width: 4em; 
+        float: left;
+    }
+
+    &.tw {
+        margin: 0 0.9em;
+    }
 }
 
 .preset-0 {
-	background: @color0;
-	color: darken(@color0, 20%);
+    background: @color0;
+    color: darken(@color0, 20%);
 }
 
 .preset-1 {
-	background: @color1;
-	color: darken(@color1, 20%);
+    background: @color1;
+    color: darken(@color1, 20%);
 }
 
 .preset-2 {
-	background: @color2;
-	color: darken(@color2, 20%);
+    background: @color2;
+    color: darken(@color2, 20%);
 }
 
 .preset-3 {
-	background: @color3;
-	color: darken(@color3, 20%);
+    background: @color3;
+    color: darken(@color3, 20%);
 }
 
 .preset-4 {
-	background: @color4;
-	color: darken(@color4, 20%);
+    background: @color4;
+    color: darken(@color4, 20%);
 }
 
 .preset-5 {
-	background: @color5;
-	color: darken(@color5, 20%);
+    background: @color5;
+    color: darken(@color5, 20%);
 }
 
 .preset-6 {
-	background: @color6;
-	color: darken(@color6, 20%);
+    background: @color6;
+    color: darken(@color6, 20%);
 }
 
 .preset-7 {
-	background: @color7;
-	color: darken(@color7, 20%);
+    background: @color7;
+    color: darken(@color7, 20%);
 }
 
 @media (max-width: 400px) {

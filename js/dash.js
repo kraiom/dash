@@ -8,7 +8,7 @@ var arrows = [null, null];
 var gauge = null, score = null;
 
 // The score handlers
-var last = null, points = null, msg = null;
+var best = null;
 
 // The names of the directions
 var names = ['left', 'up', 'right', 'down'];
@@ -92,13 +92,12 @@ function wrong () {
 // The game over handler
 function game_over () {
 
-    // if (right > BEST_SCORE) {
-    //     BEST_SCORE = right;
-    //     $.cookie('best', right + '', { expires: 365 });
-    // }
-
-    // last.html(right);
-    // best.html(BEST_SCORE);
+    if (right > BEST_SCORE) {
+        BEST_SCORE = right;
+        $.cookie('best', right + '', { expires: 365 });
+    }
+    
+    best.html(BEST_SCORE);
 
     clearTimeout(timer);
     panels[0].fadeOut();
@@ -193,6 +192,30 @@ function game () {
     rounds++;
 }
 
+// Function used for reseting the game's values
+function prepare () {
+    $('.lives div').removeClass('lost');
+
+    $('#counter').html(0);
+    score.fadeIn();
+
+    fall_time = DEFAULTS.FALL_TIME;
+    press_time = DEFAULTS.PRESS_TIME;
+    rounds = 0;
+    lives = 3;
+    right = 0;
+
+    gauge.css('width', 0);
+
+    panels[0].fadeIn();
+    panels[1].fadeIn();
+
+    panels[0].css({top: '-100%', left: '-100%'});
+    panels[1].css({top: '-100%', left: '-100%'});
+
+    playing = true;
+}
+
 // Let the games begin!
 $(document).ready(function() {
 
@@ -207,8 +230,6 @@ $(document).ready(function() {
     });
 
     best = $('#best');
-    msg = $('.msg');
-    last = $('#last');
 
     score = $('#score');
     gauge = $('#gauge');
@@ -245,37 +266,15 @@ $(document).ready(function() {
     });
     
 
-    // if ($.cookie('best') === undefined)
-    //     $.cookie('best', '0', { expires: 365 });
+    if ($.cookie('best') === undefined)
+        $.cookie('best', '0', { expires: 365 });
 
-    // BEST_SCORE = $.cookie('best');
+    BEST_SCORE = $.cookie('best');
 
-    // best.html(BEST_SCORE);
-    // last.html(0);
-
-    // msg.fadeIn();
+    best.html(BEST_SCORE);
 
     $('#btn_play').click(function(){
-        $('.lives div').removeClass('lost');
-
-        $('#counter').html(0);
-        score.fadeIn();
-
-        fall_time = DEFAULTS.FALL_TIME;
-        press_time = DEFAULTS.PRESS_TIME;
-        rounds = 0;
-        lives = 3;
-        right = 0;
-
-        gauge.css('width', 0);
-
-        panels[0].fadeIn();
-        panels[1].fadeIn();
-
-        panels[0].css({top: '-100%', left: '-100%'});
-        panels[1].css({top: '-100%', left: '-100%'});
-
-        playing = true;
+        prepare();
         game();
     });
 });
