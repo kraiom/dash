@@ -21,32 +21,40 @@
     @defaults: an object with the following attributes:
         - presets: The number or presets to be used
 
-        - panel: The default class for the panels. Any "*"
-        will be replaced by a generated number; Any "." will
-        be replaced by the corresponding value in replace_array.
+        - panel: The default class for the panels.
 
-        - icon: The default class for the icons. Any "*"
-        will be replaced by a generated number; Any "." will
-        be replaced by the corresponding value in replace_array.
+        - icon: The default class for the icons.
 
         - replace_array: An optional argument that enables more
-        flexibility when naming the classes to be used. The strings
-        containing "." will have the corresponding number translated
-        regarding this array.
+        flexibility when naming the classes to be used. 
 
         - wrong_icon: The class that the icon should have once the
-        player got it wrong. If it starts with a "+", then the class
-        will be added, instead of replaced.
+        player got it wrong.
 
         - correct_icon: The class that the icon should have once the
-        player got it correct. If it starts with a "+", then the class
-        will be added, instead of replaced.
+        player got it correct.
 
         - life_lost: The class that the life icon should have once the
-        player got it wrong. If it starts with a "+", then the class
-        will be added, instead of replaced.
+        player got it wrong. 
 
-    @specifics: TODO
+        Any class selector used will be first interpreted regarding the
+        following wild cards: 
+            - If it starts with a "+", then the class will be added, 
+            instead of replaced;
+
+            - Any "*" will be replaced by a generated number;
+
+            - Any "." will be replaced by the corresponding value in 
+            replace_array.
+        
+        For instance, if we have classes "icon-left", "icon-right", (...),
+        "bg-0", "bg-1", (...), we may use the selectors "icon-." and "bg-*"
+        having replace_array = ['left', 'right', (...)].
+
+    @specifics: A object that should index possible modifiers when calling
+    DashGUI.retrieve. Each entry should be an object with two attributes,
+    namely "panel" and "icon", just as explained before, that will extend
+    the style applied to the panel.
 
     @drop_time: The time taken by the panel to appear. (Default 700 ms).
 */
@@ -142,8 +150,20 @@ var DIRECTIONS = 4;
                 object.removeClass().addClass(class_name);
         }
 
-        // The function that displays a panel when requested
-        _.retrieve = function (direction, callback) {
+        // Minifier/helper function that calls interpret/toggle_class
+        // for the object given the class_name to be interpreted and
+        // the integer index to be considered.
+        var shape = function (object, class_name, index) {
+            var class_data = interpret(class_name, index);
+            toggle_class(object, class_data.addClass, class_data.class_name);
+        }
+
+        // The function that displays a panel when requested. It takes
+        // three parameters. @direction is the raw arrow direction that
+        // should be displayed. @modifier is an array of indexes for a 
+        // specific style that must be applied. @callback is the function
+        // called once the panel is fully displayed.
+        _.retrieve = function (direction, modifier, callback) {
             _.direction = direction;
 
             var preset = get_preset();
@@ -155,18 +175,30 @@ var DIRECTIONS = 4;
 
             current = next;
 
-            var class_data = interpret(defaults.panel, preset);
-            toggle_class(elements.panels[current], class_data.addClass, class_data.class_name);
+            var length = modifier.length;
+            var panel = elements.panels[current];
+            var arrow = elements.icons[current];
 
-            var class_data = interpret(defaults.icon, direction);
-            toggle_class(elements.icons[current], class_data.addClass, class_data.class_name);
+            shape(panel, defaults.panel, preset);
+            shape(arrow, defaults.icon, direction);
+
+            for (var i = 0; i < length; i++) {
+                if (modifier[i] in specifics) {
+                    var style = specifics[modifier[i]];
+
+                    if (style.panel)
+                        shape(panel, style.panel, preset);
+
+                    if (style.icon)
+                        shape(arrow, style.icon, direction);
+                }
+            }
 
             var die = ~~(Math.random() * DIRECTIONS);
             var pos = positions[die];
 
-            elements.panels[current].css({left: pos.x, top: pos.y});
-
-            elements.panels[current].animate({left: 0, top: 0}, drop_time, callback);
+            panel.css({left: pos.x, top: pos.y});
+            panel.animate({left: 0, top: 0}, drop_time, callback);
         }
 
         // The function that resets all data to start over
@@ -199,19 +231,15 @@ var DIRECTIONS = 4;
         _.fails = function (remaining) {
             remaining--;
 
-            var class_data = interpret(defaults.wrong_icon, _.direction);
-            toggle_class(elements.icons[current], class_data.addClass, class_data.class_name);
-
-            var class_data = interpret(defaults.life_lost);
-            toggle_class(elements.score.lives.eq(remaining), class_data.addClass, class_data.class_name);
+            shape(elements.icons[current], defaults.wrong_icon, _.direction);
+            shape(elements.score.lives.eq(remaining), defaults.life_lost);
         }
 
         // Changes panel when the user gets correct
         _.scores = function (points) {
             elements.score.points.html(points);
 
-            var class_data = interpret(defaults.correct_icon, _.direction);
-            toggle_class(elements.icons[current], class_data.addClass, class_data.class_name);
+            shape(elements.icons[current], defaults.correct_icon, _.direction);
         }
 
         // Starts the timer

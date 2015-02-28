@@ -84,8 +84,9 @@ function adjust_key (key) {
     return -1;
 }
 
-// The function that deals with losing lp
+// The function that deals with losing lives
 function wrong () {
+    Interface.toc();
     Interface.fails(lives);
 
     clearTimeout(timer);
@@ -93,6 +94,15 @@ function wrong () {
     if (--lives === 0)
         return game_over();
     
+    game();
+}
+
+// The function that deals with getting points
+function correct () {
+    Interface.toc();
+    Interface.scores(++right);
+
+    clearTimeout(timer);
     game();
 }
 
@@ -124,21 +134,20 @@ function evaluate (key) {
         return;
 
     key = adjust_key(key);
+
+    if (key === -1)
+        return;
+
     var answer = stack_key(key);
 
     if (answer === null)
         return;
 
-    Interface.toc();
-
     if (!answer.compare(Level.expected))
-        return wrong();
+        wrong();
 
-    Interface.scores(++right);
-
-    clearTimeout(timer);
-
-    game();
+    else
+        correct();
 }
 
 // The game function which places the tiles and is recursively called
@@ -151,24 +160,33 @@ function game () {
 
     allowed = false;
 
-    Interface.retrieve(Level.raw, function () {
+    Interface.retrieve(Level.raw, Level.challenges, function () {
         Interface.tic(Level.press_time);
 
         allowed = true;
 
         clearTimeout(timer);
-        timer = setTimeout(wrong, Level.press_time);
+        timer = setTimeout(function () {
+            if (Level.missable)
+                wrong();
+
+            if (sequence.compare(Level.expected))
+                correct();
+            else
+                wrong();
+
+        }, Level.press_time);
     });
 }
 
 // Function used for reseting the game's values
 function prepare () {
     Level = new DashLevel([
-        { rounds: 0,  challenges: [0] }//,
-        // { rounds: 20, challenges: [2] },
-        // { rounds: 30, challenges: [1] },
-        // { rounds: 40, challenges: [4] },
-        // { rounds: 60, challenges: [3] }
+        { rounds: 0,  challenges: [0] },
+        { rounds: 20, challenges: [2] },
+        { rounds: 30, challenges: [1] },
+        { rounds: 40, challenges: [4] },
+        { rounds: 60, challenges: [3] }
     ]);
 
     Interface.prepare();
@@ -198,7 +216,21 @@ $(document).ready(function() {
         replace_array: ['left', 'up', 'right', 'down']
     }, 
     {
+        1 : {
+            panel: 'reverse-*'
+        },
 
+        2 : {
+            icon: 'icon-angle-double-.'
+        },
+
+        3 : {
+            icon: 'icon-cw'
+        },
+
+        4 : {
+            icon: '+pressed'
+        }
     });
 
     window.addEventListener('focus', function () {

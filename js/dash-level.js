@@ -114,6 +114,11 @@ var constraints = {
         // The press time
         _.press_time = times.press_time;
 
+        // Determines whether or not the current
+        // challenge is missable. I.e. the player
+        // will get a wrong after the time finishes
+        _.missable = true;
+
         // The number of rounds elapsed
         var rounds = -1;
 
@@ -157,6 +162,7 @@ var constraints = {
 
             _.expected = tentative.expected;
             _.challenges = tentative.challenges;
+            _.missable = tentative.missable;
 
             last = _.expected;
         }
@@ -170,7 +176,8 @@ var constraints = {
 
             var values = {
                 expected: [],
-                challenges: challenges
+                challenges: challenges,
+                missable: true
             };
 
             while (true) {
@@ -224,6 +231,7 @@ var constraints = {
                 // 4 - pressed arrow
                 case 4:
                     values.expected = [];
+                    values.missable = false;
                 break;
             }
 
