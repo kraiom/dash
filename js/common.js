@@ -34,6 +34,9 @@ $(document).ready(function() {
     $('a.tw').click(function() { share('twitter'); });
     $('a.gp').click(function() { share('google+'); });
 
+    $('#btn_howto').click(function() { $('#info').fadeIn(); });
+    $('#dismiss').click(function() { $('#info').fadeOut(); });
+
     W = $(window).width();
     H = $(window).height();
 });
