@@ -27,8 +27,6 @@ function share (media) {
     window.open(url, 'Dash', 'width=500, height=250, top=' + mH + ', left=' + mW + ' scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
 }
 
-
-
 $(document).ready(function() {
     $('a.fb').click(function() { share('facebook'); });
     $('a.tw').click(function() { share('twitter'); });

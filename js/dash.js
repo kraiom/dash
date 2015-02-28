@@ -1,28 +1,11 @@
-// The panel handlers
-var panels = [null, null];
-
-// The arrow handlers
-var arrows = [null, null];
-
-// The gauge and score DOM handlers
-var gauge = null, score = null;
-
 // The score handlers
 var best = null;
 
-// The names of the directions
-var names = ['left', 'up', 'right', 'down'];
+// The level handler
+var Level = null;
 
-// Direction animations
-var positions = [
-    {x: '100%', y: '0'},
-    {x: '0', y: '100%'},
-    {x: '-100%', y: '0'},
-    {x: '0', y: '-100%'}
-];
-
-// The number of rounds elapsed
-var rounds = 0;
+// The GUI handler
+var Interface = null;
 
 // The number of right pressed panels
 var right = 0;
@@ -30,17 +13,9 @@ var right = 0;
 // The number of remaining lives
 var lives = 3;
 
-// The time (ms) that panels are going to come and are
-// going to awaits to be dismissed
-var fall_time = 0, press_time = 0;
-
 // Default configurations
 var DEFAULTS = {
-    PRESETS: 8,
-    FALL_TIME: 700,
-    PRESS_TIME: 2000,
-    ROUND_DECREASE: 30,
-    MINIMUM_VELOCITY: 600
+    PRESETS: 8
 };
 
 // The user's best score
@@ -55,31 +30,63 @@ var paused = false;
 // Whether or not the game is active
 var playing = false;
 
-// A flag to determine whether or not the player 
-// can press the key
+// Whether or not the player can press the key
 var allowed = false;
 
-// The direction to be pressed
-var expected = 0;
+// The pressed sequence
+var sequence = [];
 
-// The panel being displayed
-var current = 1;
+// The function that manages the sequence
+// pressed by the user. It adds key to
+// the sequence and return an array containing
+// what the test array should be, regarding
+// Level.expected length. If the expected length
+// has not been achieved, it returns null. 
+// If key is undefined, then sequence is set 
+// to an empty array.
+function stack_key (key) {
+    if (key === undefined) {
+        sequence = [];
+        return;
+    }
 
-// The function that stops the gauge timer
-function stop_gauge () {
-    gauge.stop();
+    sequence.push(key);
+
+    var sequence_length = sequence.length;
+    var expected_length = Level.expected.length;
+
+    if (sequence_length > expected_length)
+        sequence.shift();
+
+    if (sequence_length === expected_length)
+        return sequence;
+
+    if (sequence_length < expected_length)
+        return null;
 }
 
-// The function that starts the gauge timer
-function start_gauge () {
-    gauge.css('width', 0).animate({width: '100%'}, press_time);
+// Helper function that converts a keycode
+// to a code in [0, 3], also allowing awsd
+function adjust_key (key) {
+    var awsd = {
+        65 : 0, 
+        87 : 1, 
+        68 : 2, 
+        83 : 3
+    };
+
+    if (key >= 37 && key <= 40)
+        return key - 37;
+
+    if (awsd[key] !== undefined)
+        return awsd[key];
+
+    return -1;
 }
 
 // The function that deals with losing lp
 function wrong () {
-    arrows[current].removeClass().addClass('icon-cancel');
-
-    $('.lives div:nth-child(' + lives + ')').addClass('lost')
+    Interface.fails(lives);
 
     clearTimeout(timer);
 
@@ -91,18 +98,14 @@ function wrong () {
 
 // The game over handler
 function game_over () {
-
     if (right > BEST_SCORE) {
         BEST_SCORE = right;
         $.cookie('best', right + '', { expires: 365 });
     }
     
+    Interface.dismiss();
     best.html(BEST_SCORE);
-
     clearTimeout(timer);
-    panels[0].fadeOut();
-    panels[1].fadeOut();
-    score.fadeOut();
     playing = false;
 }
 
@@ -120,36 +123,22 @@ function evaluate (key) {
     if (!playing || paused || !allowed)
         return;
 
-    stop_gauge();
+    key = adjust_key(key);
+    var answer = stack_key(key);
 
-    allowed = false;
-
-    key -= 37;
-
-    if (key < 0 || key > 3)
+    if (answer === null)
         return;
 
-    if (key !== expected)
+    Interface.toc();
+
+    if (!answer.compare(Level.expected))
         return wrong();
 
-    $('#counter').html(++right);
+    Interface.scores(++right);
 
     clearTimeout(timer);
 
-    arrows[current].addClass('correct');
-
     game();
-}
-
-// Updates the difficulty of the game
-function difficulty () {
-    press_time -= DEFAULTS.ROUND_DECREASE;
-    press_time = Math.max(press_time, DEFAULTS.MINIMUM_VELOCITY);   
-}
-
-// Generates a number in [0, 4]
-function rand () {
-    return ~~(Math.random() * 4);
 }
 
 // The game function which places the tiles and is recursively called
@@ -157,67 +146,60 @@ function game () {
     if (!playing || paused)
         return;
 
-    difficulty();
+    Level.new_round();
+    stack_key();
 
     allowed = false;
 
-    var next = current ^ 1;
-
-    panels[current].css('z-index', 0);
-    panels[next].css('z-index', 1);
-
-    panels[next].removeClass().addClass('preset-' + (rounds % DEFAULTS.PRESETS));
-
-    var direction = rand();
-
-    expected = direction;
-
-    current = next;
-
-    arrows[current].removeClass().addClass('icon-angle-' + names[direction]);
-
-    var pos = positions[rand()];
-
-    panels[current].css({left: pos.x, top: pos.y});
-
-    panels[current].animate({left: 0, top: 0}, fall_time, function () {
-        start_gauge();
+    Interface.retrieve(Level.raw, function () {
+        Interface.tic(Level.press_time);
 
         allowed = true;
 
         clearTimeout(timer);
-        timer = setTimeout(wrong, press_time);
+        timer = setTimeout(wrong, Level.press_time);
     });
-
-    rounds++;
 }
 
 // Function used for reseting the game's values
 function prepare () {
-    $('.lives div').removeClass('lost');
+    Level = new DashLevel([
+        { rounds: 0,  challenges: [0] }//,
+        // { rounds: 20, challenges: [2] },
+        // { rounds: 30, challenges: [1] },
+        // { rounds: 40, challenges: [4] },
+        // { rounds: 60, challenges: [3] }
+    ]);
 
-    $('#counter').html(0);
-    score.fadeIn();
+    Interface.prepare();
 
-    fall_time = DEFAULTS.FALL_TIME;
-    press_time = DEFAULTS.PRESS_TIME;
-    rounds = 0;
     lives = 3;
     right = 0;
-
-    gauge.css('width', 0);
-
-    panels[0].fadeIn();
-    panels[1].fadeIn();
-
-    panels[0].css({top: '-100%', left: '-100%'});
-    panels[1].css({top: '-100%', left: '-100%'});
 
     playing = true;
 }
 
 // Let the games begin!
 $(document).ready(function() {
+    Interface = new DashGUI(
+    {
+        panels: ['#panel-0', '#panel-1'],
+        icons:  ['#panel-0 i', '#panel-1 i'],
+        score:  {main: '#score', timer: '#gauge', 
+                lives: '.lives div', points: '#counter'}
+    },
+    {  
+        presets: DEFAULTS.PRESETS,
+        panel: 'preset-*',
+        icon:  'icon-angle-.',
+        wrong_icon: 'icon-cancel',
+        life_lost: '+lost',
+        correct_icon: '+correct',
+        replace_array: ['left', 'up', 'right', 'down']
+    }, 
+    {
+
+    });
 
     window.addEventListener('focus', function () {
         paused = false;
@@ -228,20 +210,6 @@ $(document).ready(function() {
         paused = true;
         clearTimeout(timer);
     });
-
-    best = $('#best');
-
-    score = $('#score');
-    gauge = $('#gauge');
-
-    panels[0] = $('#panel-0');
-    panels[1] = $('#panel-1');
-
-    arrows[0] = $('#panel-0 i');
-    arrows[1] = $('#panel-1 i');
-
-    W = panels[0].width();
-    H = panels[0].height();
 
     $('body').keydown(function (e) {
         evaluate(e.keyCode);
@@ -265,6 +233,7 @@ $(document).ready(function() {
         evaluate_pan(event.type);
     });
     
+    best = $('#best');
 
     if ($.cookie('best') === undefined)
         $.cookie('best', '0', { expires: 365 });
