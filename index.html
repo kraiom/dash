@@ -4,7 +4,10 @@
     <meta charset="utf-8"/>
     <meta name="author" content="Breno Lima de Freitas"/>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
-    <meta property="og:image" content="http://breno.io/streak/img/logo.png"/>
+    <meta property="og:title" content="Dash"/>
+    <meta property="og:image" content="http://breno.io/dash/img/logo.png"/>
+    <meta property="fb:app_id" content="1543390215934507"/>
+    
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
@@ -20,6 +23,24 @@
     <base target="_blank"/>
 </head>
 <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1543390215934507',
+          xfbml      : true,
+          version    : 'v2.2'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
     <div class="wraper">
         <h1>DASH</h1>
 
@@ -50,8 +71,8 @@
         <div class="clear"></div>
     </div>
 
-    <section id="panel-0" class="preset-0"><i></i></section>
-    <section id="panel-1" class="preset-1"><i></i></section>
+    <section id="panel-0"></section>
+    <section id="panel-1"><i></i></section>
 </body>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>

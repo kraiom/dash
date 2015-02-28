@@ -1,5 +1,5 @@
 // Default values
-var TITLE = 'Dash';
+var TITLE = 'Try to be as fast as you can in Dash!';
 var URL = 'http://breno.io/dash';
 var W, H;
 

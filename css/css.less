@@ -1,11 +1,15 @@
-@color0: #58d363;
-@color1: #F76C27;
-@color2: #E7E737;
-@color3: #6D9DD1;
-@color5: #57d3c8;
-@color6: #E73F3F;
-@color4: #e76395;
-@color7: #7E45D3;
+@import "for";
+
+@color-0: #58d363;
+@color-1: #F76C27;
+@color-2: #57d3c8;
+@color-3: #e76395;
+@color-4: #7E45D3;
+@color-5: #6D9DD1;
+@color-6: #E73F3F;
+@color-7: #E7E737;
+
+@colors: 'color-0', 'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7';
 
 * {
     margin: 0;
@@ -21,7 +25,7 @@ body, html {
 }
 
 body {
-    background: @color2;
+    background: @color-7;
     font-family: 'Noto Sans', sans-serif;
     font-size: 1.1em;
 }
@@ -32,7 +36,6 @@ section {
     position: absolute;
     top: -100%;
     left: -100%;    
-    background: #f00;
     z-index: 1;
     overflow: hidden;
 
@@ -53,11 +56,11 @@ section {
         &.correct {
             color: #ffffff;
         }
-    }
-}
 
-.fb_iframe_widget {
-    line-height: 15px;
+        &:before {
+
+        }
+    }
 }
 
 .wraper {
@@ -169,13 +172,6 @@ h1 {
     display: inline-block;
 }
 
-.social {
-    position: fixed;
-    z-index: 0;
-    bottom: 1em;
-    right: 1em;
-}
-
 a {
     width: 16.5em;
     display: block;
@@ -206,44 +202,34 @@ a {
     }
 }
 
-.preset-0 {
-    background: @color0;
-    color: darken(@color0, 20%);
-}
+.for(@colors); .-each(@color) {
+    @number: replace(@color, '[^\d]+', '');
 
-.preset-1 {
-    background: @color1;
-    color: darken(@color1, 20%);
-}
+    @color_only: e('font-@{number}');
+    @preset: e('preset-@{number}');
+    @reverse: e('reverse-@{number}');
 
-.preset-2 {
-    background: @color2;
-    color: darken(@color2, 20%);
-}
+    .@{color_only} {
+        color: darken(@@color, 20%);
+    }
 
-.preset-3 {
-    background: @color3;
-    color: darken(@color3, 20%);
-}
+    .@{preset} {
+        background: @@color;
+        color: darken(@@color, 20%);
+    }
 
-.preset-4 {
-    background: @color4;
-    color: darken(@color4, 20%);
-}
+    .@{reverse} {
+        background: 
+            linear-gradient(135deg, @@color 25%, transparent 25%) -50px 0,
+            linear-gradient(225deg, @@color 25%, transparent 25%) -50px 0,
+            linear-gradient(315deg, @@color 25%, transparent 25%),
+            linear-gradient(45deg,  @@color 25%, transparent 25%);   
 
-.preset-5 {
-    background: @color5;
-    color: darken(@color5, 20%);
-}
+        background-size: 20px 20px;
 
-.preset-6 {
-    background: @color6;
-    color: darken(@color6, 20%);
-}
-
-.preset-7 {
-    background: @color7;
-    color: darken(@color7, 20%);
+        background-color: lighten(@@color, 3%);
+        color: darken(@@color, 20%);    
+    }
 }
 
 @media (max-width: 400px) {
