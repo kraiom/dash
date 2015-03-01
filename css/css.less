@@ -108,6 +108,19 @@ section {
     top: 0.5em;
     box-shadow: 0 1px 2px #333;
 
+    &.msg {
+        left: auto;
+        right: 0.5em;
+
+        i {
+            display: block;
+            width: 100%;
+            height: 100%;
+            line-height: 2em;
+            text-align: center;
+        }
+    }
+
     & > div {
         float: left;
     }
@@ -282,6 +295,17 @@ a {
     &.tw {
         margin: 0 0.9em;
     }
+
+    &.disabled {
+        color: darken(@color-4, 30%) !important;
+        border-color: darken(@color-4, 30%) !important;
+        cursor: default !important;
+
+        &:hover {
+            color: darken(@color-4, 30%) !important;
+            background: none !important;
+        }
+    }
 }
 
 .for(@colors); .-each(@color) {
@@ -309,7 +333,7 @@ a {
 
         background-size: 20px 20px;
 
-        background-color: lighten(@@color, 3%);
+        background-color: lighten(@@color, 6%);
         color: darken(@@color, 20%);    
     }
 }

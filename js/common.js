@@ -2,6 +2,15 @@
 var TITLE = 'Try to be as fast as you can in Dash!';
 var URL = 'http://breno.io/dash';
 var W, H;
+var listener = new window.keypress.Listener();
+var msg = null, msg_icon = null;
+
+listener.sequence_combo('up up down down left right left right b a enter', function() {
+    lives = 42; // That should mean everything for you, shouldn't it?
+    msg_icon.removeClass().addClass('icon-joystick');
+    msg.fadeIn();
+    setTimeout(function () { msg.fadeOut(); }, 1500);
+});
 
 // Function used for sharing on social networks
 function share (media) {
@@ -27,6 +36,13 @@ function share (media) {
     window.open(url, 'Dash', 'width=500, height=250, top=' + mH + ', left=' + mW + ' scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
 }
 
+// Achievement popup
+function achievement () {
+    msg_icon.removeClass().addClass('icon-trophy');
+    msg.fadeIn();
+    setTimeout(function () { msg.fadeOut(); }, 1500);
+}
+
 $(document).ready(function() {
     $('a.fb').click(function() { share('facebook'); });
     $('a.tw').click(function() { share('twitter'); });
@@ -37,4 +53,7 @@ $(document).ready(function() {
 
     W = $(window).width();
     H = $(window).height();
+
+    msg = $('#msg');
+    msg_icon = $('#msg_icon');
 });

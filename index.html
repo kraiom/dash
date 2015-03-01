@@ -54,7 +54,7 @@
             <div>Your best score is <span id="best"></span></div>
             <a id="btn_play">Start game</a>
             <a id="btn_howto">How to play</a>
-            <a id="btn_leader">Leaderboard</a>
+            <a id="btn_leader" class="disabled">Leaderboard</a>
             <a class="fb"><i class="icon-facebook"></i></a>
             <a class="tw"><i class="icon-twitter"></i></a>
             <a class="gp"><i class="icon-gplus"></i></a>
@@ -75,6 +75,10 @@
             <div></div>
         </div>
         <div class="clear"></div>
+    </div>
+
+    <div class="score msg" id="msg">
+        <i id="msg_icon"></i>
     </div>
 
     <div class="info" id="info">
@@ -139,6 +143,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/jquery.animate-enhanced.min.js"></script>
+<script type="text/javascript" src="js/keypress-2.1.0.min.js"></script>
 <script type="text/javascript" src="js/hammer.min.js"></script>
 <script type="text/javascript" src="js/common.min.js"></script>
 <script type="text/javascript" src="js/dash-utils.min.js"></script>

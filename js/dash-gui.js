@@ -181,7 +181,7 @@ var DIRECTIONS = 4;
 
             shape(panel, defaults.panel, preset);
             shape(arrow, defaults.icon, direction);
-
+    
             for (var i = 0; i < length; i++) {
                 if (modifier[i] in specifics) {
                     var style = specifics[modifier[i]];
@@ -232,7 +232,9 @@ var DIRECTIONS = 4;
             remaining--;
 
             shape(elements.icons[current], defaults.wrong_icon, _.direction);
-            shape(elements.score.lives.eq(remaining), defaults.life_lost);
+
+            if (elements.score.lives.eq(remaining) !== undefined)
+                shape(elements.score.lives.eq(remaining), defaults.life_lost);
         }
 
         // Changes panel when the user gets correct

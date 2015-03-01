@@ -105,6 +105,9 @@ function correct () {
     Interface.toc();
     Interface.scores(++right);
 
+    if (right > BEST_SCORE)
+        achievement();
+
     clearTimeout(timer);
     game();
 }
@@ -172,8 +175,8 @@ function game () {
 
         clearTimeout(timer);
         timer = setTimeout(function () {
-            if (Level.missable)
-                wrong();
+            if (Level.missable) 
+                return wrong();
 
             if (sequence.compare(Level.expected))
                 correct();
