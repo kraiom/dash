@@ -55,6 +55,9 @@ function stack_key (key) {
     var sequence_length = sequence.length;
     var expected_length = Level.expected.length;
 
+    if (expected_length === 0)
+        return sequence;
+
     if (sequence_length > expected_length)
         sequence.shift();
 
@@ -121,6 +124,8 @@ function game_over () {
 
 // Evaluate the keycode related to the pan
 function evaluate_pan (type) {
+    var names = ['left', 'up', 'right', 'down'];
+
     for (var i = 0; i < 4; i++)
         if (type.indexOf(names[i]) >= 0)
             break;

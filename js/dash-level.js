@@ -103,7 +103,7 @@ var constraints = {
         _.expected = null;
 
         // The last expected action
-        var last = null;
+        var last = {expected: null, missable: null};
 
         // The combination of challenges computed
         _.challenges = null;
@@ -164,7 +164,7 @@ var constraints = {
             _.challenges = tentative.challenges;
             _.missable = tentative.missable;
 
-            last = _.expected;
+            last = {expected: _.expected, missable: _.missable};
         }
 
         // Add a challenge to the computed expected array
@@ -185,7 +185,7 @@ var constraints = {
 
                 // This is the very first turn, and the rand
                 // gave last previous as difficulty
-                if (last === null && configuration === 3)
+                if (rounds === 0 && configuration === 3)
                     continue;
 
                 // If the challenge is not allowed, then do it again
@@ -225,7 +225,8 @@ var constraints = {
 
                 // 3 - previous action
                 case 3:
-                    values.expected = last;
+                    values.expected = last.expected;
+                    values.missable = last.missable;
                 break;
 
                 // 4 - pressed arrow
