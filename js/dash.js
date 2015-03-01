@@ -265,7 +265,9 @@ $(document).ready(function() {
         recognizers: [
             [ Hammer.Swipe,
                 {
-                    direction: Hammer.DIRECTION_ALL 
+                    direction: Hammer.DIRECTION_ALL,
+                    velocity: 0.2,
+                    threshold: 5
                 }
             ]
         ]
