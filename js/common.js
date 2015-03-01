@@ -9,11 +9,65 @@ var konami = false;
 var best = 0, BEST_SCORE = 0;
 
 var challenges = [
-    { rounds: 0,  challenges: [0] },
-    { rounds: 20, challenges: [2] },
-    { rounds: 30, challenges: [1] },
-    { rounds: 40, challenges: [4] },
-    { rounds: 60, challenges: [3] }
+    { // 0 - simple arrow
+        morph: function (tentative, last) {
+            return {
+                expected: [tentative.expected[0]]
+            };
+        }
+    },
+
+    { // 1 - reverse
+
+        constraints: [3, 4],
+        rounds: 30,
+
+        morph: function (tentative, last) {
+            var length = tentative.expected.length;
+            var values = {expected: []};
+
+            for (var i = 0; i < length; i++)
+                values.expected.push(mod(tentative.expected[i] + 2, 4));
+
+            return values;
+        }
+    },
+
+    { // 2 - double arrow
+        constraints: [3, 4],
+        rounds: 20,
+
+        morph: function (tentative, last) {
+            return {
+                expected: [tentative.expected[0], tentative.expected[0]]
+            };
+        }
+    },
+
+    { // 3 - pressed arrow
+        constraints: [1, 2, 4],
+        rounds: 60,
+
+        morph: function (tentative, last) {
+            return {
+                expected: last.expected,
+                missable: last.missable
+            };
+        }
+    },
+
+    { // 4 - previous action
+        first_turn: false,
+        constraints: [1, 2, 3],
+        rounds: 40,
+
+        morph: function (tentative, last) {
+            return {
+                expected: [],
+                missable: false
+            };
+        }
+    }
 ];
 
 listener.sequence_combo('up up down down left right left right b a enter', function() {

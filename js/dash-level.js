@@ -1,21 +1,41 @@
 /*
-    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.3  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
     The DashLevel object handles a state
     of the game. I.e. it handles what is 
     being shown in the current panel and
     its related data.
 
-    It takes two values as input:
+    FYI, The order of the directions is:
+        0 - left;
+        1 - up;
+        2 - right;
+        3 - down.
 
-    @challenges_timeline: A array of objects
-    that have two attributes: rounds (the number
-    of rounds needed to trigger the challenges) and
-    challenges (an array of numbers describing the
-    challenges to be applied after that number of
-    rounds). Note that the attribute "challenges"
-    is stackable. Therefore, you can omit repetitions
-    throughout the definition of the timeline.
+    It takes three values as input:
+
+    @challenges: The attribute that defines
+    the challenges to be faced. It is an array
+    of objects. Notice that the order IS important
+    because they are going to be indexed in the
+    given order. This object must comprise three
+    attributes:
+        - first_turn: a boolean that defines whether
+        or not the challenge can occur in the very
+        first turn. (default true).
+
+        - constraints: an array of numbers defining
+        which other challenges cannot overlap this 
+        one. Note that every challenge is self exclusive. 
+        (default []).
+
+        - rounds: The minimum number of rounds (inclusive)
+        that this challenge can occur. It will not occur
+        prior this specified number of rounds. (default 0).
+
+        - morph: a function that must return an object
+        that is a modification of the input one. This 
+        function is explained below.
 
     @times: A object with the following attributes:
       press_time: The time the player has to press
@@ -26,61 +46,113 @@
 
     @overlaid_challenges: The number of allowed
     overlays in a challenge (default 1)
+
+    The "morph" function is the most important
+    function when defining a challenge. And has 
+    the following flavour:
+    
+    function morph (tentative, last) {};
+
+    @tentative is a object that has three attributes.
+    Namely:
+        - missable: a boolean that defines whether 
+        or not the challenge is not satisfied if the
+        player runs out of time.
+
+        - challenges: an array of indexes of challenges
+        being currently applied.
+
+        - expected: an array defining the expected sequence
+        of keys in [0, 3].
+
+    @last is an object with the following attributes:
+        - expected: the last array defining the expected 
+        sequence of keys in [0, 3].
+
+        - missable: the last boolean that defines whether 
+        or not the challenge is not satisfied if the
+        player runs out of time.
+
+    Both @tentative and @last are read-only objects. DO
+    NOT change ANY of their contents, it will make the
+    game to explode into pieces!
+
+    After the logic of the challenge, the user must
+    return object containing a missable and a expected
+    parameter based on the logic for the challenge. The
+    missable parameter is still optional.
 */
-
-/*  
-    There are five possible configurations
-    for the game:
-    0 - simple arrow;
-    1 - reverse;
-    2 - double arrow;
-    3 - previous action;
-    4 - pressed arrow.
-
-    The order of the directions is:
-    0 - left;
-    1 - up;
-    2 - right;
-    3 - down.
-*/
-
-// The number of configurations
-var CONFIGURATIONS = 5;
-
-// The number of directions
-var DIRECTIONS = 4;
-
-// The time the player has to press
-var PRESS_TIME = sec2ms(2);
-
-// The amount of seconds that the next
-// turn will have less than the current
-var STEP = sec2ms(0.04);
-
-// The minimum velocity that the player
-// will ever have to dismiss a panel
-var MINIMUM_VELOCITY = sec2ms(0.7);
-
-// The constraints in the configurations.
-// I.e. if the configuration b in present
-// in the constraints of a, then a and b
-// can not happen at the same time. A
-// configuration a is NOT compatible with a.
-var constraints = {
-    0: [],
-    1: [3, 4],
-    2: [3, 4],
-    3: [1, 2, 4],
-    4: [1, 2, 3]
-};
 
 ;(function (w) {
     'use strict';
 
-    w.DashLevel = function (challenges_timeline, times, overlaid_challenges) {
+    w.DashLevel = function (challenges, times, overlaid_challenges) {
         // Mandatory argument
-        if (!challenges_timeline || challenges_timeline.length === 0)
+        if (!challenges)
             return false;
+
+        // The number of configurations
+        var CONFIGURATIONS = challenges.length;
+
+        // The number of directions
+        var DIRECTIONS = 4;
+
+        // The time the player has to press
+        var PRESS_TIME = sec2ms(2);
+
+        // The amount of seconds that the next
+        // turn will have less than the current
+        var STEP = sec2ms(0.04);
+
+        // The minimum velocity that the player
+        // will ever have to dismiss a panel
+        var MINIMUM_VELOCITY = sec2ms(0.7);
+
+        // Applying defaults for challenges
+        for (var i = 0; i < CONFIGURATIONS; i++) {
+            var current = challenges[i];
+
+            if (current.morph === undefined) {
+                challenges[i] = null;
+                continue;
+            }
+
+            if (current.first_turn === undefined)
+                current.first_turn = true;
+
+            if (current.rounds === undefined)
+                current.rounds = 0;
+
+            if (current.constraints === undefined)
+                current.constraints = [];
+        }
+
+        // Initializing the timeline array
+        var challenges_timeline = [];
+
+        for (var i = 0; i < CONFIGURATIONS; i++) {
+            var current = challenges[i];
+
+            if (current === null)
+                continue;
+
+            var timeline = {
+                index: i, 
+                rounds: current.rounds
+            };
+
+            challenges_timeline.push(timeline);
+        }
+
+        // Checks whether there are still valid
+        // challenges in order to continue;
+        if (challenges_timeline.length === 0)
+            return false;
+
+        // Sorts by earlier rounds
+        challenges_timeline.sort(function (a, b) {
+            return a.rounds - b.rounds;
+        });
 
         // The minimum number of overlaid challenges is 1
         if (overlaid_challenges === undefined)
@@ -95,6 +167,9 @@ var constraints = {
 
         if (times.step === undefined)
             times.step = STEP;
+
+        if (times.minimun_velocity === undefined)
+            times.minimun_velocity = MINIMUM_VELOCITY;
 
         // The self handler
         var _ = this;
@@ -139,8 +214,9 @@ var constraints = {
             var first = challenges_timeline[0];
 
             if (first.rounds === rounds) {
-                _.allowed.push_array(first.challenges);
+                _.allowed.push(first.index);
                 challenges_timeline.shift();
+                update_allowed_challenges();
             }
         }
 
@@ -152,13 +228,14 @@ var constraints = {
 
             var tentative = {
                 expected: [direction],
-                challenges: []
+                challenges: [],
+                missable: true
             }
 
             _.raw = direction;
 
             for (var i = 0; i < overlaid_challenges; i++)
-                tentative = salt (tentative.expected, tentative.challenges);
+                tentative = salt (tentative);
 
             _.expected = tentative.expected;
             _.challenges = tentative.challenges;
@@ -168,75 +245,50 @@ var constraints = {
         }
 
         // Add a challenge to the computed expected array
-        var salt = function (expected, challenges) {
+        var salt = function (tentative) {
+            var expected = tentative.expected;
 
-            var length = challenges.length;
+            var length = tentative.challenges.length;
             var reload = false;
-            var configuration;
-
-            var values = {
-                expected: [],
-                challenges: challenges,
-                missable: true
-            };
+            var current, index;
 
             while (true) {
-                configuration = rand (CONFIGURATIONS);
+                index = rand(CONFIGURATIONS);
+                current = challenges[index];
 
-                // This is the very first turn, and the rand
-                // gave last previous as difficulty
-                if (rounds === 0 && configuration === 3)
+                // This is the very first turn and the challenge
+                // cannot happen in the first turn
+                if (rounds === 0 && !current.first_turn)
                     continue;
 
                 // If the challenge is not allowed, then do it again
-                if (!_.allowed.has(configuration))
+                if (!_.allowed.has(index))
                     continue;
 
                 // Check for constraint violations for adding a new
                 // configuration to the previous one
-                for (var i = 0; i < length; i++)
-                    if (constraints[challenges[i]].has(configuration))
+                for (var i = 0; i < length; i++) {
+                    var applied = tentative.challenges[i];
+
+                    if (applied.constraints.has(index))
                         continue;
+                }
 
                 break;
             }
 
-            values.challenges.push(configuration);
+            tentative.challenges.push(index);
 
-            switch (configuration) {
-                // 0 - simple arrow;
-                case 0:
-                    values.expected.push(expected[0]);
-                break;
+            var computed = current.morph(tentative, last);
 
-                // 1 - reverse
-                case 1:
-                    var length = expected.length;
+            if (computed.missable === undefined)
+                computed.missable = true;
 
-                    for (var i = 0; i < length; i++)
-                        values.expected.push(mod(expected[i] + 2, 4));
-                break;
-
-                // 2 - double arrow
-                case 2:
-                    values.expected.push(expected[0]);
-                    values.expected.push(expected[0]);
-                break;
-
-                // 3 - previous action
-                case 3:
-                    values.expected = last.expected;
-                    values.missable = last.missable;
-                break;
-
-                // 4 - pressed arrow
-                case 4:
-                    values.expected = [];
-                    values.missable = false;
-                break;
-            }
-
-            return values;         
+            return {
+                expected: computed.expected,
+                challenges: tentative.challenges,
+                missable: computed.missable
+            };
         }
 
         // The function that increments a new round
@@ -249,7 +301,7 @@ var constraints = {
             compute_expected();
 
             _.press_time -= times.step;
-            _.press_time = Math.max(_.press_time, MINIMUM_VELOCITY); 
+            _.press_time = Math.max(_.press_time, times.minimun_velocity); 
         }
 
         // Returns _.rounds

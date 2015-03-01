@@ -1,4 +1,4 @@
-# DASH
+# Dash
 
 A web browser casual game. The rule is simple: send the panel to the correct direction, if you can! In DASH you must press the arrow accordingly to what is being shown within the remaining time and the number of lives.
 

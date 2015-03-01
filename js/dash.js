@@ -1,5 +1,5 @@
 /*
-    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.3  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
     The DashLevel object handles the game logic, assigning
     the proper listeners and taking care of calling the correct
