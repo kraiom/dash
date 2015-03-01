@@ -4,10 +4,12 @@
 @color-1: #F76C27;
 @color-2: #6D9DD1;
 @color-3: #e76395;
-@color-4: #E7E737;
+@color-4: #cade08;
 @color-5: #57d3c8;
 @color-6: #7E45D3;
 @color-7: #E73F3F;
+
+@yellow: #E7E737;
 
 @colors: 'color-0', 'color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7';
 
@@ -25,7 +27,7 @@ body, html {
 }
 
 body {
-    background: @color-4;
+    background: @yellow;
     font-family: 'Noto Sans', sans-serif;
     font-size: 1.1em;
 }
@@ -192,7 +194,7 @@ h1 {
     top: 5%;
     border: solid 1px #111;
     z-index: 200;
-    background: @color-4;
+    background: @yellow;
     overflow: auto;
 
     &::-webkit-scrollbar {  
@@ -200,7 +202,7 @@ h1 {
     }  
 
     &::-webkit-scrollbar-track {  
-        background-color: @color-4;
+        background-color: @yellow;
     }  
 
     &::-webkit-scrollbar-thumb {  
@@ -298,12 +300,12 @@ a {
     }
 
     &.disabled {
-        color: darken(@color-4, 30%) !important;
-        border-color: darken(@color-4, 30%) !important;
+        color: darken(@yellow, 30%) !important;
+        border-color: darken(@yellow, 30%) !important;
         cursor: default !important;
 
         &:hover {
-            color: darken(@color-4, 30%) !important;
+            color: darken(@yellow, 30%) !important;
             background: none !important;
         }
     }
