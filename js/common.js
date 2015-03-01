@@ -18,7 +18,6 @@ var challenges = [
     },
 
     { // 1 - reverse
-
         constraints: [3, 4],
         rounds: 30,
 

@@ -1,7 +1,7 @@
 /*
     Dash v 0.3  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
-    The DashLevel object handles the game logic, assigning
+    The Dash object handles the game logic, assigning
     the proper listeners and taking care of calling the correct
     interface-related objects, as well as handling life points
     and how the player press the correct key.
@@ -36,6 +36,18 @@
         Has three input parameters: the key pressed (Number), the expected 
         sequence to be performed (Array) and the challenged in the
         current panel (Array).
+
+    And two optional attributes related to DashLevel:
+
+    @times: A object with the following attributes:
+      press_time: The time the player has to press
+                  (default 2 seconds)
+      step: The amount of seconds that the next 
+            turn will have less than the current
+            (default 40 ms)
+
+    @overlaid_challenges: The number of allowed
+    overlays in a challenge (default 1)
 */
 
 
@@ -43,7 +55,7 @@
     'use strict';
 
 
-    w.Dash = function (Interface, handlers) {
+    w.Dash = function (Interface, handlers, times, overlaid_challenges) {
         // A valid Dash-GUI object is mandatory
         if (!Interface)
             return false;
@@ -250,7 +262,7 @@
 
             BEST_SCORE = best_score;
 
-            Level = new DashLevel(challenges);
+            Level = new DashLevel(challenges, times, overlaid_challenges);
 
             Interface.prepare();
 

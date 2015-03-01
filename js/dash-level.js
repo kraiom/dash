@@ -27,7 +27,9 @@
         - constraints: an array of numbers defining
         which other challenges cannot overlap this 
         one. Note that every challenge is self exclusive. 
-        (default []).
+        Note that if @overlaid_challenges is 1, then this
+        attribute has no effect, since no challenge will
+        ever be overlapped. (default []).
 
         - rounds: The minimum number of rounds (inclusive)
         that this challenge can occur. It will not occur
