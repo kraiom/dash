@@ -4,9 +4,20 @@ var URL = 'http://breno.io/dash';
 var W, H;
 var listener = new window.keypress.Listener();
 var msg = null, msg_icon = null;
+var game = null;
+var konami = false;
+var best = 0, BEST_SCORE = 0;
+
+var challenges = [
+    { rounds: 0,  challenges: [0] },
+    { rounds: 20, challenges: [2] },
+    { rounds: 30, challenges: [1] },
+    { rounds: 40, challenges: [4] },
+    { rounds: 60, challenges: [3] }
+];
 
 listener.sequence_combo('up up down down left right left right b a enter', function() {
-    lives = 42; // That should mean everything for you, shouldn't it?
+    konami ^= true;
     msg_icon.removeClass().addClass('icon-joystick');
     msg.fadeIn();
     setTimeout(function () { msg.fadeOut(); }, 1500);
@@ -56,4 +67,77 @@ $(document).ready(function() {
 
     msg = $('#msg');
     msg_icon = $('#msg_icon');
+
+    best = $('#best');
+
+    if ($.cookie('best') === undefined)
+        $.cookie('best', '0', { expires: 365 });
+
+    BEST_SCORE = $.cookie('best');
+
+    best.html(BEST_SCORE);
+
+    Interface = new DashGUI(
+        {
+            panels: ['#panel-0', '#panel-1'],
+            icons:  ['#panel-0 i', '#panel-1 i'],
+            score:  {main: '#score', timer: '#gauge', 
+                    lives: '.lives div', points: '#counter'}
+        },
+        {  
+            presets: 8,
+            panel: 'preset-*',
+            icon:  'icon-angle-.',
+            wrong_icon: 'icon-cancel',
+            life_lost: '+lost',
+            correct_icon: '+correct',
+            replace_array: ['left', 'up', 'right', 'down']
+        }, 
+        {
+            1 : {
+                panel: 'reverse-*'
+            },
+
+            2 : {
+                icon: 'icon-angle-double-.'
+            },
+
+            3 : {
+                icon: 'icon-cw'
+            },
+
+            4 : {
+                icon: '+pressed'
+            }
+        }
+    );
+
+    var handlers = {
+        before_game : function () {},
+
+        after_game  : function (score) {
+            if (score > BEST_SCORE) {
+                $.cookie('best', score, { expires: 365 });
+                BEST_SCORE = score;
+                best.html(BEST_SCORE);
+            }
+        },
+
+        best_score  : function () {
+            achievement();
+        },
+
+        lost_life   : function () {},
+
+        got_point   : function () {},
+
+        key_pressed : function () {}
+    };
+
+    game = new Dash(Interface, handlers).init();
+
+    $('#btn_play').click(function(){
+        game.prepare(konami ? 42 : 3, BEST_SCORE, challenges);
+        game.start();
+    });
 });

@@ -1,4 +1,6 @@
 /*
+    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+
     The DashGUI object handles the
     properties related to the UI and
     how they are applied and where.

@@ -1,3 +1,7 @@
+/*
+    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+*/
+
 // Function that converts sec to ms
 function sec2ms (sec) {
     return sec * 1000;

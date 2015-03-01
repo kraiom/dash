@@ -1,4 +1,6 @@
 /*
+    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+
     The DashLevel object handles a state
     of the game. I.e. it handles what is 
     being shown in the current panel and
@@ -27,8 +29,6 @@
 */
 
 /*  
-    v 0.1
-
     There are five possible configurations
     for the game:
     0 - simple arrow;

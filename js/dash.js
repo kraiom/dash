@@ -1,297 +1,319 @@
-// The score handlers
-var best = null;
+/*
+    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
-// The level handler
-var Level = null;
+    The DashLevel object handles the game logic, assigning
+    the proper listeners and taking care of calling the correct
+    interface-related objects, as well as handling life points
+    and how the player press the correct key.
 
-// The GUI handler
-var Interface = null;
+    To begin a game, the user must call .init() first and only once.
+    After that, before every gameplay, the user must call
+    .prepare() followed by .start(). Using the desired attributes
+    for the "prepare" method.
 
-// The number of right pressed panels
-var right = 0;
-
-// The number of remaining lives
-var lives = 3;
-
-// Default configurations
-var DEFAULTS = {
-    PRESETS: 8
-};
-
-// The user's best score
-var BEST_SCORE = 0;
-
-// Whether or not this run has a new best
-var new_best = false;
-
-// The timer handler
-var timer = null;
-
-// Whether or not the player paused the game
-var paused = false;
-
-// Whether or not the game is active
-var playing = false;
-
-// Whether or not the player can press the key
-var allowed = false;
-
-// The pressed sequence
-var sequence = [];
-
-// The function that manages the sequence
-// pressed by the user. It adds key to
-// the sequence and return an array containing
-// what the test array should be, regarding
-// Level.expected length. If the expected length
-// has not been achieved, it returns null. 
-// If key is undefined, then sequence is set 
-// to an empty array.
-function stack_key (key) {
-    if (key === undefined) {
-        sequence = [];
-        return;
-    }
-
-    sequence.push(key);
-
-    var sequence_length = sequence.length;
-    var expected_length = Level.expected.length;
-
-    if (expected_length === 0)
-        return sequence;
-
-    if (sequence_length > expected_length)
-        sequence.shift();
-
-    if (sequence_length === expected_length)
-        return sequence;
-
-    if (sequence_length < expected_length)
-        return null;
-}
-
-// Helper function that converts a keycode
-// to a code in [0, 3], also allowing awsd
-function adjust_key (key) {
-    var awsd = {
-        65 : 0, 
-        87 : 1, 
-        68 : 2, 
-        83 : 3
-    };
-
-    if (key >= 37 && key <= 40)
-        return key - 37;
-
-    if (awsd[key] !== undefined)
-        return awsd[key];
-
-    return -1;
-}
-
-// The function that deals with losing lives
-function wrong () {
-    Interface.toc();
-    Interface.fails(lives);
-
-    clearTimeout(timer);
-
-    if (--lives === 0)
-        return game_over();
+    To instantiate Dash, there are two attributes that must
+    be given:
+    @Interface: A properly initialized Dash-GUI object
     
-    game();
-}
+    @handlers: An object that can have the following attributes
+    (all are callback functions):
+        - before_game: Triggered right before each turn
 
-// The function that deals with getting points
-function correct () {
-    Interface.toc();
-    Interface.scores(++right);
+        - after_game: Triggered when the game ends. Has one
+        input parameter that is the final score.
 
-    if (right > BEST_SCORE && !new_best) {
-        achievement();
-        new_best = true;
-    }
+        - best_score: Achieved at maximum once in a run. Triggered
+        when the player beats his/her best score. Has one input 
+        parameter that is the current score.
 
-    clearTimeout(timer);
-    game();
-}
+        - lost_life: Triggered when the player loses a life. Has
+        one input parameter that is current life points.
 
-// The game over handler
-function game_over () {
-    if (right > BEST_SCORE) {
-        BEST_SCORE = right;
-        $.cookie('best', right + '', { expires: 365 });
-    }
-    
-    Interface.dismiss();
-    best.html(BEST_SCORE);
-    clearTimeout(timer);
-    playing = false;
-}
+        - got_point: Triggered when the player gets a point. Has
+        one input parameter that is current score.
 
-// Evaluate the keycode related to the pan
-function evaluate_pan (type) {
-    var names = ['left', 'up', 'right', 'down'];
+        - key_pressed: Triggered right after a valid key is computed.
+        Has three input parameters: the key pressed (Number), the expected 
+        sequence to be performed (Array) and the challenged in the
+        current panel (Array).
+*/
 
-    for (var i = 0; i < 4; i++)
-        if (type.indexOf(names[i]) >= 0)
-            break;
 
-    evaluate(i + 37);
-}
+;(function (w) {
+    'use strict';
 
-// The unstack function which evaluates a key pressed
-function evaluate (key) {
-    if (!playing || paused || !allowed)
-        return;
 
-    key = adjust_key(key);
+    w.Dash = function (Interface, handlers) {
+        // A valid Dash-GUI object is mandatory
+        if (!Interface)
+            return false;
 
-    if (key === -1)
-        return;
+        // The this handler
+        var _ = this;
 
-    var answer = stack_key(key);
+        // The level handler
+        var Level = null;
 
-    if (answer === null)
-        return;
+        // The number of right pressed panels
+        var right = 0;
 
-    if (!answer.compare(Level.expected))
-        wrong();
+        // The number of remaining lives
+        var lives = 3;
 
-    else
-        correct();
-}
+        // The player's best score
+        var BEST_SCORE = 0;
 
-// The game function which places the tiles and is recursively called
-function game () {
-    if (!playing || paused)
-        return;
+        // Whether or not this run has a new best
+        var new_best = false;
 
-    Level.new_round();
-    stack_key();
+        // The timer handler
+        var timer = null;
 
-    allowed = false;
+        // Whether or not the player paused the game
+        var paused = false;
 
-    Interface.retrieve(Level.raw, Level.challenges, function () {
-        Interface.tic(Level.press_time);
+        // Whether or not the game is active
+        var playing = false;
 
-        allowed = true;
+        // Whether or not the player can press the key
+        var allowed = false;
 
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            if (Level.missable) 
-                return wrong();
+        // The pressed sequence
+        var sequence = [];
 
-            if (sequence.compare(Level.expected))
-                correct();
-            else
+        // The function that manages the sequence
+        // pressed by the user. It adds key to
+        // the sequence and return an array containing
+        // what the test array should be, regarding
+        // Level.expected length. If the expected length
+        // has not been achieved, it returns null. 
+        // If key is undefined, then sequence is set 
+        // to an empty array.
+        function stack_key (key) {
+            if (key === undefined) {
+                sequence = [];
+                return;
+            }
+
+            sequence.push(key);
+
+            var sequence_length = sequence.length;
+            var expected_length = Level.expected.length;
+
+            if (expected_length === 0)
+                return sequence;
+
+            if (sequence_length > expected_length)
+                sequence.shift();
+
+            if (sequence_length === expected_length)
+                return sequence;
+
+            if (sequence_length < expected_length)
+                return null;
+        }
+
+        // Helper function that converts a keycode
+        // to a code in [0, 3], also allowing awsd
+        function adjust_key (key) {
+            var awsd = {
+                65 : 0, 
+                87 : 1, 
+                68 : 2, 
+                83 : 3
+            };
+
+            if (key >= 37 && key <= 40)
+                return key - 37;
+
+            if (awsd[key] !== undefined)
+                return awsd[key];
+
+            return -1;
+        }
+
+        // The function that deals with losing lives
+        function wrong () {
+            handlers.lost_life(lives - 1);
+
+            Interface.toc();
+            Interface.fails(lives);
+
+            clearTimeout(timer);
+
+            if (--lives === 0)
+                return game_over();
+            
+            _.start();
+        }
+
+        // The function that deals with getting points
+        function correct () {
+            right++;
+
+            handlers.got_point(right);
+
+            Interface.toc();
+            Interface.scores(right);
+
+            if (right > BEST_SCORE && !new_best) {
+                handlers.best_score(right);
+                new_best = true;
+            }
+
+            clearTimeout(timer);
+            _.start();
+        }
+
+        // The game over handler
+        function game_over () {
+            Interface.dismiss();
+            clearTimeout(timer);
+            playing = false;
+
+            handlers.after_game(right);
+        }
+
+        // Evaluate the keycode related to the pan
+        function evaluate_pan (type) {
+            var names = ['left', 'up', 'right', 'down'];
+
+            for (var i = 0; i < 4; i++)
+                if (type.indexOf(names[i]) >= 0)
+                    break;
+
+            evaluate(i + 37);
+        }
+
+        // The unstack function which evaluates a key pressed
+        function evaluate (key) {
+            if (!playing || paused || !allowed)
+                return;
+
+            key = adjust_key(key);
+
+            if (key === -1)
+                return;
+
+            var answer = stack_key(key);
+
+            handlers.key_pressed(key, Level.expected, Level.challenges);
+
+            if (answer === null)
+                return;
+
+            if (!answer.compare(Level.expected))
                 wrong();
 
-        }, Level.press_time);
-    });
-}
-
-// Function used for reseting the game's values
-function prepare () {
-    Level = new DashLevel([
-        { rounds: 0,  challenges: [0] },
-        { rounds: 20, challenges: [2] },
-        { rounds: 30, challenges: [1] },
-        { rounds: 40, challenges: [4] },
-        { rounds: 60, challenges: [3] }
-    ]);
-
-    Interface.prepare();
-
-    lives = 3;
-    right = 0;
-
-    playing = true;
-    new_best = false;
-}
-
-// Let the games begin!
-$(document).ready(function() {
-    Interface = new DashGUI(
-    {
-        panels: ['#panel-0', '#panel-1'],
-        icons:  ['#panel-0 i', '#panel-1 i'],
-        score:  {main: '#score', timer: '#gauge', 
-                lives: '.lives div', points: '#counter'}
-    },
-    {  
-        presets: DEFAULTS.PRESETS,
-        panel: 'preset-*',
-        icon:  'icon-angle-.',
-        wrong_icon: 'icon-cancel',
-        life_lost: '+lost',
-        correct_icon: '+correct',
-        replace_array: ['left', 'up', 'right', 'down']
-    }, 
-    {
-        1 : {
-            panel: 'reverse-*'
-        },
-
-        2 : {
-            icon: 'icon-angle-double-.'
-        },
-
-        3 : {
-            icon: 'icon-cw'
-        },
-
-        4 : {
-            icon: '+pressed'
+            else
+                correct();
         }
-    });
 
-    window.addEventListener('focus', function () {
-        paused = false;
-        game();
-    });
+        // The game function which places the tiles and is recursively called
+        _.start = function () {
+            if (!playing || paused)
+                return;
 
-    window.addEventListener('blur', function () {
-        paused = true;
-        clearTimeout(timer);
-    });
+            handlers.before_game();
 
-    $('body').keydown(function (e) {
-        evaluate(e.keyCode);
-    });
+            Level.new_round();
+            stack_key();
 
-    Hammer(document.body, {
-        recognizers: [
-            [ Hammer.Swipe,
-                {
-                    direction: Hammer.DIRECTION_ALL,
-                    velocity: 0.2,
-                    threshold: 5
-                }
-            ]
-        ]
-    }).on('swipeleft', function (event) {
-        evaluate_pan(event.type);
-    }).on('swipeup', function (event) {
-        evaluate_pan(event.type);
-    }).on('swiperight', function (event) {
-        evaluate_pan(event.type);
-    }).on('swipedown', function (event) {
-        evaluate_pan(event.type);
-    });
-    
-    best = $('#best');
+            allowed = false;
 
-    if ($.cookie('best') === undefined)
-        $.cookie('best', '0', { expires: 365 });
+            Interface.retrieve(Level.raw, Level.challenges, function () {
+                Interface.tic(Level.press_time);
 
-    BEST_SCORE = $.cookie('best');
+                allowed = true;
 
-    best.html(BEST_SCORE);
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    if (Level.missable) 
+                        return wrong();
 
-    $('#btn_play').click(function(){
-        prepare();
-        game();
-    });
-});
+                    if (sequence.compare(Level.expected))
+                        correct();
+                    else
+                        wrong();
+
+                }, Level.press_time);
+            });
+        }
+
+        // Function used for reseting the game's values
+        _.prepare = function (n_lives, best_score, challenges) {
+            if (n_lives === undefined)
+                n_lives = 3;
+
+            if (best_score === undefined)
+                best_score = 0;
+
+            BEST_SCORE = best_score;
+
+            Level = new DashLevel(challenges);
+
+            Interface.prepare();
+
+            lives = n_lives;
+            right = 0;
+
+            playing = true;
+            new_best = false;
+        }
+
+        // Prepare interface and set listeners
+        _.init = function () {
+
+            var handler_names = ['before_game', 'after_game', 
+            'best_score', 'lost_life', 'got_point', 'key_pressed'];
+
+            var length = handler_names.length;
+
+            if (handlers === undefined)
+                handlers = {};
+
+            for (var i = 0; i < length; i++) {
+                var name = handler_names[i];
+
+                if (handlers[name] === undefined)
+                    handlers[name] = function () {};
+            }
+
+            window.addEventListener('focus', function () {
+                paused = false;
+                _.start();
+            });
+
+            window.addEventListener('blur', function () {
+                paused = true;
+                clearTimeout(timer);
+            });
+
+            $('body').keydown(function (e) {
+                evaluate(e.keyCode);
+            });
+
+            Hammer(document.body, {
+                recognizers: [
+                    [ Hammer.Swipe,
+                        {
+                            direction: Hammer.DIRECTION_ALL,
+                            velocity: 0.2,
+                            threshold: 10
+                        }
+                    ]
+                ]
+            }).on('swipeleft', function (event) {
+                evaluate_pan(event.type);
+            }).on('swipeup', function (event) {
+                evaluate_pan(event.type);
+            }).on('swiperight', function (event) {
+                evaluate_pan(event.type);
+            }).on('swipedown', function (event) {
+                evaluate_pan(event.type);
+            });
+
+            return _;
+        }
+    }
+}) (window);
