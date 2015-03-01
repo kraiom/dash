@@ -21,6 +21,9 @@ var DEFAULTS = {
 // The user's best score
 var BEST_SCORE = 0;
 
+// Whether or not this run has a new best
+var new_best = false;
+
 // The timer handler
 var timer = null;
 
@@ -105,8 +108,10 @@ function correct () {
     Interface.toc();
     Interface.scores(++right);
 
-    if (right > BEST_SCORE)
+    if (right > BEST_SCORE && !new_best) {
         achievement();
+        new_best = true;
+    }
 
     clearTimeout(timer);
     game();
@@ -203,6 +208,7 @@ function prepare () {
     right = 0;
 
     playing = true;
+    new_best = false;
 }
 
 // Let the games begin!
