@@ -18,7 +18,7 @@ function share (media) {
 
     switch (media) {
         case 'facebook': 
-            url = 'https://www.facebook.com/dialog/share?app_id=1543390215934507&display=popup&href=http%3A//breno.io/dash&redirect_uri=http%3A//breno.io/dash/close.html';
+            url = 'https://www.facebook.com/dialog/share?app_id=903632352992329&display=popup&href=http%3A//breno.io/dash&redirect_uri=http%3A//breno.io/dash/close.html';
         break;
 
         case 'twitter': 
