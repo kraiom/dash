@@ -47,7 +47,16 @@
             (default 40 ms)
 
     @overlaid_challenges: The number of allowed
-    overlays in a challenge (default 1)
+    overlays in a challenge (default 1).
+
+    The function prepare takes three arguments:
+    @n_lives: The number of lives for this run. (default 3). 
+
+    @best_score: The current best score. Used to trigger handlers.
+    best_score. (default 0).
+
+    @challenges: Mandatory argument. This is an object that defines
+    the challenges to be beaten, as explained in DashLevel definition.
 */
 
 
