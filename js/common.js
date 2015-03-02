@@ -80,6 +80,31 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
     setTimeout(function () { msg.fadeOut(); }, 1500);
 });
 
+function toggleFullScreen () {
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen) {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+
 // Achievement popup
 function achievement () {
     msg_icon.removeClass().addClass('icon-trophy');
@@ -88,6 +113,7 @@ function achievement () {
 }
 
 $(document).ready(function() {
+
     $('#btn_howto').click(function() { $('#info').fadeIn(); });
     $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
@@ -105,6 +131,8 @@ $(document).ready(function() {
 
     shares.fb = $('#fb_share_score');
     shares.tw = $('#tw_share_score');
+
+    $('#btn_full').click(toggleFullScreen);
 
     $('.gp').click(function () {
         var left = ~~((W - 600) / 2);

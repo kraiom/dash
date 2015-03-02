@@ -314,7 +314,27 @@
                 evaluate(e.keyCode);
             });
 
-            Hammer(document.body, {
+            Hammer(document.getElementById('panel-0'), {
+                recognizers: [
+                    [ Hammer.Swipe,
+                        {
+                            direction: Hammer.DIRECTION_ALL,
+                            velocity: 0.2,
+                            threshold: 10
+                        }
+                    ]
+                ]
+            }).on('swipeleft', function (event) {
+                evaluate_pan(event.type);
+            }).on('swipeup', function (event) {
+                evaluate_pan(event.type);
+            }).on('swiperight', function (event) {
+                evaluate_pan(event.type);
+            }).on('swipedown', function (event) {
+                evaluate_pan(event.type);
+            });
+
+            Hammer(document.getElementById('panel-1'), {
                 recognizers: [
                     [ Hammer.Swipe,
                         {
