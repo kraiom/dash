@@ -199,9 +199,12 @@ h1 {
     position: absolute;
     padding: 5%;
     width: 79%;
-    height: 70%;
-    left: 5%;
-    top: 5%;
+    height: 80%;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
     border: solid 1px #111;
     z-index: 200;
     background: @yellow;
@@ -270,13 +273,13 @@ h1 {
     }
 
     span {
-        position: fixed;
+        position: absolute;
         font-size: 5em;
         display: block;
         height: 1em;
         line-height: 0em;
-        top: 10%;
-        left: 6%;
+        top: 3%;
+        left: 1%;
         cursor: pointer;
     }
 
@@ -377,6 +380,11 @@ a {
 
     section i {
         font-size: 18em;
+    }
+
+    h2 {
+        margin-top: 2em;
+        font-size: 2.5em !important;
     }
 
     .wrapper {
