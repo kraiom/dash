@@ -100,8 +100,11 @@ section {
         span {
             background: #111;
             color: #fff;
-            padding: 0.2em;
             letter-spacing: 0;
+            display: inline-block;
+            min-width: 2em;
+            min-height: 2em;
+            line-height: 2em;
         }
     }
 }
@@ -198,8 +201,8 @@ h1 {
     display: none;
     position: absolute;
     padding: 5%;
-    width: 79%;
-    height: 80%;
+    width: 50%;
+    height: 50%;
     left: 0;
     top: 0;
     right: 0;
@@ -253,7 +256,10 @@ h1 {
         font-weight: 400;
         background: #111;
         color: #fff;
-        padding: .2em;
+        display: inline-block;
+        min-width: 2em;
+        min-height: 2em;
+        line-height: 2em;
     }
 
     h2 {
@@ -278,8 +284,8 @@ h1 {
         display: block;
         height: 1em;
         line-height: 0em;
-        top: 3%;
-        left: 1%;
+        top: 5%;
+        left: 2%;
         cursor: pointer;
     }
 
@@ -376,6 +382,11 @@ a {
 @media (max-width: 650px) {
     body {
         font-size: 15px;
+    }
+
+    .info {
+        width: 79%;
+        height: 80%;
     }
 
     section i {
