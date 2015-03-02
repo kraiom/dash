@@ -109,14 +109,17 @@ $(document).ready(function() {
     $('.gp').click(function () {
         var left = ~~((W - 600) / 2);
         var top = ~~((H - 600) / 2);
-        
+
         window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
     });
 
     if ($.cookie('best') === undefined)
         $.cookie('best', '0', { expires: 365 });
 
-    BEST_SCORE = $.cookie('best');
+    if (window.localStorage.getItem('best') === null)
+        window.localStorage.setItem('best', 0);
+
+    BEST_SCORE = $.cookie('best') || window.localStorage.getItem('best');
 
     best.html(BEST_SCORE);
 
@@ -195,6 +198,7 @@ $(document).ready(function() {
 
             if (score > BEST_SCORE) {
                 $.cookie('best', score, { expires: 365 });
+                window.localStorage.setItem('best', score);
                 BEST_SCORE = score;
                 best.html(BEST_SCORE);
             }
