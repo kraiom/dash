@@ -27,7 +27,7 @@ var challenges = [
 
     { // 1 - reverse
         constraints: [3, 4],
-        rounds: 30,
+        rounds: 45,
 
         morph: function (tentative, last) {
             var length = tentative.expected.length;
@@ -42,7 +42,7 @@ var challenges = [
 
     { // 2 - double arrow
         constraints: [3, 4],
-        rounds: 20,
+        rounds: 25,
 
         morph: function (tentative, last) {
             return {
@@ -53,7 +53,7 @@ var challenges = [
 
     { // 3 - pressed arrow
         constraints: [1, 2, 4],
-        rounds: 60,
+        rounds: 40,
 
         morph: function (tentative, last) {
             return {
@@ -66,7 +66,7 @@ var challenges = [
     { // 4 - previous action
         first_turn: false,
         constraints: [1, 2, 3],
-        rounds: 40,
+        rounds: 60,
 
         morph: function (tentative, last) {
             return {
