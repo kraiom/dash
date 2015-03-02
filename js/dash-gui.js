@@ -21,6 +21,10 @@
         is the DOM in which the score must be displayed.
 
     @defaults: an object with the following attributes:
+        
+        - base_index: The z-index for the lowest element.
+        (default 0).
+
         - presets: The number or presets to be used
 
         - panel: The default class for the panels.
@@ -85,6 +89,12 @@ var DIRECTIONS = 4;
 
         // The current direction
         _.direction = null;
+
+        // The z-index base
+        var zIndex = 0;
+
+        if (defaults.base_index !== undefined)
+            zIndex = defaults.base_index;
 
         // Direction animations
         var positions = [
@@ -172,8 +182,8 @@ var DIRECTIONS = 4;
 
             var next = mod(current + 1, N_PANELS);
 
-            elements.panels[current].css('z-index', 0);
-            elements.panels[next].css('z-index', 1);
+            elements.panels[current].css('z-index', zIndex);
+            elements.panels[next].css('z-index', zIndex + 1);
 
             current = next;
 
@@ -205,6 +215,8 @@ var DIRECTIONS = 4;
 
         // The function that resets all data to start over
         _.prepare = function () {
+            elements.score.main.css('z-index', 2 * (zIndex + 1));
+
             elements.score.points.html(0);
             elements.score.main.fadeIn();
 

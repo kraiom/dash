@@ -23,8 +23,7 @@
     <link rel="stylesheet" type="text/css" href="css/fontello.css"/>
 
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
-    <base target="_blank"/>
+    <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
 </head>
 <body>
     <script>
@@ -53,9 +52,13 @@
             <a id="btn_play">Start game</a>
             <a id="btn_howto">How to play</a>
             <a id="btn_leader" class="disabled">Leaderboard</a>
-            <a class="fb"><i class="icon-facebook"></i></a>
-            <a class="tw"><i class="icon-twitter"></i></a>
+
+            <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
+
+            <a class="tw" href="https://twitter.com/intent/tweet?text=Try%20to%20be%20as%20fast%20as%20you%20can%20in%20Dash%21&url=http://breno.io/dash"><i class="icon-twitter"></i></a>
+
             <a class="gp"><i class="icon-gplus"></i></a>
+
             <div class="clear"></div>
         </div>
 
@@ -79,8 +82,38 @@
         <i id="msg_icon"></i>
     </div>
 
+    <div class="info" id="end_game_view">
+        <span class="dismiss">&times;</span>
+
+        <h2>Game over!</h2>
+
+        <div class="centering">
+            <div>
+                Your final score is <b id="last_score">DASH</b>!
+            </div> 
+
+            <div>
+                You've endured for <b id="last_time">10</b> seconds!
+            </div>
+
+            <div class="buttons">
+                <a id="btn_again">Play again</a>
+            </div>
+
+            <div>
+                <a id="fb_share_score"><i class="icon-facebook"></i> Share on Facebook</a>
+                <div class="clear"></div>
+            </div>
+
+            <div>
+                <a id="tw_share_score"><i class="icon-twitter"></i> Share on Twitter</a>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="info" id="info">
-        <span id="dismiss">&times;</span>
+        <span class="dismiss">&times;</span>
 
         <h2>How to play</h2>
 

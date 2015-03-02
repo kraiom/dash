@@ -1,12 +1,16 @@
 // Default values
-var TITLE = 'Try to be as fast as you can in Dash!';
-var URL = 'http://breno.io/dash';
 var W, H;
+var SITE = escape('http://breno.io/dash');
 var listener = new window.keypress.Listener();
 var msg = null, msg_icon = null;
 var game = null;
+var end_game_view = null;
+var last_score = null;
+var last_time = null;
 var konami = false;
 var best = 0, BEST_SCORE = 0;
+var tic = 0;
+var shares = {fb: null, tw: null};
 
 var challenges = [
     { // 0 - simple arrow
@@ -76,30 +80,6 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
     setTimeout(function () { msg.fadeOut(); }, 1500);
 });
 
-// Function used for sharing on social networks
-function share (media) {
-    var url;
-
-    switch (media) {
-        case 'facebook': 
-            url = 'https://www.facebook.com/dialog/share?app_id=903632352992329&display=popup&href=http%3A//breno.io/dash&redirect_uri=http%3A//breno.io/dash/close.html';
-        break;
-
-        case 'twitter': 
-            url = 'http://twitter.com/home?status=' + TITLE + '+' + URL;
-        break;
-
-        case 'google+': 
-            url = 'https://plus.google.com/share?url=' + URL;
-        break;
-    }
-
-    var mH = (H - 250) / 2;
-    var mW = (W - 500) / 2;
-
-    window.open(url, 'Dash', 'width=500, height=250, top=' + mH + ', left=' + mW + ' scrollbars=yes, status=no, toolbar=no, location=no, directories=no, menubar=no, resizable=no, fullscreen=no');
-}
-
 // Achievement popup
 function achievement () {
     msg_icon.removeClass().addClass('icon-trophy');
@@ -108,12 +88,8 @@ function achievement () {
 }
 
 $(document).ready(function() {
-    $('a.fb').click(function() { share('facebook'); });
-    $('a.tw').click(function() { share('twitter'); });
-    $('a.gp').click(function() { share('google+'); });
-
     $('#btn_howto').click(function() { $('#info').fadeIn(); });
-    $('#dismiss').click(function() { $('#info').fadeOut(); });
+    $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
     W = $(window).width();
     H = $(window).height();
@@ -121,7 +97,21 @@ $(document).ready(function() {
     msg = $('#msg');
     msg_icon = $('#msg_icon');
 
+    end_game_view = $('#end_game_view');
+
     best = $('#best');
+    last_score = $('#last_score');
+    last_time =  $('#last_time');
+
+    shares.fb = $('#fb_share_score');
+    shares.tw = $('#tw_share_score');
+
+    $('.gp').click(function () {
+        var left = ~~((W - 600) / 2);
+        var top = ~~((H - 600) / 2);
+        
+        window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
+    });
 
     if ($.cookie('best') === undefined)
         $.cookie('best', '0', { expires: 365 });
@@ -129,6 +119,16 @@ $(document).ready(function() {
     BEST_SCORE = $.cookie('best');
 
     best.html(BEST_SCORE);
+
+    $('#fb_share').click(function () {
+        FB.ui({
+            name: 'Dash',
+            method: 'share',
+            href: 'http://breno.io/dash/',
+            caption: 'Try to be as fast as you can in Dash!',
+            app_id: '903632352992329'
+        }, function(response){});
+    });
 
     Interface = new DashGUI(
         {
@@ -138,6 +138,7 @@ $(document).ready(function() {
                     lives: '.lives div', points: '#counter'}
         },
         {  
+            base_index: 1000,
             presets: 8,
             panel: 'preset-*',
             icon:  'icon-angle-.',
@@ -169,6 +170,29 @@ $(document).ready(function() {
         before_game : function () {},
 
         after_game  : function (score) {
+            var toc = (new Date()).getTime();
+            var elapsed = ~~((toc - tic) / 1000);
+
+            last_time.html(elapsed);
+            last_score.html(score);
+
+            var text = 'I\'ve made ' + score + ' points in Dash! Try to get over it! #dash';
+            text = escape(text);
+
+            shares.tw.attr('href', 'https://twitter.com/intent/tweet?text=' + text + '&url=' + SITE);
+
+            shares.fb.click(function () {
+                FB.ui({
+                    name: 'Dash',
+                    method: 'share',
+                    caption: unescape(text),
+                    href: 'http://breno.io/dash/',
+                    app_id: '903632352992329'
+                }, function(response){});
+            });
+
+            end_game_view.fadeIn();
+
             if (score > BEST_SCORE) {
                 $.cookie('best', score, { expires: 365 });
                 BEST_SCORE = score;
@@ -191,6 +215,14 @@ $(document).ready(function() {
 
     $('#btn_play').click(function(){
         game.prepare(konami ? 42 : 3, BEST_SCORE, challenges);
+        tic = (new Date()).getTime();
         game.start();
+    });
+
+    $('#btn_again').click(function(){
+        game.prepare(konami ? 42 : 3, BEST_SCORE, challenges);
+        tic = (new Date()).getTime();
+        game.start();
+        end_game_view.fadeOut();
     });
 });

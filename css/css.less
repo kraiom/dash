@@ -18,6 +18,10 @@
     padding: 0;
 }
 
+.centering {
+    text-align: center;
+}
+
 body, html {
     width: 100%;
     height: 100%;
@@ -217,6 +221,24 @@ h1 {
         margin-bottom: 2em;
     }
 
+    .centering > div {
+        margin-bottom: 1em;
+
+        &.buttons {
+            margin-top: 3em;
+        }
+
+        a {
+            margin-bottom: 0;
+
+            i {
+                display: inline-block;
+                width: 10%;
+                float: left;
+            }
+        }
+    }
+
     b {
         font-family: 'Josefin Sans', sans-serif;
         font-weight: 400;
@@ -226,6 +248,7 @@ h1 {
     }
 
     h2 {
+        text-transform: uppercase;
         font-family: 'Josefin Sans', sans-serif;
         text-align: center;
         font-size: 3em;
@@ -271,7 +294,7 @@ h1 {
 
 a {
     width: 16.5em;
-    display: block;
+    display: inline-block;
     padding: 0.6em;
     text-align: center;
     font-size: 0.8em;
@@ -292,11 +315,11 @@ a {
 
     &.fb, &.tw, &.gp {
         width: 4em; 
-        float: left;
+        display: inline-block;
     }
 
     &.tw {
-        margin: 0 0.9em;
+        margin: 0 0.6em;
     }
 
     &.disabled {
