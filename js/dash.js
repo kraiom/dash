@@ -1,5 +1,5 @@
 /*
-    Dash v 0.3  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.4  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
     The Dash object handles the game logic, assigning
     the proper listeners and taking care of calling the correct
@@ -83,6 +83,10 @@
 
         // The player's best score
         var BEST_SCORE = 0;
+
+        // The number of panels that must be dismissed
+        // in order to call Interface.hide_timer
+        var HIDE_TIMER = -1;
 
         // Whether or not this run has a new best
         var new_best = false;
@@ -182,6 +186,9 @@
                 new_best = true;
             }
 
+            if (right === HIDE_TIMER)
+                Interface.hide_timer();
+
             clearTimeout(timer);
             _.start();
         }
@@ -262,14 +269,18 @@
         }
 
         // Function used for reseting the game's values
-        _.prepare = function (n_lives, best_score, challenges) {
+        _.prepare = function (challenges, n_lives, best_score, no_timer_turns) {
             if (n_lives === undefined)
                 n_lives = 3;
 
             if (best_score === undefined)
                 best_score = 0;
 
+            if (no_timer_turns === undefined)
+                no_timer_turns = -1;
+
             BEST_SCORE = best_score;
+            HIDE_TIMER = no_timer_turns;
 
             Level = new DashLevel(challenges, times, overlaid_challenges);
 
@@ -321,45 +332,30 @@
                 evaluate(key);
             });
 
-            Hammer(document.getElementById('panel-0'), {
-                recognizers: [
-                    [ Hammer.Swipe,
-                        {
-                            direction: Hammer.DIRECTION_ALL,
-                            velocity: 0.2,
-                            threshold: 10
-                        }
-                    ]
-                ]
-            }).on('swipeleft', function (event) {
-                evaluate_pan(event.type);
-            }).on('swipeup', function (event) {
-                evaluate_pan(event.type);
-            }).on('swiperight', function (event) {
-                evaluate_pan(event.type);
-            }).on('swipedown', function (event) {
-                evaluate_pan(event.type);
-            });
+            var panels = Interface.getPanels();
+            length = panels.length;
 
-            Hammer(document.getElementById('panel-1'), {
-                recognizers: [
-                    [ Hammer.Swipe,
-                        {
-                            direction: Hammer.DIRECTION_ALL,
-                            velocity: 0.2,
-                            threshold: 10
-                        }
+            for (var i = 0; i < length; i++) {
+                Hammer(panels[i].get(0), {
+                    recognizers: [
+                        [ Hammer.Swipe,
+                            {
+                                direction: Hammer.DIRECTION_ALL,
+                                velocity: 0.2,
+                                threshold: 10
+                            }
+                        ]
                     ]
-                ]
-            }).on('swipeleft', function (event) {
-                evaluate_pan(event.type);
-            }).on('swipeup', function (event) {
-                evaluate_pan(event.type);
-            }).on('swiperight', function (event) {
-                evaluate_pan(event.type);
-            }).on('swipedown', function (event) {
-                evaluate_pan(event.type);
-            });
+                }).on('swipeleft', function (event) {
+                    evaluate_pan(event.type);
+                }).on('swipeup', function (event) {
+                    evaluate_pan(event.type);
+                }).on('swiperight', function (event) {
+                    evaluate_pan(event.type);
+                }).on('swipedown', function (event) {
+                    evaluate_pan(event.type);
+                });
+            }
 
             return _;
         }

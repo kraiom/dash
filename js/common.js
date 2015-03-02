@@ -12,10 +12,11 @@ var best = 0, BEST_SCORE = 0;
 var tic = 0;
 var shares = {fb: null, tw: null};
 var times = {
-    press_time: 1000,
-    step: 0
+    press_time: 1500,
+    step: 5
 };
 var konami_lives = 42;
+var ROUNDS_TO_HIDE = 120;
 
 var challenges = [
     { // 0 - simple arrow
@@ -115,6 +116,18 @@ function achievement () {
     msg_icon.removeClass().addClass('icon-trophy');
     msg.fadeIn();
     setTimeout(function () { msg.fadeOut(); }, 1500);
+}
+
+// A function called to begin dash
+function goDash () {
+    var hiding = ROUNDS_TO_HIDE;
+
+    hiding += ~~(Math.random() * ROUNDS_TO_HIDE);
+
+    game.prepare(challenges, konami ? konami_lives : 3, 
+        BEST_SCORE, hiding);
+    tic = (new Date()).getTime();
+    game.start();   
 }
 
 $(document).ready(function() {
@@ -251,15 +264,11 @@ $(document).ready(function() {
     game = new Dash(Interface, handlers, times).init();
 
     $('#btn_play').click(function(){
-        game.prepare(konami ? konami_lives : 3, BEST_SCORE, challenges);
-        tic = (new Date()).getTime();
-        game.start();
+        goDash();
     });
 
     $('#btn_again').click(function(){
-        game.prepare(konami ? konami_lives : 3, BEST_SCORE, challenges);
-        tic = (new Date()).getTime();
-        game.start();
+        goDash();
         end_game_view.fadeOut();
     });
 });

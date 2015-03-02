@@ -1,5 +1,5 @@
 /*
-    Dash v 0.3  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.4  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 */
 
 // Function that converts sec to ms

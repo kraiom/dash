@@ -1,5 +1,5 @@
 /*
-    Dash v 0.2  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.4  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
 
     The DashGUI object handles the
     properties related to the UI and
@@ -15,7 +15,8 @@
         the main DOM which must be displayed for the score;
         The attribute "timer" represents the timer that will
         have its width changed from 0% to 100% in the remaining
-        time; The attribute "lives" represent the container of
+        time (Note that timer.parent will disappear if hide_timer
+        is called) The attribute "lives" represent the container of
         children that will be accessed through :nth-child, and 
         will be disabled in reverse order; The attribute "points"
         is the DOM in which the score must be displayed.
@@ -130,6 +131,12 @@ var DIRECTIONS = 4;
             return preset;
         }
 
+        // Function that returns the panels that are going
+        // to be considered
+        _.getPanels = function () {
+            return elements.panels;
+        }
+
         // A helper function that interprets a class name given a number
         // returns an object with the following attributes: 
         // - addClass: boolean, represent whether or not the class must be added
@@ -217,6 +224,7 @@ var DIRECTIONS = 4;
         _.prepare = function () {
             elements.score.main.css('z-index', 2 * (zIndex + 1));
 
+            elements.score.timer.parent().fadeIn();
             elements.score.points.html(0);
             elements.score.main.fadeIn();
 
@@ -268,7 +276,11 @@ var DIRECTIONS = 4;
             elements.score.timer.stop();
         }
 
-
+        // Hides the timer from gameplay
+        _.hide_timer = function () {
+            _.toc();
+            elements.score.timer.parent().fadeOut();
+        }
     }
 
 }) (window);
