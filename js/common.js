@@ -128,7 +128,7 @@ $(document).ready(function() {
             name: 'Dash',
             method: 'share',
             href: 'http://dash.breno.io/',
-            caption: 'Try to be as fast as you can in Dash!',
+            caption: 'How fast can you dash?',
             app_id: '903632352992329'
         }, function(response){});
     });
