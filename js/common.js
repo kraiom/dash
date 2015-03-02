@@ -12,9 +12,10 @@ var best = 0, BEST_SCORE = 0;
 var tic = 0;
 var shares = {fb: null, tw: null};
 var times = {
-    press_time: 1250,
+    press_time: 1000,
     step: 0
 };
+var konami_lives = 42;
 
 var challenges = [
     { // 0 - simple arrow
@@ -250,13 +251,13 @@ $(document).ready(function() {
     game = new Dash(Interface, handlers, times).init();
 
     $('#btn_play').click(function(){
-        game.prepare(konami ? 42 : 3, BEST_SCORE, challenges);
+        game.prepare(konami ? konami_lives : 3, BEST_SCORE, challenges);
         tic = (new Date()).getTime();
         game.start();
     });
 
     $('#btn_again').click(function(){
-        game.prepare(konami ? 42 : 3, BEST_SCORE, challenges);
+        game.prepare(konami ? konami_lives : 3, BEST_SCORE, challenges);
         tic = (new Date()).getTime();
         game.start();
         end_game_view.fadeOut();

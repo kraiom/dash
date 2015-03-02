@@ -311,6 +311,8 @@
             });
 
             $('body').keydown(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
                 evaluate(e.keyCode);
             });
 
