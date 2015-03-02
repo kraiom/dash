@@ -311,9 +311,14 @@
             });
 
             $('body').keydown(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                evaluate(e.keyCode);
+                var key = e.keyCode;
+
+                if (key >= 37 && key <= 40) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                evaluate(key);
             });
 
             Hammer(document.getElementById('panel-0'), {
