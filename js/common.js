@@ -1,6 +1,6 @@
 // Default values
 var W, H;
-var SITE = escape('http://breno.io/dash');
+var SITE = escape('http://dash.breno.io/');
 var listener = new window.keypress.Listener();
 var msg = null, msg_icon = null;
 var game = null;
@@ -127,7 +127,7 @@ $(document).ready(function() {
         FB.ui({
             name: 'Dash',
             method: 'share',
-            href: 'http://breno.io/dash/',
+            href: 'http://dash.breno.io/',
             caption: 'Try to be as fast as you can in Dash!',
             app_id: '903632352992329'
         }, function(response){});
@@ -189,7 +189,7 @@ $(document).ready(function() {
                     name: 'Dash',
                     method: 'share',
                     caption: unescape(text),
-                    href: 'http://breno.io/dash/',
+                    href: 'http://dash.breno.io/',
                     app_id: '903632352992329'
                 }, function(response){});
             });
