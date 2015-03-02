@@ -207,7 +207,7 @@ $(document).ready(function() {
             last_time.html(elapsed);
             last_score.html(score);
 
-            var text = 'I\'ve made ' + score + ' points in Dash! Try to get over it! #dash';
+            var text = 'I\'ve made ' + score + ' points in Dash! Can you dash faster? #Dash_it';
             text = escape(text);
 
             shares.tw.attr('href', 'https://twitter.com/intent/tweet?text=' + text + '&url=' + SITE);
