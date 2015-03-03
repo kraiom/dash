@@ -18,7 +18,7 @@ var times = {
 var konami_lives = 42;
 var ROUNDS_TO_HIDE = 120;
 var tutorial = 1, message = null;
-var tutorial_btn = null;
+var tutorial_btn = {on: null, off: null};
 
 var taught = [];
 
@@ -172,7 +172,10 @@ $(document).ready(function() {
 
     message = $('#tutorial');
 
-    tutorial_btn = $('#tutorial_on');
+    tutorial_btn = {
+        on: $('#tutorial_on'),
+        off: $('#tutorial_off')
+    }
 
     $('#btn_full').click(toggleFullScreen);
 
@@ -200,18 +203,27 @@ $(document).ready(function() {
 
     tutorial = parseInt(tutorial);
 
-    if (tutorial === 0)
-        tutorial_btn.removeClass('disabled');
+    if (tutorial !== 0) {
+        tutorial_btn.on.toggle();
+        tutorial_btn.off.toggle();
+    }
 
     best.html(BEST_SCORE);
 
-    tutorial_btn.click(function () {
-        if (tutorial === 0) {
-            $(this).addClass('disabled');
-            tutorial = challenges.length;
-            $.cookie('tutorial', challenges.length, { expires: 365 });
-            window.localStorage.setItem('tutorial', challenges.length);
-        }
+    tutorial_btn.on.click(function () {
+        tutorial = challenges.length;
+        $.cookie('tutorial', challenges.length, { expires: 365 });
+        window.localStorage.setItem('tutorial', challenges.length);
+        tutorial_btn.on.toggle();
+        tutorial_btn.off.toggle();
+    });
+
+    tutorial_btn.off.click(function () {
+        tutorial = 0;
+        $.cookie('tutorial', 0, { expires: 365 });
+        window.localStorage.setItem('tutorial', 0);
+        tutorial_btn.on.toggle();
+        tutorial_btn.off.toggle();
     });
 
     $('#fb_share').click(function () {
@@ -283,7 +295,8 @@ $(document).ready(function() {
             if (taught.push(challenge) === challenges.length) { 
                 $.cookie('tutorial', '0', { expires: 365 });
                 window.localStorage.setItem('tutorial', 0);
-                tutorial_btn.removeClass('disabled');
+                tutorial_btn.on.toggle();
+                tutorial_btn.off.toggle();
             }
         },
 
