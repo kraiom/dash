@@ -268,7 +268,7 @@ var DIRECTIONS = 4;
 
         // Starts the timer
         _.tic = function (time) {
-            if (elements.score.timer.parent().css('display') !== 'none')
+            if (elements.score.timer.parent().css('display') === 'block')
                 elements.score.timer.css('width', 0).animate({width: '100%'}, time);
         }
 

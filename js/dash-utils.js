@@ -49,3 +49,15 @@ Array.prototype.compare = (function (target) {
 
     return true;
 });
+
+
+// Creates a clone of the array
+Array.prototype.clone = (function () {
+    var length_a = this.length;
+    var target = [];
+
+    for (var i = 0; i < length_a; i++)
+        target.push(this[i]);
+
+    return target;
+});

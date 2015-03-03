@@ -17,19 +17,28 @@ var times = {
 };
 var konami_lives = 42;
 var ROUNDS_TO_HIDE = 120;
+var tutorial = 1, message = null;
+var tutorial_btn = null;
+
+var taught = [];
 
 var challenges = [
-    { // 0 - simple arrow
+    {
+        alias: 'simple',
+
         morph: function (tentative, last) {
             return {
                 expected: [tentative.expected[0]]
             };
-        }
+        },
+
+        text: 'Press the key/swipe to the direction of the arrow'
     },
 
-    { // 1 - reverse
-        constraints: [3, 4],
-        rounds: 45,
+    {   
+        alias: 'reverse',
+        constraints: ['pressed', 'previous'],
+        rounds: 30,
 
         morph: function (tentative, last) {
             var length = tentative.expected.length;
@@ -39,46 +48,57 @@ var challenges = [
                 values.expected.push(mod(tentative.expected[i] + 2, 4));
 
             return values;
-        }
+        },
+
+        text: 'Press the key/swipe to the opposite direction of the arrow'
     },
 
-    { // 2 - double arrow
-        constraints: [3, 4],
-        rounds: 25,
+    {   
+        alias: 'double',
+        constraints: ['pressed', 'previous'],
+        rounds: 20,
 
         morph: function (tentative, last) {
             return {
                 expected: [tentative.expected[0], tentative.expected[0]]
             };
-        }
+        },
+
+        text: 'Press the key/swipe twice to the direction of the arrow'
     },
 
-    { // 3 - pressed arrow
-        constraints: [1, 2, 4],
-        rounds: 40,
+    {   
+        alias: 'previous',
+        first_turn: false,
+        constraints: ['reverse', 'double', 'pressed'],
+        rounds: 50,
 
         morph: function (tentative, last) {
             return {
                 expected: last.expected,
                 missable: last.missable
             };
-        }
+        },
+
+        text: 'Repeat your previous action'
     },
 
-    { // 4 - previous action
-        first_turn: false,
-        constraints: [1, 2, 3],
-        rounds: 60,
+    {   
+        alias: 'pressed',
+        constraints: ['reverse', 'double', 'pressed'],
+        rounds: 40,
 
         morph: function (tentative, last) {
             return {
                 expected: [],
                 missable: false
             };
-        }
+        },
+
+        text: 'Do not do anything!'
     }
 ];
-
+    
 listener.sequence_combo('up up down down left right left right b a enter', function() {
     konami ^= true;
     msg_icon.removeClass().addClass('icon-joystick');
@@ -150,6 +170,10 @@ $(document).ready(function() {
     shares.fb = $('#fb_share_score');
     shares.tw = $('#tw_share_score');
 
+    message = $('#tutorial');
+
+    tutorial_btn = $('#tutorial_on');
+
     $('#btn_full').click(toggleFullScreen);
 
     $('.gp').click(function () {
@@ -165,9 +189,30 @@ $(document).ready(function() {
     if (window.localStorage.getItem('best') === null)
         window.localStorage.setItem('best', 0);
 
+    if ($.cookie('tutorial') === undefined)
+        $.cookie('tutorial', challenges.length, { expires: 365 });
+
+    if (window.localStorage.getItem('tutorial') === null)
+        window.localStorage.setItem('tutorial', challenges.length);
+
     BEST_SCORE = $.cookie('best') || window.localStorage.getItem('best');
+    tutorial = $.cookie('tutorial') || window.localStorage.getItem('tutorial');
+
+    tutorial = parseInt(tutorial);
+
+    if (tutorial === 0)
+        tutorial_btn.removeClass('disabled');
 
     best.html(BEST_SCORE);
+
+    tutorial_btn.click(function () {
+        if (tutorial === 0) {
+            $(this).addClass('disabled');
+            tutorial = challenges.length;
+            $.cookie('tutorial', challenges.length, { expires: 365 });
+            window.localStorage.setItem('tutorial', challenges.length);
+        }
+    });
 
     $('#fb_share').click(function () {
         FB.ui({
@@ -216,7 +261,31 @@ $(document).ready(function() {
     );
 
     var handlers = {
-        before_game : function () {},
+        on_panel_retrieve : function (raw, modifiers, expected) {
+            var challenge = modifiers[0];
+
+            if (tutorial === 0 || taught.has(challenge))
+                return;
+
+            game.pause();
+
+            message.html(challenges[challenge].text);
+            message.fadeIn('fast');
+
+            if (expected.length === 0) {
+                setTimeout(function () {
+                    message.fadeOut('fast');
+                    game.resume();
+                    game.correct();
+                }, 2000);
+            }
+
+            if (taught.push(challenge) === challenges.length) { 
+                $.cookie('tutorial', '0', { expires: 365 });
+                window.localStorage.setItem('tutorial', 0);
+                tutorial_btn.removeClass('disabled');
+            }
+        },
 
         after_game  : function (score) {
             var toc = (new Date()).getTime();
@@ -230,15 +299,29 @@ $(document).ready(function() {
 
             shares.tw.attr('href', 'https://twitter.com/intent/tweet?text=' + text + '&url=' + SITE);
 
-            shares.fb.click(function () {
-                FB.ui({
-                    name: 'Dash',
-                    method: 'share',
-                    caption: unescape(text),
-                    href: 'http://dash.breno.io/',
-                    app_id: '903632352992329'
-                }, function(response){});
-            });
+            _gaq.push(['_setCustomVar',
+              1,                   // This custom var is set to slot #1.  Required parameter.
+              'Section',           // The top-level name for your online content categories.  Required parameter.
+              'Score',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+              score                    // Sets the scope to page-level.  Optional parameter.
+           ]);
+
+            _gaq.push(['_setCustomVar',
+              2,                   // This custom var is set to slot #1.  Required parameter.
+              'Section',           // The top-level name for your online content categories.  Required parameter.
+              'Time',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+              elapsed                    // Sets the scope to page-level.  Optional parameter.
+           ]);
+
+            // shares.fb.click(function () {
+            //     FB.ui({
+            //         name: 'Dash',
+            //         method: 'share',
+            //         caption: unescape(text),
+            //         href: 'http://dash.breno.io/',
+            //         app_id: '903632352992329'
+            //     }, function(response){});
+            // });
 
             end_game_view.fadeIn();
 
@@ -258,7 +341,17 @@ $(document).ready(function() {
 
         got_point   : function () {},
 
-        key_pressed : function () {}
+        key_pressed : function (key) {
+            if (tutorial === 0 || !game.is_paused())
+                return;
+
+            if (game.test(key)) {
+                tutorial--;
+                game.resume();
+                message.fadeOut('fast');
+                game.correct();
+            }
+        }
     };
 
     game = new Dash(Interface, handlers, times).init();

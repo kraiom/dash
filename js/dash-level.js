@@ -24,10 +24,9 @@
         or not the challenge can occur in the very
         first turn. (default true).
 
-        - constraints: an array of numbers defining
+        - constraints: an array of numbers/aliases defining
         which other challenges cannot overlap this 
-        one. Note that every challenge is self exclusive. 
-        Note that if @overlaid_challenges is 1, then this
+        one. Note that if @overlaid_challenges is 1, then this
         attribute has no effect, since no challenge will
         ever be overlapped. (default []).
 
@@ -38,6 +37,10 @@
         - morph: a function that must return an object
         that is a modification of the input one. This 
         function is explained below.
+
+        - alias: a nickname for the challenge, used if
+        you want to provide nicknames for the "constraints"
+        instead of indexes. 
 
     @times: A object with the following attributes:
       press_time: The time the player has to press
@@ -145,6 +148,19 @@
 
             challenges_timeline.push(timeline);
         }
+
+        // Initializing aliases object
+        var aliases = {};
+
+        for (var i = 0; i < CONFIGURATIONS; i++) {
+            var current = challenges[i];
+            var name = i;
+
+            if (current.alias !== undefined)
+                name = current.alias;
+
+            aliases[name] = i;
+        } 
 
         // Checks whether there are still valid
         // challenges in order to continue;
@@ -272,7 +288,7 @@
                 for (var i = 0; i < length; i++) {
                     var applied = tentative.challenges[i];
 
-                    if (applied.constraints.has(index))
+                    if (applied.constraints.has(aliases[index]))
                         continue;
                 }
 

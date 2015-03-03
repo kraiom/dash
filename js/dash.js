@@ -17,7 +17,10 @@
     
     @handlers: An object that can have the following attributes
     (all are callback functions):
-        - before_game: Triggered right before each turn
+        - before_game: Triggered right before each new panel
+        being called. Has two input parameters: @direction that is 
+        the raw arrow direction that should be displayed. @modifier
+        is an array of indexes for a specific style that must be applied.
 
         - after_game: Triggered when the game ends. Has one
         input parameter that is the final score.
@@ -36,6 +39,11 @@
         Has three input parameters: the key pressed (Number), the expected 
         sequence to be performed (Array) and the challenged in the
         current panel (Array).
+
+        - on_panel_retrieve: Triggered right after a panel is fully
+        retrieved. Has three input parameters: The raw arrow direction that
+        should be displayed; An array of indexes for the challenge being applied;
+        And what the expected value of key pressing is.
 
     And two optional attributes related to DashLevel:
 
@@ -117,7 +125,7 @@
         function stack_key (key) {
             if (key === undefined) {
                 sequence = [];
-                return;
+                return null;
             }
 
             sequence.push(key);
@@ -128,8 +136,10 @@
             if (expected_length === 0)
                 return sequence;
 
-            if (sequence_length > expected_length)
+            if (sequence_length > expected_length) {
                 sequence.shift();
+                return sequence;
+            }
 
             if (sequence_length === expected_length)
                 return sequence;
@@ -158,7 +168,7 @@
         }
 
         // The function that deals with losing lives
-        function wrong () {
+        _.wrong = function () {
             handlers.lost_life(lives - 1);
 
             Interface.toc();
@@ -173,7 +183,7 @@
         }
 
         // The function that deals with getting points
-        function correct () {
+        _.correct = function () {
             right++;
 
             handlers.got_point(right);
@@ -213,28 +223,60 @@
             evaluate(i + 37);
         }
 
-        // The unstack function which evaluates a key pressed
+        // The unstack function which evaluates a key pressed.
         function evaluate (key) {
-            if (!playing || paused || !allowed)
+            if (!playing)
                 return;
 
+            handlers.key_pressed(key, Level.expected.clone(), 
+                Level.challenges.clone());
+
+            if (paused || !allowed)
+                return false;
+
+            if (_.test(key) === true)
+                _.correct();
+
+            else if (_.test(key) === false)
+                _.wrong();
+        }
+
+        // Checks whether or not the game is paused
+        _.is_paused = function () {
+            return paused;
+        }
+
+        // An interface so that the user can emulate the interaction
+        // with the system by inputing a key (that will be normally)
+        // computed and compared to the expected value.
+        _.test = function (key) {
             key = adjust_key(key);
 
             if (key === -1)
-                return;
+                return null;
 
             var answer = stack_key(key);
 
-            handlers.key_pressed(key, Level.expected, Level.challenges);
-
             if (answer === null)
-                return;
+                return null;
 
-            if (!answer.compare(Level.expected))
-                wrong();
+            if (answer.compare(Level.expected))
+                return true;
 
             else
-                correct();
+                return false;          
+        }
+
+        // A function that pauses the whole game
+        _.pause = function () {
+            paused = true;
+            clearTimeout(timer);
+            Interface.toc();
+        }
+
+        // A function that resumes the whole game
+        _.resume = function () {
+            paused = false;
         }
 
         // The game function which places the tiles and is recursively called
@@ -242,12 +284,12 @@
             if (!playing || paused)
                 return;
 
-            handlers.before_game();
-
             Level.new_round();
             stack_key();
 
             allowed = false;
+
+            handlers.before_game(Level.raw, Level.challenges);
 
             Interface.retrieve(Level.raw, Level.challenges, function () {
                 Interface.tic(Level.press_time);
@@ -257,14 +299,19 @@
                 clearTimeout(timer);
                 timer = setTimeout(function () {
                     if (Level.missable) 
-                        return wrong();
+                        return _.wrong();
 
                     if (sequence.compare(Level.expected))
-                        correct();
+                        _.correct();
                     else
-                        wrong();
+                        _.wrong();
 
                 }, Level.press_time);
+
+                setTimeout(function () {
+                    handlers.on_panel_retrieve(Level.raw, Level.challenges.clone(), 
+                        Level.expected.clone());
+                }, 5);
             });
         }
 
@@ -312,13 +359,14 @@
             }
 
             window.addEventListener('focus', function () {
-                paused = false;
-                _.start();
+                // paused = false;
+                // _.start();
             });
 
             window.addEventListener('blur', function () {
-                paused = true;
-                clearTimeout(timer);
+                // Interface.dismiss();
+                // clearTimeout(timer);
+                // playing = false;
             });
 
             $('body').keydown(function (e) {

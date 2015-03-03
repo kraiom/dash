@@ -124,7 +124,7 @@ section {
 .score {
     z-index: 2002;
     display: none;
-    width: 2em;
+    width: 2.5em;
     height: 2em;
     font-size: 3em;
     color: #fff;
@@ -159,7 +159,7 @@ section {
     }
 
     .timer {
-        width: 1.8em;
+        width: 2.3em;
         height: 0.1em;
         box-sizing: border-box;
         margin: -0.2em 0.1em 0 0.1em;
@@ -174,18 +174,18 @@ section {
 
     .lives {
         height: 0.2em;
-        width: 2em;
+        width: 2.5em;
         margin-top: -1.9em;
         margin-left: 0.1em;
 
         div {
             float: left;
-            width: 0.5em;
+            width: 0.7em;
             height: 0.1em;
             background: #fff;
 
             &.middle {
-                margin: 0 0.15em;
+                margin: 0 0.1em;
             }
 
             &.lost {
@@ -207,6 +207,26 @@ h1 {
     font-weight: 400;
     font-size: 5em;
     display: inline-block;
+}
+
+.message {
+    display: none;
+    position: absolute;
+    padding: 5%;
+    width: 80%;
+    padding: 0.1em;
+    left: 0;
+    right: 0;
+    bottom: 2%;
+    margin: auto;
+    border: solid 1px #111;
+    z-index: 200;
+    background: @yellow;
+    overflow: auto;
+    padding: 1em;
+    line-height: 1em;
+    text-align: center;
+    z-index: 2002;
 }
 
 .info {
@@ -244,6 +264,10 @@ h1 {
 
     & > div {
         margin-bottom: 2em;
+    }
+
+    a {
+        width: auto;
     }
 
     .centering > div {
