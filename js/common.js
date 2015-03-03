@@ -142,7 +142,7 @@ function achievement () {
 function goDash () {
     var hiding = ROUNDS_TO_HIDE;
 
-    hiding += ~~(Math.random() * ROUNDS_TO_HIDE);
+    hiding += ~~(Math.random() * 20);
 
     game.prepare(challenges, konami ? konami_lives : 3, 
         BEST_SCORE, hiding);
