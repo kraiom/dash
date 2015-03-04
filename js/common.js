@@ -182,7 +182,9 @@ function goDash () {
 
 $(document).ready(function() {
 
-    $('#btn_howto').click(function() { $('#info').fadeIn(); });
+    $('#btn_howto').click(function() { $('#info').fadeIn('slow', function () {
+        $(this).css('overflow', 'auto');
+    }); });
     $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
     W = $(window).width();
@@ -358,7 +360,9 @@ $(document).ready(function() {
             //     }, function(response){});
             // });
 
-            end_game_view.fadeIn();
+            end_game_view.fadeIn('slow', function () {
+                $(this).css('overflow', 'auto');
+            });
 
             if (score > BEST_SCORE) {
                 $.cookie('best', score, { expires: 365 });
