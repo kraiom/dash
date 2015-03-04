@@ -138,16 +138,10 @@ function fetch (name, result) {
     var cookie = $.cookie(name);
     var local  = window.localStorage.getItem(name);
 
-    if (chrome && chrome.storage) {
-        chrome.storage.local.get(name, function(r) {
-            result = r.name;
-        });
-    } else {
-        if (!cookie && !local)
-            return null;
+    if (!cookie && !local)
+        return null;
 
-        return cookie || local;
-    }
+    return cookie || local;
 }
 
 
@@ -155,9 +149,6 @@ function fetch (name, result) {
 function store (name, value) {
     $.cookie(name, value, { expires: 365 });
     window.localStorage.setItem(name, value);
-
-    if (chrome && chrome.storage)
-        chrome.storage.local.set({name: value});
 }
 
 
