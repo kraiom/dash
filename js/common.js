@@ -109,55 +109,18 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
 
 // Toggles fullscreen
 function toggleFullScreen () {
-  if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-      document.documentElement.msRequestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-  }
+    chrome.app.window.current().fullscreen();
 }
 
 // Fetches object
-function fetch (name, result) {
-    var cookie = $.cookie(name);
-    var local  = window.localStorage.getItem(name);
-
-    if (chrome && chrome.storage) {
-        chrome.storage.local.get(name, function(r) {
-            result = r.name;
-        });
-    } else {
-        if (!cookie && !local)
-            return null;
-
-        return cookie || local;
-    }
+function fetch (name, callback) {
+    chrome.storage.local.get(name, callback);
 }
 
 
 // Stores object
 function store (name, value) {
-    $.cookie(name, value, { expires: 365 });
-    window.localStorage.setItem(name, value);
-
-    if (chrome && chrome.storage)
-        chrome.storage.local.set({name: value});
+    chrome.storage.local.set({name: value});
 }
 
 
@@ -216,47 +179,52 @@ $(document).ready(function() {
         window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
     });
 
-    if (fetch ('best') === null)
-        store ('best', 0);
+    fetch ('best', function (result) {
+        if (result['best'] === undefined) {
+            store ('best', 0);
+            result['best'] = 0;
+        }
 
-    if (fetch ('tutorial') === null)
-        store ('tutorial', challenges.length);
+        BEST_SCORE = result['best'];
+        best.html(BEST_SCORE);
+    });
 
-    BEST_SCORE = fetch ('best');
-    tutorial = parseInt(fetch('tutorial'));
+    fetch ('tutorial', function (result) {
+        if (result['tutorial'] === undefined) {
+            store ('tutorial', challenges.length);
+            result['tutorial'] = challenges.length;
+        }
 
-    if (tutorial !== 0) {
-        tutorial_btn.on.toggle();
-        tutorial_btn.off.toggle();
-    }
+        tutorial = result['tutorial'];
 
-    best.html(BEST_SCORE);
-
+        if (tutorial !== 0) {
+            tutorial_btn.on.toggle();
+            tutorial_btn.off.toggle();
+        }
+    });
+    
     tutorial_btn.on.click(function () {
-        tutorial = challenges.length;
-        $.cookie('tutorial', challenges.length, { expires: 365 });
-        window.localStorage.setItem('tutorial', challenges.length);
+        store ('tutorial', challenges.length);
         tutorial_btn.on.toggle();
         tutorial_btn.off.toggle();
     });
 
     tutorial_btn.off.click(function () {
         tutorial = 0;
-        $.cookie('tutorial', 0, { expires: 365 });
-        window.localStorage.setItem('tutorial', 0);
+        store ('tutorial', 0);
         tutorial_btn.on.toggle();
         tutorial_btn.off.toggle();
     });
 
-    $('#fb_share').click(function () {
-        FB.ui({
-            name: 'Dash',
-            method: 'share',
-            href: 'http://dash.breno.io/',
-            caption: 'How fast can you dash?',
-            app_id: '903632352992329'
-        }, function(response){});
-    });
+    // $('#fb_share').click(function () {
+    //     FB.ui({
+    //         name: 'Dash',
+    //         method: 'share',
+    //         href: 'http://dash.breno.io/',
+    //         caption: 'How fast can you dash?',
+    //         app_id: '903632352992329'
+    //     }, function(response){});
+    // });
 
     Interface = new DashGUI(
         {
@@ -315,8 +283,7 @@ $(document).ready(function() {
             }
 
             if (taught.push(challenge) === challenges.length) { 
-                $.cookie('tutorial', '0', { expires: 365 });
-                window.localStorage.setItem('tutorial', 0);
+                store ('tutorial', 0);
                 tutorial_btn.on.toggle();
                 tutorial_btn.off.toggle();
             }
@@ -334,19 +301,19 @@ $(document).ready(function() {
 
             shares.tw.attr('href', 'https://twitter.com/intent/tweet?text=' + text + '&url=' + SITE);
 
-            _gaq.push(['_setCustomVar',
-              1,                   // This custom var is set to slot #1.  Required parameter.
-              'Section',           // The top-level name for your online content categories.  Required parameter.
-              'Score',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
-              score                    // Sets the scope to page-level.  Optional parameter.
-           ]);
+           //  _gaq.push(['_setCustomVar',
+           //    1,                   // This custom var is set to slot #1.  Required parameter.
+           //    'Section',           // The top-level name for your online content categories.  Required parameter.
+           //    'Score',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+           //    score                    // Sets the scope to page-level.  Optional parameter.
+           // ]);
 
-            _gaq.push(['_setCustomVar',
-              2,                   // This custom var is set to slot #1.  Required parameter.
-              'Section',           // The top-level name for your online content categories.  Required parameter.
-              'Time',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
-              elapsed                    // Sets the scope to page-level.  Optional parameter.
-           ]);
+           //  _gaq.push(['_setCustomVar',
+           //    2,                   // This custom var is set to slot #1.  Required parameter.
+           //    'Section',           // The top-level name for your online content categories.  Required parameter.
+           //    'Time',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+           //    elapsed                    // Sets the scope to page-level.  Optional parameter.
+           // ]);
 
             // shares.fb.click(function () {
             //     FB.ui({
@@ -361,8 +328,7 @@ $(document).ready(function() {
             end_game_view.fadeIn();
 
             if (score > BEST_SCORE) {
-                $.cookie('best', score, { expires: 365 });
-                window.localStorage.setItem('best', score);
+                store ('best', score);
                 BEST_SCORE = score;
                 best.html(BEST_SCORE);
             }

@@ -12,6 +12,5 @@
   "permissions": [
     "storage"
   ],
-  "icons": { "16": "img/logo-16.png", "128": "img/logo-128.png" },
-  "content_security_policy": "script-src 'self' 'unsafe-inline'; object-src 'self'"
+  "icons": { "16": "img/logo-16.png", "128": "img/logo-128.png" }
 }

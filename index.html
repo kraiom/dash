@@ -12,39 +12,23 @@
     <meta property="fb:app_id" content="903632352992329"/>
     <meta property="og:description" content="How fast can you dash?">
 
+    <meta name="twitter:widgets:csp" content="on">
+
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <title>Dash</title>
 
     <link href="img/favicon.png" rel="icon" type="image/x-icon"/>
-    <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700|Josefin+Sans:100,400' rel='stylesheet' type='text/css'>
+    <link href="css/fonts.css" rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="css/css.css"/>
     <link rel="stylesheet" type="text/css" href="css/medias.css"/>
     <link rel="stylesheet" type="text/css" href="css/fontello.css"/>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
+    <script src="js/platform.js" async defer></script>
+    <script type="text/javascript" async src="js/widgets.js"></script>
 </head>
 <body>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '903632352992329',
-          xfbml      : true,
-          version    : 'v2.2'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
-
     <div class="wrapper">
         <h1>DASH</h1>
 
@@ -53,10 +37,10 @@
 
             <a class="main_btn" id="btn_play">Start game</a>
             <a class="main_btn" id="btn_howto">How to play</a>
-            <a class="main_btn" id="btn_full">Toggle fullscreen</a>
+            <a class="main_btn" id="btn_full">Go fullscreen</a>
             <!-- <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a> -->
 
-            <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
+            <a class="fb" href="https://www.facebook.com/the.dash.game" target="_blank"><i class="icon-facebook"></i></a>
 
             <a class="tw" href="https://twitter.com/intent/tweet?text=How%20fast%20can%20you%20dash%3F&url=http://dash.breno.io/"><i class="icon-twitter"></i></a>
 
@@ -118,18 +102,6 @@
                 <a id="tw_share_score"><i class="icon-twitter"></i> Share on Twitter</a>
                 <div class="clear"></div>
             </div> 
-
-            <script type="text/javascript">
-                google_ad_client = "ca-pub-3758610824903714";
-                google_ad_slot = "1970973182";
-                google_ad_width = 250;
-                google_ad_height = 250;
-            </script>
-            <!-- New small Dash -->
-            <script type="text/javascript"
-            src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-            </script>
-
         </div>
     </div>
 
@@ -197,7 +169,7 @@
     <div class="message" id="tutorial"></div>
 </body>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/jquery.animate-enhanced.min.js"></script>
 <script type="text/javascript" src="js/keypress-2.1.0.min.js"></script>
@@ -206,9 +178,9 @@
 <script type="text/javascript" src="js/dash-level.min.js"></script>
 <script type="text/javascript" src="js/dash-gui.min.js"></script>
 <script type="text/javascript" src="js/dash.min.js"></script>
-<script type="text/javascript" src="js/common.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-60178881-1']);
@@ -220,6 +192,6 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script>
+</script> -->
 
 </html>
