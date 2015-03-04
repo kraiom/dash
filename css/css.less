@@ -18,6 +18,10 @@
     padding: 0;
 }
 
+.show {
+    display: block !important;
+}
+
 .centering {
     text-align: center;
 }
@@ -34,6 +38,10 @@ body {
     font-family: 'Noto Sans', sans-serif;
     font-size: 1.1em;
     overflow: hidden;
+
+    &.automatic {
+        overflow: auto;
+    }
 }
 
 section {
@@ -65,6 +73,24 @@ section {
     }
 }
 
+table {
+    width: 100%;
+
+    td {
+        padding: 0.3em;
+    }
+
+    tr:nth-child(odd) {
+        background: lighten(#e3e337, 30%);
+    }
+}
+
+ul {
+    li {
+        list-style-position: inside;
+    }
+}
+
 .wrapper {
     width: 36em;
     height: 19.5em;
@@ -74,6 +100,33 @@ section {
     right: 0;
     bottom: 0;
     margin: auto;
+
+    &.full {
+        position: relative;
+        width: 65%;
+        font-size: 15px;
+        text-align: justify;
+
+        & > div {
+            margin-bottom: 0.5em;
+        }
+
+        a {
+            width: auto;
+            display: inline;
+            padding: 0;
+            text-align: left;
+            font-size: 1em;
+            letter-spacing: 0;
+            border: none;
+            color: #111;
+            text-decoration: underline;
+
+            &:hover {
+                background: none;
+            } 
+        }
+    }
 }
 
 .clear {
@@ -88,6 +141,7 @@ section {
 
     a {
         width: auto;
+        min-width: 10em;
         padding: 0.6em 1em;
     }
 }
@@ -96,9 +150,13 @@ section {
     float: left;
     display: inline-block;
     padding: 0 2.5em;
-    margin-top: -0.6em;
+    margin-top: -1.7em;
     width: 15em;
     height: 3em;
+
+    b {
+        display: block;
+    }
 
     div {
         display: block;
@@ -207,7 +265,46 @@ h1 {
     font-weight: 400;
     font-size: 5em;
     display: inline-block;
+
+    &.title {
+        float: none;
+        display: inline-block;
+        margin-bottom: 1em;
+    }
 }
+
+h2 {
+    text-transform: uppercase;
+    font-family: 'Josefin Sans', sans-serif;
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 1.5em;
+    position: relative;
+    margin-bottom: 1em;
+
+    &.tal {
+        text-align: left;
+    }
+
+    small {
+        font-size: 0.3em;
+        position: absolute;
+        left: 0;
+        bottom: -1.5em;
+        color: #555;
+    }
+}
+
+h4 {
+    text-transform: uppercase;
+    font-family: 'Josefin Sans', sans-serif;
+    text-align: left;
+    font-size: 1.5em;
+    position: relative;
+    margin: 1.5em 0 0.5em 0;    
+}
+
+
 
 .message {
     display: none;
@@ -243,7 +340,8 @@ h1 {
     border: solid 1px #111;
     z-index: 200;
     background: @yellow;
-    overflow: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
 
     &::-webkit-scrollbar {  
         width: 8px; 
@@ -279,6 +377,7 @@ h1 {
 
         a {
             margin-bottom: 0;
+            min-width: 15em;
 
             i {
                 display: inline-block;
@@ -297,14 +396,6 @@ h1 {
         min-width: 2em;
         min-height: 2em;
         line-height: 2em;
-    }
-
-    h2 {
-        text-transform: uppercase;
-        font-family: 'Josefin Sans', sans-serif;
-        text-align: center;
-        font-size: 3em;
-        margin-bottom: 1.5em;
     }
 
     h3 {
