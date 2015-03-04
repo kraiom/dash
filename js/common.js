@@ -106,6 +106,8 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
     setTimeout(function () { msg.fadeOut(); }, 1500);
 });
 
+
+// Toggles fullscreen
 function toggleFullScreen () {
   if (!document.fullscreenElement &&    // alternative standard method
       !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
@@ -130,6 +132,34 @@ function toggleFullScreen () {
     }
   }
 }
+
+// Fetches object
+function fetch (name, result) {
+    var cookie = $.cookie(name);
+    var local  = window.localStorage.getItem(name);
+
+    if (chrome && chrome.storage) {
+        chrome.storage.local.get(name, function(r) {
+            result = r.name;
+        });
+    } else {
+        if (!cookie && !local)
+            return null;
+
+        return cookie || local;
+    }
+}
+
+
+// Stores object
+function store (name, value) {
+    $.cookie(name, value, { expires: 365 });
+    window.localStorage.setItem(name, value);
+
+    if (chrome && chrome.storage)
+        chrome.storage.local.set({name: value});
+}
+
 
 // Achievement popup
 function achievement () {
@@ -186,22 +216,14 @@ $(document).ready(function() {
         window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
     });
 
-    if ($.cookie('best') === undefined)
-        $.cookie('best', '0', { expires: 365 });
+    if (fetch ('best') === null)
+        store ('best', 0);
 
-    if (window.localStorage.getItem('best') === null)
-        window.localStorage.setItem('best', 0);
+    if (fetch ('tutorial') === null)
+        store ('tutorial', challenges.length);
 
-    if ($.cookie('tutorial') === undefined)
-        $.cookie('tutorial', challenges.length, { expires: 365 });
-
-    if (window.localStorage.getItem('tutorial') === null)
-        window.localStorage.setItem('tutorial', challenges.length);
-
-    BEST_SCORE = $.cookie('best') || window.localStorage.getItem('best');
-    tutorial = $.cookie('tutorial') || window.localStorage.getItem('tutorial');
-
-    tutorial = parseInt(tutorial);
+    BEST_SCORE = fetch ('best');
+    tutorial = parseInt(fetch('tutorial'));
 
     if (tutorial !== 0) {
         tutorial_btn.on.toggle();
