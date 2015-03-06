@@ -378,7 +378,9 @@ $(document).ready(function() {
             if (game.test(key)) {
                 tutorial--;
                 game.resume();
-                message.fadeOut('fast');
+                setTimeout(function () {
+                    message.fadeOut('slow');
+                }, 1000);
                 game.correct();
             }
         }

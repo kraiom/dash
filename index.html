@@ -35,14 +35,14 @@
           version    : 'v2.2'
         });
 
-        function onLogin(response) {
-          if (response.status == 'connected') {
-            FB.api('/me?fields=first_name', function(data) {
-              var welcomeBlock = document.getElementById('fb-welcome');
-              welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
-            });
-          }
-        }
+        // function onLogin(response) {
+        //   if (response.status == 'connected') {
+        //     FB.api('/me?fields=first_name', function(data) {
+        //       var welcomeBlock = document.getElementById('fb-welcome');
+        //       welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
+        //     });
+        //   }
+        // }
 
         // FB.getLoginStatus(function(response) {
         //   // Check login status on load, and if the user is
@@ -170,7 +170,7 @@
             <a id="tutorial_off" style="display: none;">Disable in-game tutorial</a>
         </div>
 
-        <div>The rule is simple: send the panel to the correct direction, if you can! In DASH you must press the arrow accordingly to what is being shown within the remaining time and the number of lives. You have 3 lives, a timer that will be each round tighter and that will eventually vanish!</div>
+        <div>The rule is simple: send the panel to the correct direction, if you can! In DASH you must press the arrow accordingly to what is being shown within the remaining time and the number of lives. You've got three lives, and each round is faster than the last!</div>
 
         <div>Too easy? There are also some things you must pay attention to in order to dash!</div>
 
@@ -233,7 +233,7 @@
 <script type="text/javascript" src="js/dash-level.min.js"></script>
 <script type="text/javascript" src="js/dash-gui.min.js"></script>
 <script type="text/javascript" src="js/dash.min.js"></script>
-<script type="text/javascript" src="js/common.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
 
 <script type="text/javascript">
 
