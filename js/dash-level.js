@@ -40,7 +40,7 @@
 
         - alias: a nickname for the challenge, used if
         you want to provide nicknames for the "constraints"
-        instead of indexes. 
+        instead of indexes.
 
     @times: A object with the following attributes:
       press_time: The time the player has to press
@@ -121,6 +121,9 @@
                 challenges[i] = null;
                 continue;
             }
+
+            if (current.missable === undefined)
+                current.missable = true;
 
             if (current.first_turn === undefined)
                 current.first_turn = true;
@@ -270,13 +273,11 @@
             var reload = false;
             var current, index;
 
+            var computed = null;
+
             while (true) {
                 index = rand(CONFIGURATIONS);
                 current = challenges[index];
-
-                // Does not allow repetition of non-missables
-                if (last.missable === false && current.missable === false)
-                    continue;
 
                 // This is the very first turn and the challenge
                 // cannot happen in the first turn
@@ -296,12 +297,17 @@
                         continue;
                 }
 
+                // Gets the next computed challenge
+                computed = current.morph(tentative, last);
+
+                // Does not allow repetition of non-missables
+                if (last.missable === false && computed.missable === false)
+                    continue;
+
                 break;
             }
 
             tentative.challenges.push(index);
-
-            var computed = current.morph(tentative, last);
 
             if (computed.missable === undefined)
                 computed.missable = true;

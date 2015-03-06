@@ -38,7 +38,7 @@ var challenges = [
     {   
         alias: 'reverse',
         constraints: ['pressed', 'previous'],
-        rounds: 30,
+        rounds: 60,
 
         morph: function (tentative, last) {
             var length = tentative.expected.length;
@@ -71,7 +71,7 @@ var challenges = [
         alias: 'previous',
         first_turn: false,
         constraints: ['reverse', 'double', 'pressed'],
-        rounds: 50,
+        rounds: 70,
 
         morph: function (tentative, last) {
             return {
