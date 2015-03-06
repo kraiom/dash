@@ -169,6 +169,8 @@
 
         // The function that deals with losing lives
         _.wrong = function () {
+            Level.toc();
+
             handlers.lost_life(lives - 1);
 
             Interface.toc();
@@ -184,6 +186,8 @@
 
         // The function that deals with getting points
         _.correct = function () {
+            Level.toc();
+
             right++;
 
             handlers.got_point(right);
@@ -289,15 +293,25 @@
 
             allowed = false;
 
-            handlers.before_game(Level.raw, Level.challenges);
+            handlers.before_game(Level.direction, Level.challenges);
 
-            Interface.retrieve(Level.raw, Level.challenges, function () {
+            var drop_time = Interface.get_drop_time();
+            drop_time = Level.apply_ratio(drop_time, 0.9999, Interface.MIN_DROP_TIME);
+            drop_time += 2 + (1 - Level.get_ratio()) * 4;
+
+            Interface.set_drop_time(Math.round(drop_time));
+
+            Interface.retrieve(Level.direction, Level.challenges, function () {
                 Interface.tic(Level.press_time);
 
                 allowed = true;
 
+                Level.tic();
+
                 clearTimeout(timer);
                 timer = setTimeout(function () {
+                    Level.toc();
+
                     if (Level.missable) 
                         return _.wrong();
 
@@ -309,8 +323,8 @@
                 }, Level.press_time);
 
                 setTimeout(function () {
-                    handlers.on_panel_retrieve(Level.raw, Level.challenges.clone(), 
-                        Level.expected.clone());
+                    handlers.on_panel_retrieve(Level.direction, 
+                        Level.challenges.clone(), Level.expected.clone());
                 }, 5);
             });
         }

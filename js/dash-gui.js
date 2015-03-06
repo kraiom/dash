@@ -75,12 +75,18 @@ var DIRECTIONS = 4;
 ;(function (w) {
     'use strict';
 
-    w.DashGUI = function (elements, defaults, specifics, drop_time) {
+    w.DashGUI = function (elements, defaults, specifics) {
         // The self handler
         var _ = this;
 
+        // Default drop time
+        _.DROP_TIME = 700;
+
+        // Default minimum drop time
+        _.MIN_DROP_TIME = 300;
+
         // Default value for drop_time
-        drop_time = drop_time ? drop_time : 700;
+        var drop_time = _.DROP_TIME;
 
         // A variable that does not allow color repetition
         var queue = [];
@@ -302,6 +308,16 @@ var DIRECTIONS = 4;
             _.toc();
             elements.score.timer.parent().fadeOut();
         }
+
+        // Return drop_time
+        _.get_drop_time = function () {
+            return drop_time;
+        }
+
+        // Sets drop_time
+        _.set_drop_time = function (time) {
+            drop_time = time;
+        }    
     }
 
 }) (window);

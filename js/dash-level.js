@@ -70,6 +70,8 @@
         - expected: an array defining the expected sequence
         of keys in [0, 3].
 
+        - direction: the raw direction that the class generated.
+
     @last is an object with the following attributes:
         - expected: the last array defining the expected 
         sequence of keys in [0, 3].
@@ -77,6 +79,9 @@
         - missable: the last boolean that defines whether 
         or not the challenge is not satisfied if the
         player runs out of time.
+
+        - direction: the last raw direction that the
+        class generated.
 
     Both @tentative and @last are read-only objects. DO
     NOT change ANY of their contents, it will make the
@@ -111,7 +116,10 @@
 
         // The minimum velocity that the player
         // will ever have to dismiss a panel
-        var MINIMUM_VELOCITY = sec2ms(0.7);
+        var MINIMUM_VELOCITY = sec2ms(0.5);
+
+        // The time the user used to press the key
+        var timer = 0;
 
         // Applying defaults for challenges
         for (var i = 0; i < CONFIGURATIONS; i++) {
@@ -199,13 +207,13 @@
         _.expected = null;
 
         // The last expected action
-        var last = {expected: null, missable: null};
+        var last = {expected: null, missable: null, direction: null};
 
         // The combination of challenges computed
         _.challenges = null;
 
         // The raw direction computed
-        _.raw = null;
+        _.direction = null;
 
         // The press time
         _.press_time = times.press_time;
@@ -217,6 +225,9 @@
 
         // The number of rounds elapsed
         var rounds = -1;
+
+        // The ratio of difficulty based on user's speed
+        var ratio = 0.5;
 
         // The challenged that can currently be applied
         _.allowed = [];
@@ -250,10 +261,9 @@
             var tentative = {
                 expected: [direction],
                 challenges: [],
-                missable: true
+                missable: true,
+                direction: direction
             }
-
-            _.raw = direction;
 
             for (var i = 0; i < overlaid_challenges; i++)
                 tentative = salt (tentative);
@@ -262,7 +272,13 @@
             _.challenges = tentative.challenges;
             _.missable = tentative.missable;
 
-            last = {expected: _.expected, missable: _.missable};
+            last = {
+                expected: _.expected, 
+                missable: _.missable,
+                direction: tentative.direction
+            };
+
+            _.direction = tentative.direction;
         }
 
         // Add a challenge to the computed expected array
@@ -312,10 +328,14 @@
             if (computed.missable === undefined)
                 computed.missable = true;
 
+            if (computed.direction === undefined)
+                computed.direction = tentative.direction;
+
             return {
                 expected: computed.expected,
                 challenges: tentative.challenges,
-                missable: computed.missable
+                missable: computed.missable,
+                direction: computed.direction
             };
         }
 
@@ -327,9 +347,8 @@
             update_allowed_challenges();
 
             compute_expected();
-
-            _.press_time -= times.step;
-            _.press_time = Math.max(_.press_time, times.minimun_velocity); 
+            _.press_time = _.apply_ratio(_.press_time, 1, 
+                times.minimun_velocity);
         }
 
         // Returns _.rounds
@@ -337,6 +356,31 @@
             return rounds;
         }
 
+        // Starts counter
+        _.tic = function () {
+            timer = (new Date()).getTime();
+        }
+
+        // Stops counter and update ratio
+        _.toc = function () {
+            var toc = (new Date()).getTime();
+            var difference = toc - timer;
+            ratio = (_.press_time - difference) / _.press_time;
+        }
+
+        // Gets the difficulty ration
+        _.get_ratio = function () {
+            return ratio;
+        }
+
+        // Returns the difficulty ratio to a given variable 
+        // in a given threshold
+        _.apply_ratio = function (value, threshold, minimum) {
+            value -= times.step * ratio;
+            value -= times.step * 0.5;
+            value = Math.max(value, minimum); 
+            return Math.round(value / threshold);
+        }
     }
 
 }) (window);

@@ -12,7 +12,7 @@ var best = 0, BEST_SCORE = 0;
 var tic = 0;
 var shares = {fb: null, tw: null};
 var times = {
-    press_time: 1500,
+    press_time: 2000,
     step: 5
 };
 var konami_lives = 42;
@@ -76,7 +76,8 @@ var challenges = [
         morph: function (tentative, last) {
             return {
                 expected: last.expected,
-                missable: last.missable
+                missable: last.missable,
+                direction: last.direction
             };
         },
 
