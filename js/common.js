@@ -266,7 +266,8 @@ $(document).ready(function() {
             wrong_icon: 'icon-cancel',
             life_lost: '+lost',
             correct_icon: '+correct',
-            replace_array: ['left', 'up', 'right', 'down']
+            replace_array: ['left', 'up', 'right', 'down'],
+            timer_color: 'bg-*'
         }, 
         {
             1 : {

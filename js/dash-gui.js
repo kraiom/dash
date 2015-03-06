@@ -213,6 +213,8 @@ var DIRECTIONS = 4;
                 }
             }
 
+            shape(elements.score.timer, defaults.timer_color, preset);
+
             var die = ~~(Math.random() * DIRECTIONS);
             var pos = positions[die];
 
@@ -223,6 +225,7 @@ var DIRECTIONS = 4;
         // The function that resets all data to start over
         _.prepare = function () {
             elements.score.main.css('z-index', 2 * (zIndex + 1));
+            elements.score.timer.css('z-index', 2 * (zIndex + 1));
 
             elements.score.timer.parent().fadeIn();
             elements.score.points.html(0);
@@ -247,6 +250,7 @@ var DIRECTIONS = 4;
                 elements.panels[i].fadeOut();
 
             elements.score.main.fadeOut();
+            elements.score.timer.parent().fadeOut();
         }
 
         // Changes panel when the user gets wrong
@@ -269,12 +273,12 @@ var DIRECTIONS = 4;
         // Starts the timer
         _.tic = function (time) {
             if (elements.score.timer.parent().css('display') === 'block')
-                elements.score.timer.css('width', 0).animate({width: '100%'}, time);
+                elements.score.timer.animate({width: '100%'}, time);
         }
 
         // Stops the timer
         _.toc = function () {
-            elements.score.timer.stop();
+            elements.score.timer.stop().css('width', 0);
         }
 
         // Hides the timer from gameplay

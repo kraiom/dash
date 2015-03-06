@@ -185,6 +185,34 @@ ul {
     }
 }
 
+.timer {
+    position: absolute;
+    z-index: 2002;
+    display: none;
+
+    box-shadow: 0 1px 2px #333;
+
+    background: rgba(255, 255, 255, 0.5);
+
+    left: 0;
+    right: 0;
+    bottom: 1em;
+    width: 80%;
+    margin: auto;
+
+    height: 1.5em;
+    box-sizing: border-box;
+    border-radius: 0.5em;
+
+    & > div {
+        background: #fff;
+        width: 50%;
+        height: 100%;
+        border-radius: 0.5em;
+        box-shadow: 0 1px 4px #333;
+    }
+}
+
 .score {
     z-index: 2002;
     display: none;
@@ -219,33 +247,19 @@ ul {
     .counter {
         width: 100%;
         text-align: center;
-        line-height: 2em;
-    }
-
-    .timer {
-        width: 2.3em;
-        height: 0.1em;
-        box-sizing: border-box;
-        margin: -0.2em 0.1em 0 0.1em;
-        background: #333;
-
-        .fill {
-            background: #fff;
-            width: 50%;
-            height: 100%;
-        }
+        line-height: 2.4em;
     }
 
     .lives {
-        height: 0.2em;
+        height: 0.5em;
         width: 2.5em;
-        margin-top: -1.9em;
+        margin-top: -2.3em;
         margin-left: 0.1em;
 
         div {
             float: left;
             width: 0.7em;
-            height: 0.1em;
+            height: 0.2em;
             background: #fff;
 
             &.middle {
@@ -495,11 +509,16 @@ a {
     @number: replace(@color, '[^\d]+', '');
 
     @color_only: e('font-@{number}');
+    @bg_only: e('bg-@{number}');
     @preset: e('preset-@{number}');
     @reverse: e('reverse-@{number}');
 
     .@{color_only} {
         color: darken(@@color, 20%) !important;
+    }
+
+    .@{bg_only} {
+        background: darken(@@color, 20%) !important;
     }
 
     .@{preset} {
