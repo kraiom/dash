@@ -359,14 +359,16 @@
             }
 
             window.addEventListener('focus', function () {
-                // paused = false;
-                // _.start();
+                _.resume();
+                _.start();
+                var text = $('title').html();
+                $('title').html(text.replace(' - Paused', ''));
             });
 
             window.addEventListener('blur', function () {
-                // Interface.dismiss();
-                // clearTimeout(timer);
-                // playing = false;
+                _.pause();
+                var text = $('title').html();
+                $('title').html(text + ' - Paused');
             });
 
             $('body').keydown(function (e) {

@@ -349,6 +349,21 @@ h4 {
     overflow-y: scroll;
     overflow-x: hidden;
 
+    .dismiss {
+        position: fixed;
+        margin-top: -4%;
+        margin-left: -4%;
+        z-index: 1000;
+        
+        a {
+            background: @yellow;
+
+            &:hover {
+                background: #111;
+            }
+        }    
+    }
+
     &::-webkit-scrollbar {  
         width: 8px; 
         border-radius: 10px;
@@ -404,23 +419,16 @@ h4 {
         line-height: 2em;
     }
 
+    h2 {
+        margin-top: 1em;
+    }
+
     h3 {
         margin-bottom: 1em;
     }
 
     .block div {
         padding-top: 5%;
-    }
-
-    span {
-        position: absolute;
-        font-size: 5em;
-        display: block;
-        height: 1em;
-        line-height: 0em;
-        top: 5%;
-        left: 2%;
-        cursor: pointer;
     }
 
     img {
