@@ -246,6 +246,8 @@ var DIRECTIONS = 4;
                 {x: '0', y: H + 'px'}
             ];
 
+            last_raw = -1;
+
             elements.score.main.css('z-index', 2 * (zIndex + 1));
             elements.score.timer.css('z-index', 2 * (zIndex + 1));
 
