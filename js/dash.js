@@ -359,16 +359,16 @@
             }
 
             window.addEventListener('focus', function () {
-                _.resume();
-                _.start();
-                var text = $('title').html();
-                $('title').html(text.replace(' - Paused', ''));
+                // _.resume();
+                // _.start();
+                // var text = $('title').html();
+                // $('title').html(text.replace(' - Paused', ''));
             });
 
             window.addEventListener('blur', function () {
-                _.pause();
-                var text = $('title').html();
-                $('title').html(text + ' - Paused');
+                // _.pause();
+                // var text = $('title').html();
+                // $('title').html(text + ' - Paused');
             });
 
             $('body').keydown(function (e) {

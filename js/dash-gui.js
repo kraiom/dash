@@ -44,6 +44,9 @@
         - life_lost: The class that the life icon should have once the
         player got it wrong. 
 
+        - timer_color: The class the timer gauge should have once a panel
+        has changed.
+
         Any class selector used will be first interpreted regarding the
         following wild cards: 
             - If it starts with a "+", then the class will be added, 
@@ -94,16 +97,14 @@ var DIRECTIONS = 4;
         // The z-index base
         var zIndex = 0;
 
+        // The last raw direction computed
+        var last_raw = -1;
+
         if (defaults.base_index !== undefined)
             zIndex = defaults.base_index;
 
         // Direction animations
-        var positions = [
-            {x: '100%', y: '0'},
-            {x: '0', y: '100%'},
-            {x: '-100%', y: '0'},
-            {x: '0', y: '-100%'}
-        ];
+        var positions;
 
         // Converts strings into jQuery selectors
         for (var i = 0; i < elements.panels.length; i++)
@@ -186,19 +187,16 @@ var DIRECTIONS = 4;
             _.direction = direction;
 
             var preset = get_preset();
-
+            var length = modifier.length;
+            var panel = elements.panels;
             var next = mod(current + 1, N_PANELS);
 
-            elements.panels[current].css('z-index', zIndex);
-            elements.panels[next].css('z-index', zIndex + 1);
+            panel[next].css('z-index', zIndex);
+            panel[current].css('z-index', zIndex + 1);
 
-            current = next;
+            var arrow = elements.icons[next];
 
-            var length = modifier.length;
-            var panel = elements.panels[current];
-            var arrow = elements.icons[current];
-
-            shape(panel, defaults.panel, preset);
+            shape(panel[next], defaults.panel, preset);
             shape(arrow, defaults.icon, direction);
     
             for (var i = 0; i < length; i++) {
@@ -206,7 +204,7 @@ var DIRECTIONS = 4;
                     var style = specifics[modifier[i]];
 
                     if (style.panel)
-                        shape(panel, style.panel, preset);
+                        shape(panel[next], style.panel, preset);
 
                     if (style.icon)
                         shape(arrow, style.icon, direction);
@@ -215,15 +213,33 @@ var DIRECTIONS = 4;
 
             shape(elements.score.timer, defaults.timer_color, preset);
 
-            var die = ~~(Math.random() * DIRECTIONS);
-            var pos = positions[die];
+            if (last_raw === -1) {
+                var die = ~~(Math.random() * DIRECTIONS);
+                var pos = positions[die];
+                panel[next].css({left: pos.x, top: pos.y});
+                panel[next].animate({left: 0, top: 0}, drop_time, callback);
+            } else {
+                var pos = positions[last_raw];
+                panel[next].css({left: 0, top: 0});
+                panel[current].animate({left: pos.x, top: pos.y}, drop_time, callback);
+            }
 
-            panel.css({left: pos.x, top: pos.y});
-            panel.animate({left: 0, top: 0}, drop_time, callback);
+            last_raw = direction;
+            current = next;
         }
 
         // The function that resets all data to start over
         _.prepare = function () {
+            var W = $(window).width() + 10;
+            var H = $(window).height() + 10;
+
+            positions = [
+                {x: '-' + W + 'px', y: '0'},
+                {x: '0', y:  '-' + H + 'px'},
+                {x:  W + 'px', y: '0'},
+                {x: '0', y: H + 'px'}
+            ];
+
             elements.score.main.css('z-index', 2 * (zIndex + 1));
             elements.score.timer.css('z-index', 2 * (zIndex + 1));
 
