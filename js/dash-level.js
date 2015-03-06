@@ -274,6 +274,10 @@
                 index = rand(CONFIGURATIONS);
                 current = challenges[index];
 
+                // Does not allow repetition of non-missables
+                if (last.missable === false && current.missable === false)
+                    continue;
+
                 // This is the very first turn and the challenge
                 // cannot happen in the first turn
                 if (rounds === 0 && !current.first_turn)
