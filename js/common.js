@@ -16,7 +16,7 @@ var times = {
     step: 5
 };
 var konami_lives = 42;
-var ROUNDS_TO_HIDE = 120;
+var ROUNDS_TO_HIDE = -1;
 var tutorial = 1, message = null;
 var tutorial_btn = {on: null, off: null};
 
