@@ -167,7 +167,7 @@ function goDash () {
     hiding += ~~(Math.random() * 20);
 
     game.prepare(challenges, konami ? konami_lives : 3, 
-        BEST_SCORE, hiding);
+        BEST_SCORE, -1);
     tic = (new Date()).getTime();
     game.start();   
 }
