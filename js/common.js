@@ -108,6 +108,11 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
 });
 
 
+listener.sequence_combo('esc', function() {
+    if (game.is_playing())
+        game.end();
+});
+
 // Toggles fullscreen
 function toggleFullScreen () {
   if (!document.fullscreenElement &&    // alternative standard method

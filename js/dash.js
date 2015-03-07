@@ -210,10 +210,16 @@
         // The game over handler
         function game_over () {
             Interface.dismiss();
+            Interface.toc();
             clearTimeout(timer);
             playing = false;
 
             handlers.after_game(right);
+        }
+
+        // Calls game over
+        _.end = function () {
+            game_over();
         }
 
         // Evaluate the keycode related to the pan
@@ -373,16 +379,16 @@
             }
 
             window.addEventListener('focus', function () {
-                // _.resume();
-                // _.start();
-                // var text = $('title').html();
-                // $('title').html(text.replace(' - Paused', ''));
+                _.resume();
+                _.start();
+                var text = $('title').html();
+                $('title').html(text.replace(' - Paused', ''));
             });
 
             window.addEventListener('blur', function () {
-                // _.pause();
-                // var text = $('title').html();
-                // $('title').html(text + ' - Paused');
+                _.pause();
+                var text = $('title').html();
+                $('title').html(text + ' - Paused');
             });
 
             $('body').keydown(function (e) {
@@ -422,6 +428,11 @@
             }
 
             return _;
+        }
+
+        // Returns playing
+        _.is_playing = function () {
+            return playing;
         }
     }
 }) (window);
