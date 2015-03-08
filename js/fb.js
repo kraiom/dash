@@ -102,7 +102,6 @@ window.fbAsyncInit = function() {
       onLogin(response);
       $('#loading').toggle(true);
       $('#btn_login').toggle(false);
-      fb_update_leaderboard();
     }, {scope: 'user_friends, email, publish_actions'});
   }
 
