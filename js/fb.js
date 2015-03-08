@@ -91,8 +91,6 @@ window.fbAsyncInit = function() {
             }
           }
       );
-
-      fb_update_leaderboard();
     }
   }
 
