@@ -29,7 +29,7 @@ window.fbAsyncInit = function() {
 
       $('#loading').toggle(true);
 
-      var ranking = $('#ranking').empty();
+      var ranking = $('#ranking').empty().empty();
 
       FB.api(
           "/app/scores?fields=score,user.limit(40)",
@@ -91,6 +91,8 @@ window.fbAsyncInit = function() {
             }
           }
       );
+
+      fb_update_leaderboard();
     }
   }
 
