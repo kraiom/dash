@@ -27,18 +27,25 @@ window.fbAsyncInit = function() {
       if (window.FB_LOGGED !== true)
         return;
 
+      var ranking = $('#ranking').empty();
+
       FB.api(
           "/app/scores?fields=score,user.limit(40)",
           function (response) {
-            $('#loading').hide();
+            $('#loading').toggle(false);
 
             if (response && !response.error) {
               response = response.data;
               var length = response.length;
-              var ranking = $('#ranking').empty();
 
               if (length === 0)
-                $('#error_msg').toggle();
+                $('#error_msg').toggle(true);
+
+              if (length === 1)
+                $('#app_permissions_alert').toggle(true);
+
+              $('#error_msg').toggle(false);
+              $('#app_permissions_alert').toggle(false);
 
               for (var i = 0; i < length; i++) {
                 ranking.append(
@@ -93,8 +100,8 @@ window.fbAsyncInit = function() {
     FB.login(function(response) {
       window.FB_LOGGED = true;
       onLogin(response);
-      $('#loading').toggle();
-      $('#btn_login').toggle();
+      $('#loading').toggle(true);
+      $('#btn_login').toggle(false);
       fb_update_leaderboard();
     }, {scope: 'user_friends, email, publish_actions'});
   }
@@ -102,15 +109,15 @@ window.fbAsyncInit = function() {
   FB.getLoginStatus(function(response) {
     // Check login status on load, and if the user is
     // already logged in, go directly to the welcome message.
-    $('#error_msg').toggle();
+    $('#error_msg').toggle(false);
 
     if (response.status == 'connected') {
       window.FB_LOGGED = true;
       onLogin(response);
-      $('#loading').toggle();
+      $('#loading').toggle(true);
       fb_update_leaderboard();
     } else
-      $('#btn_login').toggle();
+      $('#btn_login').toggle(true);
   });
 };
 

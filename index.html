@@ -201,6 +201,10 @@
 
         <h2>Leaderboard</h2>
 
+        <div id="app_permissions_alert" style="display: none;">
+            <small>Have you enabled posting permission for the App? If you didn't you will not be able to see your friends scores. Learn more reading about Facebook integration in the <a href="policy.html#facebook" target="_blank">privacy policy</a>.</small>
+        </div>
+
         <div class="centering" id="error_msg">
             Ranking not available yet!
         </div>
@@ -209,8 +213,8 @@
             <a id="btn_login" style="display: none;">Login with Facebook</a>
         </div>
 
-        <div class="centering">
-            <img src="img/load.gif" alt="loading" id="loading" style="border: none; display: none;"/>
+        <div class="centering" id="loading" style="display: none;">
+            <img src="img/load.gif" alt="loading" style="border: none;"/>
         </div>
 
         <table id="ranking">
