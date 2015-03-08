@@ -188,7 +188,6 @@ $(document).ready(function() {
     $('#btn_full').click(toggleFullScreen);
 
     $('#btn_leader').click(function() { 
-        $('#loading').toggle(true);
         fb_update_leaderboard();
 
         $('#leaderboards').fadeIn('slow', function () {

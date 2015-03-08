@@ -27,6 +27,8 @@ window.fbAsyncInit = function() {
       if (window.FB_LOGGED !== true)
         return;
 
+      $('#loading').toggle(true);
+
       var ranking = $('#ranking').empty();
 
       FB.api(
@@ -84,7 +86,7 @@ window.fbAsyncInit = function() {
                 BEST_SCORE = fb_score;
                 best.html(BEST_SCORE);
                 store('best', BEST_SCORE);
-                
+
                 fb_update_score (BEST_SCORE);
             }
           }
