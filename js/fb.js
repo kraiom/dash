@@ -51,7 +51,7 @@ window.fbAsyncInit = function() {
                 ranking.append(
                   '<tr>' + 
                     '<td>' + (i + 1) + '.</td>' +
-                    '<td><img src="http://graph.facebook.com/' + response[i].user.id + 
+                    '<td><img src="https://graph.facebook.com/' + response[i].user.id + 
                     '/picture?type=square" alt="' + response[i].user.name + '"/></td>' +
                     '<td>' + response[i].user.name + '</td>' +
                     '<td style="text-align: center;">' + response[i].score + '</td>' +
