@@ -109,8 +109,10 @@ listener.sequence_combo('up up down down left right left right b a enter', funct
 
 
 listener.sequence_combo('esc', function() {
-    if (game.is_playing())
+    if (game.is_playing()) {
         game.end();
+        message.fadeOut('fast');
+    }
 });
 
 // Toggles fullscreen
@@ -244,28 +246,16 @@ $(document).ready(function() {
 
     tutorial_btn.on.click(function () {
         tutorial = challenges.length;
-        $.cookie('tutorial', challenges.length, { expires: 365 });
-        window.localStorage.setItem('tutorial', challenges.length);
+        store('tutorial', tutorial);
         tutorial_btn.on.toggle();
         tutorial_btn.off.toggle();
     });
 
     tutorial_btn.off.click(function () {
         tutorial = 0;
-        $.cookie('tutorial', 0, { expires: 365 });
-        window.localStorage.setItem('tutorial', 0);
+        store('tutorial', tutorial);
         tutorial_btn.on.toggle();
         tutorial_btn.off.toggle();
-    });
-
-    $('#fb_share').click(function () {
-        FB.ui({
-            name: 'Dash',
-            method: 'share',
-            href: 'http://dash.breno.io/',
-            caption: 'How fast can you dash?',
-            app_id: '903632352992329'
-        }, function(response){});
     });
 
     Interface = new DashGUI(
