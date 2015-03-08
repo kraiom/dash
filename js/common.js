@@ -221,12 +221,12 @@ $(document).ready(function() {
         off: $('#tutorial_off')
     }
 
-    $('.gp').click(function () {
-        var left = ~~((W - 600) / 2);
-        var top = ~~((H - 600) / 2);
+    // $('.gp').click(function () {
+    //     var left = ~~((W - 600) / 2);
+    //     var top = ~~((H - 600) / 2);
 
-        window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
-    });
+    //     window.open('https://plus.google.com/share?url=' + SITE, 'Dash', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600,left=' + left + ',top=' + top);
+    // });
 
     if (fetch ('best') === null)
         store ('best', 0);

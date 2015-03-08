@@ -67,11 +67,13 @@ window.fbAsyncInit = function() {
           "/me/scores",
           function (response) {
             if (response && !response.error) {
+              var fb_score = 0;
 
-              if (response.data[0] !== undefined && response.data[0].score !== undefined)
-                var fb_score = response.data[0].score;
-              else
-                var fb_score = 0;
+              if (response.data !== undefined &&
+                response.data[0] !== undefined && 
+                response.data[0].score !== undefined)
+                fb_score = response.data[0].score;
+                
 
               if (fb_score > BEST_SCORE) {
                 BEST_SCORE = fb_score;
