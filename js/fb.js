@@ -81,12 +81,10 @@ window.fbAsyncInit = function() {
                 response.data[0].score !== undefined)
                 fb_score = response.data[0].score;
                 
-
-              if (fb_score > BEST_SCORE) {
                 BEST_SCORE = fb_score;
                 best.html(BEST_SCORE);
                 store('best', BEST_SCORE);
-              } else if (fb_score < BEST_SCORE)
+                
                 fb_update_score (BEST_SCORE);
             }
           }
