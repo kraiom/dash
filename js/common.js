@@ -182,6 +182,17 @@ $(document).ready(function() {
     $('#btn_howto').click(function() { $('#info').fadeIn('slow', function () {
         $(this).css('overflow', 'auto');
     }); });
+
+    $('#btn_leader').click(function() { 
+        fb_update_leaderboard();
+
+        $('#leaderboards').fadeIn('slow', function () {
+            $(this).css('overflow', 'auto');
+        });
+    });
+
+    $('#btn_login').click(function() { fb_login(); });   
+
     $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
     W = $(window).width();
@@ -201,12 +212,12 @@ $(document).ready(function() {
 
     message = $('#tutorial');
 
+    $('#btn_leader').click
+
     tutorial_btn = {
         on: $('#tutorial_on'),
         off: $('#tutorial_off')
     }
-
-    $('#btn_full').click(toggleFullScreen);
 
     $('.gp').click(function () {
         var left = ~~((W - 600) / 2);
@@ -315,8 +326,7 @@ $(document).ready(function() {
             }
 
             if (taught.push(challenge) === challenges.length) { 
-                $.cookie('tutorial', '0', { expires: 365 });
-                window.localStorage.setItem('tutorial', 0);
+                store('tutorial', 0);
                 tutorial_btn.on.toggle();
                 tutorial_btn.off.toggle();
             }
@@ -348,23 +358,45 @@ $(document).ready(function() {
               elapsed                    // Sets the scope to page-level.  Optional parameter.
            ]);
 
-            // shares.fb.click(function () {
-            //     FB.ui({
-            //         name: 'Dash',
-            //         method: 'share',
-            //         caption: unescape(text),
-            //         href: 'http://dash.breno.io/',
-            //         app_id: '903632352992329'
-            //     }, function(response){});
-            // });
+            if (window.FB_LOGGED !== true)
+                shares.fb.removeClass('disabled').addClass('disabled');
+
+            shares.fb.click(function () {
+                if (shares.fb.hasClass('disabled'))
+                    return;
+
+                shares.fb.addClass('disabled');
+                $('#share_text').html ('Sharing...');
+
+                FB.api('/me/feed', 'post', { 
+                    description: unescape(text),
+                    caption: 'How fast can you dash?',
+                    link: 'https://apps.facebook.com/the-dash-game/',
+                    picture: 'https://dash.breno.io/img/logo.png',
+                    name: 'DASH',
+                    status_type: 'app_created_story',
+                    type: 'link'
+                }, function(response) {
+                    if (!response || response.error) {
+                        console.log('Error occured');
+                    } else {
+                        $('#share_text').html ('Shared!');
+
+                        setTimeout(function(){
+                            $('#share_text').html ('Share');
+                            shares.fb.removeClass('disabled');
+                        }, 2000);
+                    }
+                });
+            });
 
             end_game_view.fadeIn('slow', function () {
                 $(this).css('overflow', 'auto');
             });
 
             if (score > BEST_SCORE) {
-                $.cookie('best', score, { expires: 365 });
-                window.localStorage.setItem('best', score);
+                store('best', score);
+                fb_update_score(score);
                 BEST_SCORE = score;
                 best.html(BEST_SCORE);
             }

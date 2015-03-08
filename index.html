@@ -27,63 +27,25 @@
     <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
 </head>
 <body>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '903632352992329',
-          xfbml      : true,
-          version    : 'v2.2'
-        });
-
-        // function onLogin(response) {
-        //   if (response.status == 'connected') {
-        //     FB.api('/me?fields=first_name', function(data) {
-        //       var welcomeBlock = document.getElementById('fb-welcome');
-        //       welcomeBlock.innerHTML = 'Hello, ' + data.first_name + '!';
-        //     });
-        //   }
-        // }
-
-        // FB.getLoginStatus(function(response) {
-        //   // Check login status on load, and if the user is
-        //   // already logged in, go directly to the welcome message.
-        //   if (response.status == 'connected') {
-        //     onLogin(response);
-        //   } else {
-        //     // Otherwise, show Login dialog first.
-        //     FB.login(function(response) {
-        //       onLogin(response);
-        //     }, {scope: 'user_friends, email'});
-        //   }
-        // });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
-    </script>
+    <script type="text/javascript" src="js/fb.min.js"></script>
 
 
     <div class="wrapper">
         <h1>DASH</h1>
 
         <div class="menu">
-            <div>Your best score is <span id="best"></span></div>
+            <div><b id="user_name"></b>Your best score is <span id="best"></span></div>
 
             <a class="main_btn" id="btn_play">Start game</a>
             <a class="main_btn" id="btn_howto">How to play</a>
             <a class="main_btn" id="btn_full">Toggle fullscreen</a>
-            <!-- <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a> -->
+            <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a>
 
-            <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
+            <!-- <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
 
             <a class="tw" href="https://twitter.com/intent/tweet?text=How%20fast%20can%20you%20dash%3F&url=http://dash.breno.io/"><i class="icon-twitter"></i></a>
 
-            <a class="gp"><i class="icon-gplus"></i></a>
+            <a class="gp"><i class="icon-gplus"></i></a> -->
 
             <div class="clear"></div>
         </div>
@@ -136,7 +98,7 @@
                 <a id="btn_again">Play again</a>
             </div>
 
-            <div style="display: none;">
+            <div>
                 <a id="fb_share_score"><i class="icon-facebook"></i> Share on Facebook</a>
                 <div class="clear"></div>
             </div>
@@ -234,6 +196,26 @@
         </div>
     </div>
 
+    <div class="info" id="leaderboards">
+        <span class="dismiss"><a>Close window</a></span>
+
+        <h2>Leaderboard</h2>
+
+        <div class="centering" id="error_msg">
+            Ranking not available yet!
+        </div>
+
+        <div class="centering">
+            <a id="btn_login" style="display: none;">Login with Facebook</a>
+        </div>
+
+        <div class="centering">
+            <img src="img/load.gif" alt="loading" id="loading" style="border: none; display: none;"/>
+        </div>
+
+        <table id="ranking">
+        </table>
+    </div>
 
     <div class="message" id="tutorial"></div>
 </body>
