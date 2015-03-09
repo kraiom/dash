@@ -11,10 +11,6 @@ var konami = false;
 var best = 0, BEST_SCORE = 0;
 var tic = 0;
 var shares = {fb: null, tw: null};
-var times = {
-    press_time: 1800,
-    step: 6
-};
 var ROUNDS_TO_HIDE = -1;
 var tutorial = 1, message = null;
 var tutorial_btn = {on: null, off: null};
@@ -416,7 +412,10 @@ $(document).ready(function() {
         }
     };
 
-    game = new Dash(Interface, handlers, times).init();
+    game = new Dash(Interface, handlers, {
+        press_time: 1800,
+        step: 6
+    }).init();
 
     $('#btn_play').click(function(){
         goDash();
