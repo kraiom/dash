@@ -28,6 +28,7 @@ window.fbAsyncInit = function() {
         return;
 
       $('#loading').toggle(true);
+      $('#no_leaderboard').toggle(false);
 
       var ranking = $('#ranking').empty().empty();
 
@@ -60,7 +61,7 @@ window.fbAsyncInit = function() {
                     '</tr>');
               }
             } else 
-              $('#no_leaderboard').show();
+              $('#no_leaderboard').toggle(true);
           }
       );
   }
@@ -100,7 +101,6 @@ window.fbAsyncInit = function() {
     FB.login(function(response) {
       window.FB_LOGGED = true;
       onLogin(response);
-      $('#loading').toggle(true);
       $('#btn_login').toggle(false);
     }, {scope: 'user_friends, email, publish_actions'});
   }
@@ -113,7 +113,6 @@ window.fbAsyncInit = function() {
     if (response.status == 'connected') {
       window.FB_LOGGED = true;
       onLogin(response);
-      $('#loading').toggle(true);
       fb_update_leaderboard();
     } else
       $('#btn_login').toggle(true);
