@@ -112,7 +112,6 @@ window.fbAsyncInit = function() {
     if (response.status == 'connected') {
       window.FB_LOGGED = true;
       onLogin(response);
-      fb_update_leaderboard();
     } else
       $('#btn_login').toggle(true);
   });
