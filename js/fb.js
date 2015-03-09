@@ -92,8 +92,6 @@ window.fbAsyncInit = function() {
             }
           }
       );
-
-      fb_update_leaderboard();
     }
   }
 
@@ -101,6 +99,7 @@ window.fbAsyncInit = function() {
     FB.login(function(response) {
       window.FB_LOGGED = true;
       onLogin(response);
+      fb_update_leaderboard();
       $('#btn_login').toggle(false);
     }, {scope: 'user_friends, email, publish_actions'});
   }
