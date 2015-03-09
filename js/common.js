@@ -12,8 +12,8 @@ var best = 0, BEST_SCORE = 0;
 var tic = 0;
 var shares = {fb: null, tw: null};
 var times = {
-    press_time: 2000,
-    step: 5
+    press_time: 1900,
+    step: 6
 };
 var konami_lives = 42;
 var ROUNDS_TO_HIDE = -1;
@@ -38,7 +38,7 @@ var challenges = [
     {   
         alias: 'reverse',
         constraints: ['pressed', 'previous'],
-        rounds: 60,
+        rounds: 20,
 
         morph: function (tentative, last) {
             var length = tentative.expected.length;
@@ -56,7 +56,7 @@ var challenges = [
     {   
         alias: 'double',
         constraints: ['pressed', 'previous'],
-        rounds: 20,
+        rounds: 15,
 
         morph: function (tentative, last) {
             return {
@@ -71,7 +71,7 @@ var challenges = [
         alias: 'previous',
         first_turn: false,
         constraints: ['reverse', 'double', 'pressed'],
-        rounds: 70,
+        rounds: 50,
 
         morph: function (tentative, last) {
             return {
@@ -87,7 +87,7 @@ var challenges = [
     {   
         alias: 'pressed',
         constraints: ['reverse', 'double', 'pressed'],
-        rounds: 40,
+        rounds: 35,
 
         morph: function (tentative, last) {
             return {
