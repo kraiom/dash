@@ -15,7 +15,6 @@ var times = {
     press_time: 1900,
     step: 6
 };
-var konami_lives = 42;
 var ROUNDS_TO_HIDE = -1;
 var tutorial = 1, message = null;
 var tutorial_btn = {on: null, off: null};
@@ -173,7 +172,7 @@ function goDash () {
 
     hiding += ~~(Math.random() * 20);
 
-    game.prepare(challenges, konami ? konami_lives : 3, 
+    game.prepare(challenges, konami ? 42 : 1, 
         BEST_SCORE, -1);
     tic = (new Date()).getTime();
     game.start();   
