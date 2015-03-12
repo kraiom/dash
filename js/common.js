@@ -182,15 +182,15 @@ $(document).ready(function() {
 
     $('#btn_full').click(toggleFullScreen);
 
-    $('#btn_leader').click(function() { 
-        fb_update_leaderboard();
+    // $('#btn_leader').click(function() { 
+    //     fb_update_leaderboard();
 
-        $('#leaderboards').fadeIn('slow', function () {
-            $(this).css('overflow', 'auto');
-        });
-    });
+    //     $('#leaderboards').fadeIn('slow', function () {
+    //         $(this).css('overflow', 'auto');
+    //     });
+    // });
 
-    $('#btn_login').click(function() { fb_login(); });   
+    // $('#btn_login').click(function() { fb_login(); });   
 
     $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
@@ -206,12 +206,12 @@ $(document).ready(function() {
     last_score = $('#last_score');
     last_time =  $('#last_time');
 
-    shares.fb = $('#fb_share_score');
+    // shares.fb = $('#fb_share_score');
     shares.tw = $('#tw_share_score');
 
     message = $('#tutorial');
 
-    $('#btn_leader').click
+    // $('#btn_leader').click
 
     tutorial_btn = {
         on: $('#tutorial_on'),
@@ -329,7 +329,9 @@ $(document).ready(function() {
             var text = 'I\'ve made ' + score + ' points in Dash! Can you dash faster? #Dash';
             text = escape(text);
 
-            shares.tw.attr('href', 'https://twitter.com/intent/tweet?text=' + text + '&url=' + SITE);
+            shares.tw.click(function () {
+                Clay('client.share.any', {text: unescape(text)});
+            });
 
             _gaq.push(['_setCustomVar',
               1,                   // This custom var is set to slot #1.  Required parameter.
@@ -345,37 +347,37 @@ $(document).ready(function() {
               elapsed                    // Sets the scope to page-level.  Optional parameter.
            ]);
 
-            if (window.FB_LOGGED !== true)
-                shares.fb.removeClass('disabled').addClass('disabled');
+            // if (window.FB_LOGGED !== true)
+            //     shares.fb.removeClass('disabled').addClass('disabled');
 
-            shares.fb.click(function () {
-                if (shares.fb.hasClass('disabled'))
-                    return;
+            // shares.fb.click(function () {
+            //     if (shares.fb.hasClass('disabled'))
+            //         return;
 
-                shares.fb.addClass('disabled');
-                $('#share_text').html ('Sharing...');
+            //     shares.fb.addClass('disabled');
+            //     $('#share_text').html ('Sharing...');
 
-                FB.api('/me/feed', 'post', { 
-                    description: unescape(text),
-                    caption: 'How fast can you dash?',
-                    link: 'https://apps.facebook.com/the-dash-game/',
-                    picture: 'https://dash.breno.io/img/logo.png',
-                    name: 'DASH',
-                    status_type: 'app_created_story',
-                    type: 'link'
-                }, function(response) {
-                    if (!response || response.error) {
-                        console.log('Error occured');
-                    } else {
-                        $('#share_text').html ('Shared!');
+            //     FB.api('/me/feed', 'post', { 
+            //         description: unescape(text),
+            //         caption: 'How fast can you dash?',
+            //         link: 'https://apps.facebook.com/the-dash-game/',
+            //         picture: 'https://dash.breno.io/img/logo.png',
+            //         name: 'DASH',
+            //         status_type: 'app_created_story',
+            //         type: 'link'
+            //     }, function(response) {
+            //         if (!response || response.error) {
+            //             console.log('Error occured');
+            //         } else {
+            //             $('#share_text').html ('Shared!');
 
-                        setTimeout(function(){
-                            $('#share_text').html ('Share');
-                            shares.fb.removeClass('disabled');
-                        }, 2000);
-                    }
-                });
-            });
+            //             setTimeout(function(){
+            //                 $('#share_text').html ('Share');
+            //                 shares.fb.removeClass('disabled');
+            //             }, 2000);
+            //         }
+            //     });
+            // });
 
             end_game_view.fadeIn('slow', function () {
                 $(this).css('overflow', 'auto');
@@ -383,7 +385,7 @@ $(document).ready(function() {
 
             if (score > BEST_SCORE) {
                 store('best', score);
-                fb_update_score(score);
+                // fb_update_score(score);
                 BEST_SCORE = score;
                 best.html(BEST_SCORE);
             }

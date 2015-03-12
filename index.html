@@ -27,7 +27,15 @@
     <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
 </head>
 <body>
-    <script type="text/javascript" src="js/fb.min.js"></script>
+    <!-- <script type="text/javascript" src="js/fb.min.js"></script> -->
+    <script>
+    (function(C,l,a,y,_,i,o){C[_]=C[_]||function(){
+    (C[_].q=C[_].q||[]).push(arguments)},C[_].l=1*new Date();i=l.createElement(a),
+    o=l.getElementsByTagName(a)[0];i.async=1;i.src=y;o.parentNode.insertBefore(i,o)
+    })(window,document,'script','//cdn.wtf/sdk/v1/clay_sdk.js','Clay');
+
+    Clay('init', {gameId: '8363'})
+    </script>
 
 
     <div class="wrapper">
@@ -39,7 +47,7 @@
             <a class="main_btn" id="btn_play">Start game</a>
             <a class="main_btn" id="btn_howto">How to play</a>
             <a class="main_btn" id="btn_full">Toggle fullscreen</a>
-            <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a>
+            <!-- <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a> -->
 
             <!-- <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
 
@@ -99,24 +107,24 @@
                 <a id="btn_again">Play again</a>
             </div>
 
-            <div>
+            <!-- <div>
                 <a id="fb_share_score"><i class="icon-facebook"></i> <div id="share_text">Share on Facebook</div></a>
                 <div class="clear"></div>
-            </div>
+            </div> -->
 
             <div>
-                <a id="tw_share_score"><i class="icon-twitter"></i> Share on Twitter</a>
+                <a id="tw_share_score">Share</a>
                 <div class="clear"></div>
             </div> 
 
-            <div id="small_ad">
+            <!-- <div id="small_ad">
                 <script type="text/javascript">
                     google_ad_client = "ca-pub-3758610824903714";
                     google_ad_slot = "1970973182";
                     google_ad_width = 250;
                     google_ad_height = 250;
                 </script>
-                <!-- New small Dash -->
+                 
                 <script type="text/javascript"
                 src="//pagead2.googlesyndication.com/pagead/show_ads.js">
                 </script>
@@ -124,7 +132,7 @@
 
             <div id="big_ad">
                 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- big dash -->
+                
                 <ins class="adsbygoogle"
                      style="display:inline-block;width:336px;height:280px"
                      data-ad-client="ca-pub-3758610824903714"
@@ -132,7 +140,7 @@
                 <script>
                 (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
-            </div>
+            </div> -->
 
         </div>
     </div>
