@@ -211,8 +211,6 @@ $(document).ready(function() {
 
     message = $('#tutorial');
 
-    $('#btn_leader').click
-
     tutorial_btn = {
         on: $('#tutorial_on'),
         off: $('#tutorial_off')
