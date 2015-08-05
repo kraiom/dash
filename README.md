@@ -6,5 +6,4 @@ A web browser casual game. The rule is simple: send the panel to the correct dir
 A project like this could not be possibly polished and tested without a little a help of some people! Special thanks to [Thiago Wittmann](http://thiagowittmann.github.io/), [Mateus Craveiro](http://mccraveiro.github.io/), [Alexandre Almeida](http://alexandrealmeida.io/) and [Rafael Tomazela](https://twitter.com/sohakes).
 
 # License
-
-[Creative Commons Attribution NonCommercial NoDerivs (CC-NC-ND)](https://tldrlegal.com/license/creative-commons-attribution-noncommercial-noderivs-(cc-nc-nd))
+MIT
