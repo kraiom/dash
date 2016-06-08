@@ -52,15 +52,15 @@ window.fbAsyncInit = function() {
 
               for (var i = 0; i < length; i++) {
                 ranking.append(
-                  '<tr>' + 
+                  '<tr>' +
                     '<td>' + (i + 1) + '.</td>' +
-                    '<td><img src="https://graph.facebook.com/' + response[i].user.id + 
+                    '<td><img src="https://graph.facebook.com/' + response[i].user.id +
                     '/picture?type=square" alt="' + response[i].user.name + '"/></td>' +
                     '<td>' + response[i].user.name + '</td>' +
                     '<td style="text-align: center;">' + response[i].score + '</td>' +
                     '</tr>');
               }
-            } else 
+            } else
               $('#no_leaderboard').toggle(true);
           }
       );
@@ -80,10 +80,10 @@ window.fbAsyncInit = function() {
               var fb_score = 0;
 
               if (response.data !== undefined &&
-                response.data[0] !== undefined && 
+                response.data[0] !== undefined &&
                 response.data[0].score !== undefined)
                 fb_score = response.data[0].score;
-                
+
                 BEST_SCORE = fb_score;
                 best.html(BEST_SCORE);
                 store('best', BEST_SCORE);

@@ -1,226 +1,212 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="author" content="Breno Lima de Freitas"/>
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+  <meta charset="utf-8"/>
+  <meta name="author" content="Breno Lima de Freitas"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- Open Graph metadata -->
-    <meta property="og:title" content="Dash"/>
-    <meta property="og:image" content="http://breno.io/dash/img/logo.png"/>
-    <meta property="og:image:type" content="image/png">
-    <meta property="fb:app_id" content="903632352992329"/>
-    <meta property="og:description" content="How fast can you dash?">
+  <!-- Open Graph metadata -->
+  <meta property="og:title" content="Dash"/>
+  <meta property="og:image" content="http://breno.io/dash/img/logo.png"/>
+  <meta property="og:image:type" content="image/png">
+  <meta property="fb:app_id" content="903632352992329"/>
+  <meta property="og:description" content="How fast can you dash?">
 
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>Dash</title>
+  <title>Dash</title>
 
-    <link href="img/favicon.png" rel="icon" type="image/x-icon"/>
-    <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Josefin+Sans:100,400' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/css.css"/>
+  <link href="img/favicon.png" rel="icon" type="image/x-icon"/>
+  <link href='https://fonts.googleapis.com/css?family=Noto+Sans:400,700|Josefin+Sans:100,400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/css.css"/>
 
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <script type="text/javascript" async src="//platform.twitter.com/widgets.js"></script>
 </head>
 <body>
-    <script type="text/javascript" src="js/libs/fb.min.js"></script>
+  <script type="text/javascript" src="js/libs/fb.min.js"></script>
 
 
-    <div class="wrapper">
-        <h1>DASH</h1>
+  <div class="wrapper">
+    <h1>DASH</h1>
 
-        <div class="menu">
-            <div><b id="user_name"></b>Your best score is <span id="best"></span></div>
+    <div class="menu">
+      <div><b id="user_name"></b>Your best score is <span id="best"></span></div>
 
-            <a class="main_btn" id="btn_play">Start game</a>
-            <a class="main_btn" id="btn_howto">How to play</a>
-            <a class="main_btn" id="btn_full">Toggle fullscreen</a>
-            <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a>
+      <a class="main_btn" id="btn_play">Start game</a>
+      <a class="main_btn" id="btn_howto">How to play</a>
+      <a class="main_btn" id="btn_full">Toggle fullscreen</a>
+      <a class="main_btn" id="btn_leader" class="disabled">Leaderboard</a>
 
-            <!-- <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
+      <!-- <a class="fb" id="fb_share"><i class="icon-facebook"></i></a>
 
-            <a class="tw" href="https://twitter.com/intent/tweet?text=How%20fast%20can%20you%20dash%3F&url=http://dash.breno.io/"><i class="icon-twitter"></i></a>
+      <a class="tw" href="https://twitter.com/intent/tweet?text=How%20fast%20can%20you%20dash%3F&url=http://dash.breno.io/"><i class="icon-twitter"></i></a>
 
-            <a class="gp"><i class="icon-gplus"></i></a> -->
+      <a class="gp"><i class="icon-gplus"></i></a> -->
 
-            <div class="clear"></div>
-        </div>
-
-        <div class="clear"></div>
-
-        <div class="copyright">
-            <a href="https://breno.io/" target="_blank">Creator's site</a>
-            <a href="https://dash.breno.io/policy.html" target="_blank">Privacy policy</a>
-            <a href="https://www.facebook.com/the.dash.game" target="_blank">Facebook page</a>
-            <a href="https://play.google.com/store/apps/details?id=com.breno.dash" target="_blank">Android app</a>
-        </div>
+      <div class="clear"></div>
     </div>
 
-    <!-- <section id="panel-0" class="preset-5" style="display: block; left:0%;top:0;"><i class="icon-angle-down"></i></section> -->
-    <section id="panel-0"><i></i></section>
-    <section id="panel-1"><i></i></section>
+    <div class="clear"></div>
 
-    <div class="score" id="score">
-        <div class="counter" id="counter">10</div>
-        <!-- <div class="timer">
-            <div class="fill" id="gauge"></div>
-        </div> -->
-        <div class="lives">
-            <div></div>
-            <div class="middle"></div>
-            <div></div>
-        </div>
-        <div class="clear"></div>
+    <div class="copyright">
+      <a href="https://breno.io/" target="_blank">Creator's site</a>
+      <a href="https://dash.breno.io/policy.html" target="_blank">Privacy policy</a>
+      <a href="https://www.facebook.com/the.dash.game" target="_blank">Facebook page</a>
+      <a href="https://play.google.com/store/apps/details?id=com.breno.dash" target="_blank">Android app</a>
+    </div>
+  </div>
+
+  <!-- <section id="panel-0" class="preset-5" style="display: block; left:0%;top:0;"><i class="icon-angle-down"></i></section> -->
+  <section id="panel-0"><i></i></section>
+  <section id="panel-1"><i></i></section>
+
+  <div class="score" id="score">
+    <div class="counter" id="counter">10</div>
+    <!-- <div class="timer">
+    <div class="fill" id="gauge"></div>
+  </div> -->
+  <div class="lives">
+    <div></div>
+    <div class="middle"></div>
+    <div></div>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="timer">
+  <div id="gauge"></div>
+</div>
+
+<div class="score msg" id="msg">
+  <i id="msg_icon"></i>
+</div>
+
+<div class="info" id="end_game_view">
+  <span class="dismiss"><a>Close window</a></span>
+
+  <h2>Game over!</h2>
+
+  <div class="centering">
+    <div>
+      Your final score is <b id="last_score">888</b> in <b id="last_time">10</b> seconds!
     </div>
 
-    <div class="timer">
-        <div id="gauge"></div>
+    <div class="buttons">
+      <a id="btn_again">Play again</a>
     </div>
 
-    <div class="score msg" id="msg">
-        <i id="msg_icon"></i>
+    <div>
+      <a id="fb_share_score"><i class="icon-facebook"></i> <div id="share_text">Share on Facebook</div></a>
+      <div class="clear"></div>
     </div>
 
-    <div class="info" id="end_game_view">
-        <span class="dismiss"><a>Close window</a></span>
-
-        <h2>Game over!</h2>
-
-        <div class="centering">
-            <div>
-                Your final score is <b id="last_score">888</b> in <b id="last_time">10</b> seconds!
-            </div>
-
-            <div class="buttons">
-                <a id="btn_again">Play again</a>
-            </div>
-
-            <div>
-                <a id="fb_share_score"><i class="icon-facebook"></i> <div id="share_text">Share on Facebook</div></a>
-                <div class="clear"></div>
-            </div>
-
-            <div>
-                <a id="tw_share_score"><i class="icon-twitter"></i> Share on Twitter</a>
-                <div class="clear"></div>
-            </div> 
-
-            <div id="small_ad">
-                <script type="text/javascript">
-                    google_ad_client = "ca-pub-3758610824903714";
-                    google_ad_slot = "1970973182";
-                    google_ad_width = 250;
-                    google_ad_height = 250;
-                </script>
-                <!-- New small Dash -->
-                <script type="text/javascript"
-                src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-                </script>
-            </div>
-
-            <div id="big_ad">
-                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- big dash -->
-                <ins class="adsbygoogle"
-                     style="display:inline-block;width:336px;height:280px"
-                     data-ad-client="ca-pub-3758610824903714"
-                     data-ad-slot="2857120389"></ins>
-                <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-
-        </div>
+    <div>
+      <a id="tw_share_score"><i class="icon-twitter"></i> Share on Twitter</a>
+      <div class="clear"></div>
     </div>
 
-    <div class="info" id="info">
-        <span class="dismiss"><a>Close window</a></span>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Dash2016 -->
+    <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-3758610824903714"
+    data-ad-slot="6418858383"
+    data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
-        <h2>How to play</h2>
+  </div>
+</div>
 
-        <div class="centering">
-            <a id="tutorial_on">Enable in-game tutorial</a>
-            <a id="tutorial_off" style="display: none;">Disable in-game tutorial</a>
-        </div>
+<div class="info" id="info">
+  <span class="dismiss"><a>Close window</a></span>
 
-        <div>The rule is simple: send the panel to the correct direction, if you can! In Dash you must press the arrow accordingly to what is being shown within the remaining time and each round is faster than the last!</div>
+  <h2>How to play</h2>
 
-        <div>Too easy? There are also some things you must pay attention to in order to dash!</div>
+  <div class="centering">
+    <a id="tutorial_on">Enable in-game tutorial</a>
+    <a id="tutorial_off" style="display: none;">Disable in-game tutorial</a>
+  </div>
 
-        <div class="block">
-            <img src="img/tut/common.png" alt="common arrow" class="l" />
-            <div>
-                <h3>Simple arrow</h3>
-                The simple arrow is the most basic and classic thing! Just press the right key in time and you're good.
-            </div>
-            <div class="clear"></div>
-        </div>
+  <div>The rule is simple: send the panel to the correct direction, if you can! In Dash you must press the arrow accordingly to what is being shown within the remaining time and each round is faster than the last!</div>
 
-        <div class="block">
-            <img src="img/tut/reverse.png" alt="common arrow" class="r" />
-            <div>
-                <h3>Reverse</h3>
-                It's a trap! If the background is striped, then you must take the opposite action that is being shown. For instance, if the image shows a right arrow, press the left key; If it shows up, then press down, and so on and so forth.
-            </div>
-            <div class="clear"></div>
-        </div>
+  <div>Too easy? There are also some things you must pay attention to in order to dash!</div>
 
-        <div class="block">
-            <img src="img/tut/double.png" alt="common arrow" class="l" />
-            <div>
-                <h3>Double arrow</h3>
-                To dismiss a panel like this, you must double press the required key in the same amount of time. As easy as pie!
-            </div>
-            <div class="clear"></div>
-        </div>
-
-        <div class="block">
-            <img src="img/tut/previous.png" alt="common arrow" class="r" />
-            <div>
-                <h3>Previous action</h3>
-                This one may seem tricky. <b>DASH</b> is not only about being fast, but also being attentive! If you ever see a symbol like this, then it is a previous arrow! It means you must repeat your last action!
-            </div>
-            <div class="clear"></div>
-        </div>
-
-        <div class="block">
-            <img src="img/tut/pressed.png" alt="common arrow" class="l" />
-            <div>
-                <h3>Pressed arrow</h3>
-                Have you paid close attention to what happens when you press the correct key? Yes, the arrow turns into white. However, what should you do if the panel came with a white arrow? Simple: do not press anything. At all. Seriously.
-            </div>
-            <div class="clear"></div>
-        </div>
+  <div class="block">
+    <img src="img/tut/common.png" alt="common arrow" class="l" />
+    <div>
+      <h3>Simple arrow</h3>
+      The simple arrow is the most basic and classic thing! Just press the right key in time and you're good.
     </div>
+    <div class="clear"></div>
+  </div>
 
-    <div class="info" id="leaderboards">
-        <span class="dismiss"><a>Close window</a></span>
-
-        <h2>Leaderboard</h2>
-
-        <div id="app_permissions_alert" style="display: none;">
-            <small>Have your friends enabled posting permission for the App? If they didn't you will not be able to see your friends scores. Learn more reading about Facebook integration in the <a href="policy.html#facebook" target="_blank">privacy policy</a>.</small>
-        </div>
-
-        <div class="centering" id="error_msg">
-            Ranking not available yet!
-        </div>
-
-        <div class="centering">
-            <a id="btn_login" style="display: none;">Login with Facebook</a>
-        </div>
-
-        <div class="centering" id="loading" style="display: none;">
-            <img src="img/load.gif" alt="loading" style="border: none;"/>
-        </div>
-
-        <table id="ranking">
-        </table>
+  <div class="block">
+    <img src="img/tut/reverse.png" alt="common arrow" class="r" />
+    <div>
+      <h3>Reverse</h3>
+      It's a trap! If the background is striped, then you must take the opposite action that is being shown. For instance, if the image shows a right arrow, press the left key; If it shows up, then press down, and so on and so forth.
     </div>
+    <div class="clear"></div>
+  </div>
 
-    <div class="message" id="tutorial"></div>
+  <div class="block">
+    <img src="img/tut/double.png" alt="common arrow" class="l" />
+    <div>
+      <h3>Double arrow</h3>
+      To dismiss a panel like this, you must double press the required key in the same amount of time. As easy as pie!
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="block">
+    <img src="img/tut/previous.png" alt="common arrow" class="r" />
+    <div>
+      <h3>Previous action</h3>
+      This one may seem tricky. <b>DASH</b> is not only about being fast, but also being attentive! If you ever see a symbol like this, then it is a previous arrow! It means you must repeat your last action!
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="block">
+    <img src="img/tut/pressed.png" alt="common arrow" class="l" />
+    <div>
+      <h3>Pressed arrow</h3>
+      Have you paid close attention to what happens when you press the correct key? Yes, the arrow turns into white. However, what should you do if the panel came with a white arrow? Simple: do not press anything. At all. Seriously.
+    </div>
+    <div class="clear"></div>
+  </div>
+</div>
+
+<div class="info" id="leaderboards">
+  <span class="dismiss"><a>Close window</a></span>
+
+  <h2>Leaderboard</h2>
+
+  <div id="app_permissions_alert" style="display: none;">
+    <small>Have your friends enabled posting permission for the App? If they didn't you will not be able to see your friends scores. Learn more reading about Facebook integration in the <a href="policy.html#facebook" target="_blank">privacy policy</a>.</small>
+  </div>
+
+  <div class="centering" id="error_msg">
+    Ranking not available yet!
+  </div>
+
+  <div class="centering">
+    <a id="btn_login" style="display: none;">Login with Facebook</a>
+  </div>
+
+  <div class="centering" id="loading" style="display: none;">
+    <img src="img/load.gif" alt="loading" style="border: none;"/>
+  </div>
+
+  <table id="ranking">
+  </table>
+</div>
+
+<div class="message" id="tutorial"></div>
 </body>
 
 <script type="text/javascript" src="js/script.min.js"></script>
@@ -229,7 +215,7 @@
 
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-60178881-1']);
-  _gaq.push(['_trackPageview']);    
+  _gaq.push(['_trackPageview']);
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
