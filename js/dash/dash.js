@@ -1,5 +1,5 @@
 /*
-    Dash v 0.4  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.4  | (c) 2017 Kraiom Studio - kraiom.com | Licensed under CC-NC-ND
 
     The Dash object handles the game logic, assigning
     the proper listeners and taking care of calling the correct

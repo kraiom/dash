@@ -4,7 +4,8 @@
   "description": "A web browser casual game. The rule is simple: send the panel to the correct direction, if you can! In DASH you must press the arrow accordingly to what is being shown within the remaining time and the number of lives.",
   "main": "gulpfile.js",
   "dependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-load-plugins": "^1.5.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
@@ -16,16 +17,17 @@
     "gulp-uglify": "^1.5.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/brenolf/dash.git"
+    "url": "https://github.com/kraiom/dash.git"
   },
-  "author": "Breno Lima de Freitas <brenolimadefreitas@gmail.com> (https://breno.io/)",
+  "author": "Kraiom Studio <hello@kraiom.com> (https://kraiom.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brenolf/dash/issues"
+    "url": "https://github.com/kraiom/dash/issues"
   },
-  "homepage": "https://github.com/brenolf/dash"
+  "homepage": "https://github.com/kraiom/dash"
 }

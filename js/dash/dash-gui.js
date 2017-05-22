@@ -1,5 +1,5 @@
 /*
-    Dash v 0.4  | (c) 2015 Breno Lima de Freitas - breno.io | Licensed under CC-NC-ND
+    Dash v 0.4  | (c) 2017 Kraiom Studio - kraiom.com | Licensed under CC-NC-ND
 
     The DashGUI object handles the
     properties related to the UI and
@@ -17,12 +17,12 @@
         have its width changed from 0% to 100% in the remaining
         time (Note that timer.parent will disappear if hide_timer
         is called) The attribute "lives" represent the container of
-        children that will be accessed through :nth-child, and 
+        children that will be accessed through :nth-child, and
         will be disabled in reverse order; The attribute "points"
         is the DOM in which the score must be displayed.
 
     @defaults: an object with the following attributes:
-        
+
         - base_index: The z-index for the lowest element.
         (default 0).
 
@@ -33,7 +33,7 @@
         - icon: The default class for the icons.
 
         - replace_array: An optional argument that enables more
-        flexibility when naming the classes to be used. 
+        flexibility when naming the classes to be used.
 
         - wrong_icon: The class that the icon should have once the
         player got it wrong.
@@ -42,21 +42,21 @@
         player got it correct.
 
         - life_lost: The class that the life icon should have once the
-        player got it wrong. 
+        player got it wrong.
 
         - timer_color: The class the timer gauge should have once a panel
         has changed.
 
         Any class selector used will be first interpreted regarding the
-        following wild cards: 
-            - If it starts with a "+", then the class will be added, 
+        following wild cards:
+            - If it starts with a "+", then the class will be added,
             instead of replaced;
 
             - Any "*" will be replaced by a generated number;
 
-            - Any "." will be replaced by the corresponding value in 
+            - Any "." will be replaced by the corresponding value in
             replace_array.
-        
+
         For instance, if we have classes "icon-left", "icon-right", (...),
         "bg-0", "bg-1", (...), we may use the selectors "icon-." and "bg-*"
         having replace_array = ['left', 'right', (...)].
@@ -126,7 +126,7 @@ var DIRECTIONS = 4;
         var get_preset = function () {
             var preset;
 
-            do { 
+            do {
                 preset = ~~(Math.random() * defaults.presets);
             } while (queue.has(preset));
 
@@ -145,7 +145,7 @@ var DIRECTIONS = 4;
         }
 
         // A helper function that interprets a class name given a number
-        // returns an object with the following attributes: 
+        // returns an object with the following attributes:
         // - addClass: boolean, represent whether or not the class must be added
         //        instead of replaced.
         // - class_name: string, represents the class name to be used
@@ -186,7 +186,7 @@ var DIRECTIONS = 4;
 
         // The function that displays a panel when requested. It takes
         // three parameters. @direction is the raw arrow direction that
-        // should be displayed. @modifier is an array of indexes for a 
+        // should be displayed. @modifier is an array of indexes for a
         // specific style that must be applied. @callback is the function
         // called once the panel is fully displayed.
         _.retrieve = function (direction, modifier, callback) {
@@ -204,7 +204,7 @@ var DIRECTIONS = 4;
 
             shape(panel[next], defaults.panel, preset);
             shape(arrow, defaults.icon, direction);
-    
+
             for (var i = 0; i < length; i++) {
                 if (modifier[i] in specifics) {
                     var style = specifics[modifier[i]];
@@ -257,7 +257,7 @@ var DIRECTIONS = 4;
 
             for (var i = 0; i < elements.panels.length; i++)
                 elements.panels[i].css({
-                    top: '-100%', 
+                    top: '-100%',
                     left: '-100%',
                     display: 'block'
                 });
@@ -319,7 +319,7 @@ var DIRECTIONS = 4;
         // Sets drop_time
         _.set_drop_time = function (time) {
             drop_time = time;
-        }    
+        }
     }
 
 }) (window);

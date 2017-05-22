@@ -1,6 +1,6 @@
 // Default values
 var W, H;
-var SITE = escape('http://dash.breno.io/');
+var SITE = escape('http://dash.kraiom.com/');
 var listener = new window.keypress.Listener();
 var msg = null, msg_icon = null;
 var game = null;
@@ -30,7 +30,7 @@ var challenges = [
         text: 'Press the key/swipe to the direction of the arrow'
     },
 
-    {   
+    {
         alias: 'reverse',
         constraints: ['pressed', 'previous'],
         rounds: 15,
@@ -48,7 +48,7 @@ var challenges = [
         text: 'Press the key/swipe to the opposite direction of the arrow'
     },
 
-    {   
+    {
         alias: 'double',
         constraints: ['pressed', 'previous'],
         rounds: 10,
@@ -62,7 +62,7 @@ var challenges = [
         text: 'Press the key/swipe twice to the direction of the arrow'
     },
 
-    {   
+    {
         alias: 'previous',
         first_turn: false,
         constraints: ['reverse', 'double', 'pressed'],
@@ -79,7 +79,7 @@ var challenges = [
         text: 'Repeat your previous action'
     },
 
-    {   
+    {
         alias: 'pressed',
         constraints: ['reverse', 'double', 'pressed'],
         rounds: 30,
@@ -94,7 +94,7 @@ var challenges = [
         text: 'Do not do anything!'
     }
 ];
-    
+
 listener.sequence_combo('up up down down left right left right b a enter', function() {
     konami ^= true;
     msg_icon.removeClass().addClass('icon-joystick');
@@ -168,10 +168,10 @@ function goDash () {
 
     hiding += ~~(Math.random() * 20);
 
-    game.prepare(challenges, konami ? 42 : 1, 
+    game.prepare(challenges, konami ? 42 : 1,
         BEST_SCORE, -1);
     tic = (new Date()).getTime();
-    game.start();   
+    game.start();
 }
 
 $(document).ready(function() {
@@ -182,7 +182,7 @@ $(document).ready(function() {
 
     $('#btn_full').click(toggleFullScreen);
 
-    $('#btn_leader').click(function() { 
+    $('#btn_leader').click(function() {
         fb_update_leaderboard();
 
         $('#leaderboards').fadeIn('slow', function () {
@@ -190,7 +190,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#btn_login').click(function() { fb_login(); });   
+    $('#btn_login').click(function() { fb_login(); });
 
     $('.dismiss').click(function() { $(this).parent().fadeOut(); });
 
@@ -257,10 +257,10 @@ $(document).ready(function() {
         {
             panels: ['#panel-0', '#panel-1'],
             icons:  ['#panel-0 i', '#panel-1 i'],
-            score:  {main: '#score', timer: '#gauge', 
+            score:  {main: '#score', timer: '#gauge',
                     lives: '.lives div', points: '#counter'}
         },
-        {  
+        {
             base_index: 1000,
             presets: 8,
             panel: 'preset-*',
@@ -270,7 +270,7 @@ $(document).ready(function() {
             correct_icon: '+correct',
             replace_array: ['left', 'up', 'right', 'down'],
             timer_color: 'bg-*'
-        }, 
+        },
         {
             1 : {
                 panel: 'reverse-*'
@@ -310,7 +310,7 @@ $(document).ready(function() {
                 }, 2000);
             }
 
-            if (taught.push(challenge) === challenges.length) { 
+            if (taught.push(challenge) === challenges.length) {
                 store('tutorial', 0);
                 tutorial_btn.on.toggle();
                 tutorial_btn.off.toggle();
@@ -353,11 +353,11 @@ $(document).ready(function() {
                 shares.fb.addClass('disabled');
                 $('#share_text').html ('Sharing...');
 
-                FB.api('/me/feed', 'post', { 
+                FB.api('/me/feed', 'post', {
                     description: unescape(text),
                     caption: 'How fast can you dash?',
                     link: 'https://apps.facebook.com/the-dash-game/',
-                    picture: 'https://dash.breno.io/img/logo.png',
+                    picture: 'https://dash.kraiom.com/img/logo.png',
                     name: 'DASH',
                     status_type: 'app_created_story',
                     type: 'link'
